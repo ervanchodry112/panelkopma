@@ -1,12 +1,4 @@
-<?php
-// include '../app/core/Database.php';
-$query = "SELECT * FROM data_anggota";
-// mysqli_query($conn, $query);
-$data = array();
-
-echo $this->extend('dashboard/sidebar');
-?>
-
+<?= $this->extend('dashboard/sidebar') ?>
 
 <?= $this->section('main') ?>
 <main>
@@ -34,41 +26,32 @@ echo $this->extend('dashboard/sidebar');
                 </div>
                 <!-- Search Field -->
 
-
                 <!-- </div> -->
             </div>
         </div>
         <div class="container overflow-scroll">
-            <table class="table table-striped table-responsive tabel-data" style="font-size: 12px;" id="tableData">
+            <table class="table table-striped table-responsive tabel-data fs-6" style="font-size: 12px;" id="tableData">
                 <tr>
-                    <?php //if ($_SESSION['role'] == 3) { 
-                    ?>
                     <th scope="col">Action</th>
-                    <?php //} 
-                    ?>
                     <th scope="col">NPM</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Nomor Anggota</th>
                     <th scope="col">Jurusan</th>
-                    <th scope="col">Fakultas</th>
                     <th scope="col">Nomor WA</th>
                     <th scope="col">Email</th>
                 </tr>
-                <?php foreach ($data as $d) { ?>
+                <?php foreach ($anggota as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
-                        <?php if ($_SESSION['role'] == 3) { ?>
-                            <td>
-                                <a href="hapus.php?npm=<?= $d['npm'] ?>" type="button" onclick="return confirm('Apakah ingin menghapus') " class="btn btn-danger btn-sm">
-                                    <ion-icon name="trash-outline"></ion-icon>
-                                </a>
-                            </td>
-                        <?php } ?>
+                        <td>
+                            <a href="hapus.php?npm=<?= $d['npm'] ?>" type="button" onclick="return confirm('Apakah ingin menghapus') " class="btn btn-danger btn-sm">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </a>
+                        </td>
                         <td><?= $d['npm'] ?></td>
-                        <td><?= $d['nama'] ?></td>
+                        <td><?= $d['nama_lengkap'] ?></td>
                         <td><?= $d['nomor_anggota'] ?></td>
-                        <td><?= $d['nama_jurusan'] ?></td>
-                        <td><?= $d['nama_fakultas'] ?></td>
-                        <td><?= $d['nomor'] ?></td>
+                        <td><?= $d['id_jurusan'] ?></td>
+                        <td><?= $d['nomor_hp'] ?></td>
                         <td><?= $d['email'] ?></td>
                     </tr>
                 <?php } ?>
