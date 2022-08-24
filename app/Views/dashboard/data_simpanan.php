@@ -64,15 +64,15 @@ $data = array();
                     <th scope="col">Simpanan Wajib</th>
                     <th scope="col">Total Simpanan</th>
                 </tr>
-                <?php foreach ($data as $d) { ?>
+                <?php foreach ($simpanan as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="edit_simpanan.php?npm=<?= $d['npm'] ?>&nama=<?= $d['nama'] ?>&simwa=<?= $d['simpanan_wajib'] ?>&simpok=<?= $d['simpanan_pokok'] ?>" type="button" class="btn btn-sm btn-success">
+                            <a href="edit_simpanan.php?npm=<?= $d['npm'] ?>&simwa=<?= $d['simpanan_wajib'] ?>&simpok=<?= $d['simpanan_pokok'] ?>" type="button" class="btn btn-sm btn-success">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         </td>
                         <td><?= $d['npm'] ?></td>
-                        <td class="text-start"><?= $d['nama'] ?></td>
+                        <!-- <td class="text-start"></td> -->
                         <td>Rp <?= $d['simpanan_pokok'] ?></td>
                         <td>Rp <?= $d['simpanan_wajib'] ?></td>
                         <td>Rp <?= $d['simpanan_pokok'] + $d['simpanan_wajib'] ?></td>

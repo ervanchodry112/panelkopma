@@ -59,35 +59,27 @@ echo $this->section('main');
                     <th scope="col">Lokasi</th>
                     <th scope="col">Tanggal</th>
                 </tr>
-                <!-- <?php //foreach ($data as $d) { 
-                        ?> -->
-                <tr>
-                    <td>
-                        <a href="" type="button" class="btn btn-success btn-sm">
-                            <span class="row text-center">
-                                <ion-icon class="col" name="create-outline" size="small"></ion-icon>
-                            </span>
-                            <span class="row">
-                                <div class="col" style="font-size: 12px;">
-                                    Ubah
-                                </div>
-                            </span>
-                        </a>
-                        <a href="<?= base_url('dashboard/presensi') ?>" type="button" class="btn btn-primary btn-sm">
-                            <span class="row">
-                                <ion-icon class="col" size="small" name="clipboard-outline"></ion-icon>
-                            </span>
-                            <span class="row">
-                                <div class="col" style="font-size: 12px;">
-                                    Presensi
-                                </div>
-                            </span>
-                        </a>
-                    </td>
-
-                </tr>
-                <?php //} 
-                ?>
+                <?php foreach ($kegiatan as $d) { ?>
+                    <tr>
+                        <td>
+                            <a href="" type="button" class="btn btn-success btn-sm">
+                                <ion-icon class="col" name="create-outline"></ion-icon>
+                            </a>
+                            <a href="<?= base_url('dashboard/presensi') ?>" type="button" class="btn btn-primary btn-sm">
+                                <ion-icon class="col" name="clipboard-outline"></ion-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <?= $d['nama_kegiatan'] ?>
+                        </td>
+                        <td>
+                            <?= $d['tempat_kegiatan'] ?>
+                        </td>
+                        <td>
+                            <?= $d['tanggal_kegiatan'] ?>
+                        </td>
+                    </tr>
+                <?php } ?>
             </table>
         </div>
     </div>
