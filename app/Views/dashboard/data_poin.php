@@ -1,5 +1,4 @@
 <?php
-$data = array();
 
 echo $this->extend('dashboard/sidebar');
 echo $this->section('main');
@@ -49,14 +48,14 @@ echo $this->section('main');
                 <?php foreach ($data as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="edit_poin.php?npm=<?= $d['npm'] ?>&nama=<?= $d['nama'] ?>&nomor=<?= $d['nomor_anggota'] ?>&p=<?= $d['total_poin'] ?>" type="button" class="btn btn-sm btn-success">
+                            <a href="" type="button" class="btn btn-sm btn-success">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         </td>
                         <td><?= $d['npm'] ?></td>
-                        <td><?= $d['nama'] ?></td>
+                        <td><?= $d['nama_lengkap'] ?></td>
                         <td><?= $d['nomor_anggota'] ?></td>
-                        <td><?= $d['total_poin'] ?></td>
+                        <td><?= $d['poin'] + (int) (($d['simpanan_wajib'] / 10000) * 3) ?></td>
                     </tr>
                 <?php } ?>
             </table>

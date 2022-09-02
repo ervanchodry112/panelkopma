@@ -17,14 +17,14 @@
                         psda
                     </div>
                 </li>
-                <!-- <li>
-                        <a href="index.php" class="nav-link px-3 d-flex">
-                            <span class="me-2">
-                                <ion-icon style="font-size: 22px;" name="people"></ion-icon>
-                            </span>
-                            <spa>Pendaftaran Anggota</span>
-                        </a>
-                    </li> -->
+                <li>
+                    <a href="/dashboard/calon_anggota" class="nav-link px-3 d-flex">
+                        <span class="me-2">
+                            <ion-icon style="font-size: 22px;" name="people"></ion-icon>
+                        </span>
+                        <span>Calon Anggota</span>
+                    </a>
+                </li>
                 <li>
                     <a href="<?= base_url('/dashboard/data_anggota/') ?>" class="nav-link px-3 d-flex">
                         <span class="me-2">
@@ -37,7 +37,8 @@
                 <li>
                     <a href="<?= base_url('/dashboard/data_poin') ?>" class="nav-link px-3 d-flex">
                         <span class="me-2">
-                            <ion-icon style="font-size: 22px;" name="people"></ion-icon>
+                            <ion-icon style="font-size: 22px;" name="checkmark-circle-outline"></ion-icon>
+
                         </span>
                         <span>Data Poin</span>
                     </a>

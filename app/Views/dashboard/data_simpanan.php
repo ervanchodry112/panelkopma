@@ -1,5 +1,7 @@
 <?php
 $data = array();
+
+// dd($simpanan);
 ?>
 
 <?= $this->extend('dashboard/sidebar') ?>
@@ -58,8 +60,8 @@ $data = array();
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                 <tr>
                     <th scope="col">Action</th>
-                    <th scope="col">NPM</th>
                     <th scope="col">Nama</th>
+                    <th scope="col">Nomor Anggota</th>
                     <th scope="col">Simpanan Pokok</th>
                     <th scope="col">Simpanan Wajib</th>
                     <th scope="col">Total Simpanan</th>
@@ -71,7 +73,8 @@ $data = array();
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         </td>
-                        <td><?= $d['npm'] ?></td>
+                        <td><?= $d['nama_lengkap'] ?></td>
+                        <td><?= $d['nomor_anggota'] ?></td>
                         <!-- <td class="text-start"></td> -->
                         <td>Rp <?= $d['simpanan_pokok'] ?></td>
                         <td>Rp <?= $d['simpanan_wajib'] ?></td>

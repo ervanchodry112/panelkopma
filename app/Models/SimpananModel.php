@@ -6,7 +6,10 @@ use CodeIgniter\Model;
 
 class SimpananModel extends Model
 {
-    protected $table = 'data_simpanan';
-    protected $primaryKey = 'npm';
-    public $timestamps = false;
+    public function getSimpanan()
+    {
+        return $this->db->table('data_simpanan')
+            ->join('data_anggota', 'data_simpanan.npm=data_anggota.npm')
+            ->get()->getResultArray();
+    }
 }
