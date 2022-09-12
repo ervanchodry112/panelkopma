@@ -23,15 +23,6 @@ $data = array();
 
                 <div class="col d-flex align-items-center">
 
-                    <!-- Add Button -->
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="tambah_data_simpanan.php">
-                        <span class="fs-6 py-2 align-middle">
-                            <ion-icon name="add-outline"></ion-icon>
-                        </span>
-                        <span class="align-middle">Add</span>
-                    </a>
-                    <!-- Add Button -->
-
                     <!-- Search Field -->
                     <ion-icon name="search-outline"></ion-icon>
                     <form class="form w-50">
@@ -69,8 +60,8 @@ $data = array();
                 <?php foreach ($simpanan as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="edit_simpanan.php?npm=<?= $d['npm'] ?>&simwa=<?= $d['simpanan_wajib'] ?>&simpok=<?= $d['simpanan_pokok'] ?>" type="button" class="btn btn-sm btn-success">
-                                <ion-icon name="create-outline"></ion-icon>
+                            <a href="add_simpanan/<?= $d['npm'] ?>" type="button" class="btn btn-sm btn-warning">
+                                <ion-icon name="add-outline"></ion-icon>
                             </a>
                         </td>
                         <td><?= $d['nama_lengkap'] ?></td>

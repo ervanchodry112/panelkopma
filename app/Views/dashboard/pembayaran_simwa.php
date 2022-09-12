@@ -1,11 +1,13 @@
-<?= $this->extend('dashboard/sidebar') ?>
+<?php
+echo $this->extend('dashboard/sidebar');
+echo $this->section('main');
+?>
 
-<?= $this->section('main') ?>
 <main>
     <div class="container p-0">
         <div class="row pt-3 mb-3">
             <div class="col">
-                <h4 class="ps-3">Data Anggota</h4>
+                <h4 class="ps-3">Pembayaran Simpanan</h4>
             </div>
             <hr>
         </div>
@@ -31,37 +33,44 @@
         </div>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data fs-6" style="font-size: 12px;" id="tableData">
-                <thead>
+                <tr>
+                    <th scope="col">Action</th>
+                    <th scope="col">No. Ref</th>
+                    <th scope="col">Waktu</th>
+                    <th scope="col">Nama Lengkap</th>
+                    <th scope="col">Nomor Anggota</th>
+                    <th scope="col">Nominal</th>
+                    <th scope="col">Bukti</th>
+                    <th scope="col">Status</th>
+                </tr>
+                <?php foreach ($simwa as $d) { ?>
                     <tr>
-                        <th scope="col">Action</th>
-                        <th scope="col">NPM</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Nomor Anggota</th>
-                        <th scope="col">Jurusan</th>
-                        <th scope="col">Nomor WA</th>
-                        <th scope="col">Email</th>
-                    </tr>
-                </thead>
-                <?php foreach ($anggota as $d) { ?>
-                    <tr id="<?= $d['npm'] ?>">
-                        <td class="d-flex">
-                            <a href="hapus.php?npm=<?= $d['npm'] ?>" type="button" onclick="return confirm('Apakah ingin menghapus') " class="disable btn btn-danger btn-sm me-1">
-                                <ion-icon name="trash-outline"></ion-icon>
+                        <td>
+                            <a href="accept/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-success btn-sm">
+                                <ion-icon name="checkmark-circle-outline"></ion-icon>
                             </a>
-                            <a href="" type="button" class="btn btn-sm btn-primary">
-                                <ion-icon name="create-outline"></ion-icon>
+                            <a href="reject/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-danger btn-sm">
+                                <ion-icon name="ban-outline"></ion-icon>
                             </a>
                         </td>
-                        <td><?= $d['npm'] ?></td>
+                        <td><?= $d['id_pembayaran'] ?></td>
+                        <td><?= $d['waktu'] ?></td>
                         <td><?= $d['nama_lengkap'] ?></td>
                         <td><?= $d['nomor_anggota'] ?></td>
-                        <td><?= $d['id_jurusan'] ?></td>
-                        <td><?= $d['nomor_hp'] ?></td>
-                        <td><?= $d['email'] ?></td>
+                        <td><?= $d['nominal'] ?></td>
+                        <td>
+                            <a target="blank" href="" class="btn btn-sm btn-primary">
+                                <span clas>
+                                    <ion-icon name="eye-outline"></ion-icon>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="<?= ($d['status'] == 1) ? 'text-warning' : 'text-danger' ?> ?>"><?= ($d['status'] == 1) ? 'Pending' : 'Rejected' ?></td>
                     </tr>
                 <?php } ?>
             </table>
         </div>
     </div>
 </main>
+
 <?= $this->endSection() ?>

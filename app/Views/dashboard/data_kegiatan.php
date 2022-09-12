@@ -1,5 +1,4 @@
 <?php
-$data = array();
 echo $this->extend('dashboard/sidebar');
 echo $this->section('main');
 ?>
@@ -19,7 +18,7 @@ echo $this->section('main');
                 <div class="col d-flex align-items-center">
 
                     <!-- Add Button -->
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="tambah_data_simpanan.php">
+                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="add_kegiatan">
                         <span class="fs-6 py-2 align-middle">
                             <ion-icon name="add-outline"></ion-icon>
                         </span>
@@ -53,21 +52,26 @@ echo $this->section('main');
         </div>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
-                <tr>
-                    <th scope="col">Action</th>
-                    <th scope="col">Nama Kegiatan</th>
-                    <th scope="col">Lokasi</th>
-                    <th scope="col">Tanggal</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">Nama Kegiatan</th>
+                        <th scope="col">Lokasi</th>
+                        <th scope="col">Tanggal</th>
+                    </tr>
+                </thead>
                 <?php foreach ($kegiatan as $d) { ?>
                     <tr>
                         <td>
                             <a href="" type="button" class="btn btn-success btn-sm">
                                 <ion-icon class="col" name="create-outline"></ion-icon>
                             </a>
-                            <a href="<?= base_url('dashboard/presensi') ?>" type="button" class="btn btn-primary btn-sm">
+                            <a href="/dashboard/presensi/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-primary btn-sm">
                                 <ion-icon class="col" name="clipboard-outline"></ion-icon>
                             </a>
+                            <a href="kegiatan/<?= $d['id_kegiatan'] ?>" class="btn btn-sm btn-warning">
+                                <ion-icon name="qr-code-outline"></ion-icon>
+                                </button>
                         </td>
                         <td>
                             <?= $d['nama_kegiatan'] ?>
@@ -81,6 +85,7 @@ echo $this->section('main');
                     </tr>
                 <?php } ?>
             </table>
+
         </div>
     </div>
 </main>

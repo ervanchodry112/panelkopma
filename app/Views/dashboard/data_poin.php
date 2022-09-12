@@ -18,14 +18,7 @@ echo $this->section('main');
 
 
                 <div class="col d-flex align-items-center">
-                    <!-- Button Add -->
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="tambah_data_poin.php">
-                        <span class="fs-6 py-2 align-middle">
-                            <ion-icon name="add-outline"></ion-icon>
-                        </span>
-                        <span class="align-middle">Add</span>
-                    </a>
-                    <!-- Button Add -->
+
 
                     <!-- Search Field -->
                     <ion-icon name="search-outline" class="ms-auto"></ion-icon>
@@ -38,19 +31,20 @@ echo $this->section('main');
         </div>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
-                <tr>
-                    <th scope="col">Action</th>
-                    <th scope="col">NPM</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Nomor Anggota</th>
-                    <th scope="col">Poin</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">NPM</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Nomor Anggota</th>
+                        <th scope="col">Poin</th>
+                    </tr>
+                </thead>
                 <?php foreach ($data as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="" type="button" class="btn btn-sm btn-success">
-                                <ion-icon name="create-outline"></ion-icon>
-                            </a>
+                            <a href="" type="button" class="btn btn-sm btn-warning">
+                                <ion-icon name="add-outline"></ion-icon>
                         </td>
                         <td><?= $d['npm'] ?></td>
                         <td><?= $d['nama_lengkap'] ?></td>

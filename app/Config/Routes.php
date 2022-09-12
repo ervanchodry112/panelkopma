@@ -37,6 +37,9 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Dashboard::index');
 
+$routes->get('/dashboard/kegiatan/(:any)', 'Dashboard::qr_code/$1');
+$routes->get('/dashboard/qr_download/(:any)', 'Dashboard::qr_download/$1');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

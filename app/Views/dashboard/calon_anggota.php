@@ -54,21 +54,23 @@ echo $this->section('main');
         </div>
         <div class="container overflow-scroll">
             <table class=" table table-striped table-responsive tabel-data" style="font-size: 12px;" id="tableData">
-                <tr>
-                    <th scope="col">Action</th>
-                    <th scope="col">NPM</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Panggilan</th>
-                    <th scope="col">Jurusan</th>
-                    <th scope="col">Fakultas</th>
-                    <th scope="col">Nomor WA</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Asal Informasi</th>
-                    <th scope="col">Domisili</th>
-                    <th scope="col">Alasan Masuk Kopma</th>
-                    <th scope="col">Kode Referal</th>
-                    <th scope="col">Berkas</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">NPM</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Panggilan</th>
+                        <th scope="col">Jurusan</th>
+                        <th scope="col">Fakultas</th>
+                        <th scope="col">Nomor WA</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Asal Informasi</th>
+                        <th scope="col">Domisili</th>
+                        <th scope="col">Alasan Masuk Kopma</th>
+                        <th scope="col">Kode Referal</th>
+                        <th scope="col">Berkas</th>
+                    </tr>
+                </thead>
                 <?php foreach ($calon_anggota as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
