@@ -28,7 +28,7 @@ if ($tgl_kegiatan < $today) {
 
 
                 <div class="col d-flex align-items-center">
-                    <a href="/dashboard/data_kegiatan" class="link text-reset d-flex align-items-center">
+                    <a href="/psda/data_kegiatan" class="link text-reset d-flex align-items-center">
                         <ion-icon name="arrow-back-outline"></ion-icon>
                         <span class="mx-1">Back</span>
                     </a>

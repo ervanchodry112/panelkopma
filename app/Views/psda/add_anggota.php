@@ -63,6 +63,7 @@ echo $this->section('main');
                     </div>
                 </div>
             <?php
+                session()->remove('pesan');
             }
             ?>
 

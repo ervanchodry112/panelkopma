@@ -29,6 +29,19 @@ echo $this->section('main');
                 <!-- </div> -->
             </div>
         </div>
+        <?php
+        if (session()->getFlashdata('pesan')) {
+        ?>
+            <div class="row mx-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Data berhasil dihapus!
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+            session()->remove('pesan');
+        }
+        ?>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data fs-6" style="font-size: 12px;" id="tableData">
                 <tr>
@@ -41,9 +54,13 @@ echo $this->section('main');
                 <?php foreach ($referal as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="hapus.php?npm=<?= $d['npm'] ?>" type="button" onclick="return confirm('Apakah ingin menghapus') " class="btn btn-danger btn-sm">
-                                <ion-icon name="trash-outline"></ion-icon>
-                            </a>
+                            <form action="delete_referal/<?= $d['nomor_anggota'] ?>" method="POST">
+                                <?= csrf_field(); ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                </button>
+                            </form>
                         </td>
                         <td><?= $d['nama_lengkap'] ?></td>
                         <td><?= $d['nomor_anggota'] ?></td>

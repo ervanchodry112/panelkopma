@@ -52,6 +52,19 @@ echo $this->section('main');
                 <!-- </div> -->
             </div>
         </div>
+        <?php
+        if (session()->getFlashdata('pesan')) {
+        ?>
+            <div class="row mx-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Data berhasil dihapus!
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+            session()->remove('pesan');
+        }
+        ?>
         <div class="container overflow-scroll">
             <table class=" table table-striped table-responsive tabel-data" style="font-size: 12px;" id="tableData">
                 <thead>
@@ -74,9 +87,13 @@ echo $this->section('main');
                 <?php foreach ($calon_anggota as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="hapus.php?npm=<?= $d['npm'] ?>&table=calon_anggota" type="button" onclick="return confirm('Apakah ingin menghapus') " class="btn btn-danger btn-sm">
-                                <ion-icon name="trash-outline"></ion-icon>
-                            </a>
+                            <form action="/psda/delete_calon/<?= $d['npm'] ?>" method="POST">
+                                <?= csrf_field(); ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" onclick="return confirm('Apakah anda yakin>')" class="btn btn-danger btn-sm">
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                </button>
+                            </form>
                         </td>
                         <td><?= $d['npm'] ?></td>
                         <td><?= $d['nama_lengkap'] ?></td>

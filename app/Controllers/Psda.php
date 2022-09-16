@@ -24,7 +24,7 @@ use function bin2hex;
 use function file_exists;
 use function mkdir;
 
-class PSDAController extends BaseController
+class Psda extends BaseController
 {
     protected $data_anggota;
     protected $data_kegiatan;
@@ -55,10 +55,11 @@ class PSDAController extends BaseController
     // Data Anggota
     public function data_anggota()
     {
-        $anggota = $this->data_anggota->findAll();
+        $anggota =
+            $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->findAll();
         $data = [
             'title' => 'Data Anggota',
-            'anggota' => $anggota
+            'anggota' => $anggota,
         ];
         return view('psda/data_anggota', $data);
     }
@@ -89,6 +90,15 @@ class PSDAController extends BaseController
         return redirect()->to('/psda/add_anggota');
     }
 
+    public function delete_anggota($npm)
+    {
+        $this->data_anggota->delete($npm);
+        session()->setFlashdata('pesan', 'Data berhasil dihapus');
+        return redirect()->to('/psda/data_anggota');
+    }
+    // End of Anggota Function
+
+    // Calon Anggota Function
     public function calon_anggota()
     {
         $calon = $this->calon_anggota->getCalonAnggota();
@@ -98,7 +108,16 @@ class PSDAController extends BaseController
         ];
         return view('psda/calon_anggota', $data);
     }
-    // End of Anggota Function
+
+    public function delete_calon($npm)
+    {
+        $this->calon_anggota->delete($npm);
+        session()->setFlashdata('pesan', 'Data berhasil dihapus');
+        return redirect()->to('/psda/calon_anggota');
+    }
+
+    // End of Calon Anggota Function 
+
 
     // Kegiatan Function
     public function data_kegiatan()
@@ -215,6 +234,7 @@ class PSDAController extends BaseController
     public function kode_referal()
     {
         $ref = $this->referal->getReferal();
+        // dd($ref);
         $data = [
             'title' => 'Kode Referal',
             'referal' => $ref
@@ -241,6 +261,15 @@ class PSDAController extends BaseController
         session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
 
         return redirect()->to('/psda/add_referal');
+    }
+
+    public function delete_referal($seg1 = false, $seg2 = false, $seg3 = false)
+    {
+        $nomor_anggota = $seg1 . "/" . $seg2 . "/" . $seg3;
+        // dd($nomor_anggota);
+        $this->referal->delete($nomor_anggota);
+        session()->setFlashdata('pesan', 'Data berhasil dihapus');
+        return redirect()->to('/psda/kode_referal');
     }
     // End of Referal Function
 }

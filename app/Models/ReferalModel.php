@@ -8,7 +8,7 @@ class ReferalModel extends Model
 {
     protected $table = 'referal';
     protected $primaryKey = 'nomor_anggota';
-    protected $allowedFields = ['referal','nomor_anggota'];
+    protected $allowedFields = ['kode_referal', 'nomor_anggota'];
 
     public function getReferal()
     {

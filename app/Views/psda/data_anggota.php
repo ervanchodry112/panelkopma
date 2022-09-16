@@ -29,6 +29,19 @@
                 <!-- </div> -->
             </div>
         </div>
+        <?php
+        if (session()->getFlashdata('pesan')) {
+        ?>
+            <div class="row mx-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Data berhasil dihapus!
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+            session()->remove('pesan');
+        }
+        ?>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data fs-6" style="font-size: 12px;" id="tableData">
                 <thead>
@@ -45,9 +58,13 @@
                 <?php foreach ($anggota as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td class="d-flex">
-                            <a href="hapus.php?npm=<?= $d['npm'] ?>" type="button" onclick="return confirm('Apakah ingin menghapus') " class="disable btn btn-danger btn-sm me-1">
-                                <ion-icon name="trash-outline"></ion-icon>
-                            </a>
+                            <form action="delete_anggota/<?= $d['npm'] ?>" method="POST">
+                                <?= csrf_field(); ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                </button>
+                            </form>
                             <a href="" type="button" class="btn btn-sm btn-primary">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
@@ -55,7 +72,7 @@
                         <td><?= $d['npm'] ?></td>
                         <td><?= $d['nama_lengkap'] ?></td>
                         <td><?= $d['nomor_anggota'] ?></td>
-                        <td><?= $d['id_jurusan'] ?></td>
+                        <td><?= $d['nama_jurusan'] ?></td>
                         <td><?= $d['nomor_hp'] ?></td>
                         <td><?= $d['email'] ?></td>
                     </tr>
