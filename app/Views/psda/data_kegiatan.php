@@ -66,7 +66,7 @@ echo $this->section('main');
                             <a href="" type="button" class="btn btn-success btn-sm">
                                 <ion-icon class="col" name="create-outline"></ion-icon>
                             </a>
-                            <a href="/dashboard/presensi/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-primary btn-sm">
+                            <a href="/psda/presensi/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-primary btn-sm">
                                 <ion-icon class="col" name="clipboard-outline"></ion-icon>
                             </a>
                             <a href="kegiatan/<?= $d['id_kegiatan'] ?>" class="btn btn-sm btn-warning">

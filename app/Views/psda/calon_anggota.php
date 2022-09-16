@@ -92,23 +92,14 @@ echo $this->section('main');
                         <td class="gy-2">
                             <a class="m-1 w-100 row btn btn-danger btn-sm" target="blank" href="../pendaftaran/include/upload/foto/<?= $d['foto'] ?>">
                                 <div class="col bukti-btn">Foto</div>
-                                <!-- <ion-icon name="document-text-outline"></ion-icon> -->
                             </a>
                             <a class="m-1 w-100 row btn btn-warning text-light btn-sm" target="blank" href="../pendaftaran/include/upload/ktm/<?= $d['ktm'] ?>">
                                 <div class="col bukti-btn">KTM</div>
-                                <!-- <ion-icon name="document-text-outline"></ion-icon> -->
                             </a>
                             <a class="m-1 w-100 row btn btn-success btn-sm" target="blank" href="../pendaftaran/include/upload/bukti-pembayaran/<?= $d['bukti_pembayaran'] ?>">
                                 <div class="col bukti-btn">Pembayaran</div>
                             </a>
                         </td>
-                        <!-- <td><a target="blank" href="../pendaftaran/include/upload/ktm/<?= $d['ktm'] ?>">
-                                <ion-icon name="document-text-outline"></ion-icon>
-                            </a></td>
-                        <td>
-                            <a target="blank" href="../pendaftaran/include/upload/bukti-pembayaran/<?= $d['bukti_pembayaran'] ?>">
-                            </a>
-                        </td> -->
                     </tr>
                 <?php } ?>
             </table>

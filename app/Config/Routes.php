@@ -37,8 +37,11 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Dashboard::index');
 
-$routes->get('/dashboard/kegiatan/(:any)', 'Dashboard::qr_code/$1');
-$routes->get('/dashboard/qr_download/(:any)', 'Dashboard::qr_download/$1');
+$routes->get('/psda/kegiatan/(:any)', 'PSDAController::qr_code/$1');
+$routes->get('/psda/qr_download/(:any)', 'PSDAController::qr_download/$1');
+$routes->get('/psda/(:segment)', 'PSDAController::$1');
+$routes->get('/psda/(:segment)/(:any)', 'PSDAController::$1/$2');
+$routes->get('/psda', 'PSDAController::index');
 
 /*
  * --------------------------------------------------------------------

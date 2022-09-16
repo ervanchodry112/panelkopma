@@ -68,7 +68,7 @@ echo $this->section('main');
 
             <div class="row ms-4 w-75">
                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Tambah</button>
-                <a href="data_anggota" class="col-3 btn btn-secondary btn-sm">Batal</a>
+                <a href="/psda/data_anggota" class="col-3 btn btn-secondary btn-sm">Batal</a>
             </div>
         </form>
 

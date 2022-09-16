@@ -12,12 +12,12 @@ echo $this->section('main');
             </div>
             <hr>
         </div>
-        <form action="save_kegiatan" method="POST">
+        <form action="/dashboard/save_simpanan" method="POST">
             <?= csrf_field(); ?>
             <div class="row m-3 w-75">
                 <label for="npm" class="col-sm-3 col-form-label">NPM</label>
                 <div class="col-sm-9">
-                    <input type="text" name="npm" class="form-control" id="npm" value="<?= $npm ?>" disabled>
+                    <input type="text" name="npm" class="form-control" id="npm" value="<?= $npm ?>" readonly>
                 </div>
             </div>
             <div class="row m-3 w-75">
@@ -30,7 +30,7 @@ echo $this->section('main');
                 <label for="nominal" class="col-sm-3 form-label">Nominal Pembayaran</label>
                 <div class="col-sm-9 input-group w-75">
                     <span class="input-group-text">Rp</span>
-                    <input type="text" name="nominal" class="form-control" id="nominal" placeholder="0">
+                    <input type="text" name="nominal" class="form-control" id="nominal" placeholder="0" autofocus>
                 </div>
             </div>
 

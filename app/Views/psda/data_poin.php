@@ -15,10 +15,7 @@ echo $this->section('main');
         </div>
         <div class="row mx-2 mb-2">
             <div class="col d-flex justify-content-between">
-
-
                 <div class="col d-flex align-items-center">
-
 
                     <!-- Search Field -->
                     <ion-icon name="search-outline" class="ms-auto"></ion-icon>

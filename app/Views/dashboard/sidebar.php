@@ -5,10 +5,21 @@
 <?= $this->section('sidebar'); ?>
 
 <!-- Offcanvas -->
-<div class="offcanvas offcanvas-start sidebar-nav bg-dark text-white" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-start sidebar-nav bg-dark text-white overflow-auto" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-body overflow-hidden p-0">
         <nav class="navbar-dark">
             <ul class="navbar-nav">
+                <li class="my-1">
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a href="/dashboard" class="nav-link px-3 d-flex">
+                        <span class="me-2">
+                            <ion-icon style="font-size: 22px;" name="speedometer"></ion-icon>
+                        </span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
                 <li class="my-2">
                     <hr class="dropdown-divider">
                 </li>
@@ -22,7 +33,7 @@
                 </li>
                 <div id="psdacollapse" class="collapse">
                     <li>
-                        <a href="/dashboard/calon_anggota" class="nav-link px-3 d-flex">
+                        <a href="/psda/calon_anggota" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="people"></ion-icon>
                             </span>
@@ -31,7 +42,7 @@
                     </li>
 
                     <li>
-                        <a href="<?= base_url('/dashboard/data_anggota/') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/psda/data_anggota/') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="people"></ion-icon>
                             </span>
@@ -40,7 +51,7 @@
                     </li>
 
                     <li>
-                        <a href="<?= base_url('/dashboard/data_poin') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/psda/data_poin') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="checkmark-circle-outline"></ion-icon>
 
@@ -49,7 +60,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('/dashboard/data_kegiatan') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/psda/data_kegiatan') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="calendar-clear-outline"></ion-icon>
                             </span>
@@ -57,7 +68,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('/dashboard/kode_referal') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/psda/kode_referal') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="gift-outline"></ion-icon>
                             </span>
@@ -83,7 +94,7 @@
                 <div id="keuangan-collapse" class="collapse">
 
                     <li>
-                        <a href="<?= base_url('/dashboard/data_simpanan') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/keuangan/data_simpanan') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="cash-outline"></ion-icon>
                             </span>
@@ -91,7 +102,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('/dashboard/pembayaran_simwa') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/keuangan/pembayaran_simwa') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="cash-outline"></ion-icon>
                             </span>
