@@ -39,12 +39,20 @@ echo $this->section('main');
             <?php foreach ($simwa as $d) { ?>
                 <tr>
                     <td>
-                        <a href="accept/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-success btn-sm">
-                            <ion-icon name="checkmark-circle-outline"></ion-icon>
-                        </a>
-                        <a href="reject/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-danger btn-sm">
-                            <ion-icon name="ban-outline"></ion-icon>
-                        </a>
+                        <?php
+                        if ($d['status'] == 1) {
+                        ?>
+                            <a href="/keuangan/accept/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-success btn-sm">
+                                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                            </a>
+                            <a href="/keuangan/reject/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-danger btn-sm">
+                                <ion-icon name="ban-outline"></ion-icon>
+                            </a>
+                        <?php
+                        } else {
+                            echo '-';
+                        }
+                        ?>
                     </td>
                     <td><?= $d['id_pembayaran'] ?></td>
                     <td><?= $d['created_at'] ?></td>
@@ -52,13 +60,21 @@ echo $this->section('main');
                     <td><?= $d['nomor_anggota'] ?></td>
                     <td><?= $d['nominal'] ?></td>
                     <td>
-                        <a target="blank" href="" class="btn btn-sm btn-primary">
-                            <span clas>
-                                <ion-icon name="eye-outline"></ion-icon>
-                            </span>
-                        </a>
+                        <?php
+                        if ($d['bukti_pembayaran'] == '-') {
+                            echo "-";
+                        } else {
+                        ?>
+                            <a target="blank" href="" class="btn btn-sm btn-primary">
+                                <span clas>
+                                    <ion-icon name="eye-outline"></ion-icon>
+                                </span>
+                            </a>
+                        <?php } ?>
                     </td>
-                    <td class="<?= ($d['status'] == 1) ? 'text-warning' : 'text-danger' ?> ?>"><?= ($d['status'] == 1) ? 'Pending' : 'Rejected' ?></td>
+                    <td class="<?= ($d['status'] == 1 ? 'text-warning' : ($d['status'] == 2 ? 'text-danger' : 'text-success')) ?>">
+                        <?= ($d['status'] == 1 ? 'Pending' : ($d['status'] == 2 ? 'Rejected' : "Accepted")) ?>
+                    </td>
                 </tr>
             <?php } ?>
         </table>

@@ -23,7 +23,7 @@ if ($tgl_kegiatan < $today) {
         </div>
         <div class="row mx-2 mb-2">
             <div class="col d-flex justify-content-between">
-                <a href="/psda/data_kegiatan" class="link text-reset d-flex align-items-center">
+                <a href="/dashboard/data_kegiatan" class="link text-reset d-flex align-items-center">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <span class="mx-1">Back</span>
                 </a>
@@ -33,7 +33,7 @@ if ($tgl_kegiatan < $today) {
             <div class="row d-flex align-items-center mx-2 text-light">
                 <div class="col-sm-3 justify-content-center bg-primary p-3 rounded m-2">
                     <img class="w-100 rounded mb-2 shadow" src="<?= base_url($file) ?>" width="250px" alt="">
-                    <a href="/psda/qr_download/<?= $kegiatan['id_kegiatan'] ?>.png" class="btn btn-light w-100 shadow align-self-center">Download</a>
+                    <a href="/dashboard/qr_download/<?= $kegiatan['id_kegiatan'] ?>.png" class="btn btn-light w-100 shadow align-self-center">Download</a>
                 </div>
                 <div class="col-sm-8 m-2 bg-primary p-3 rounded lh-sm">
                     <div class="row my-2 fw-bolder">

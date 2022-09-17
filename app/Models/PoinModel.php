@@ -6,6 +6,12 @@ use CodeIgniter\Model;
 
 class PoinModel extends Model
 {
+    protected $table = 'data_poin';
+    protected $primaryKey = 'nomor_anggota';
+    protected $allowedFields = ['nomor_anggota', 'poin'];
+    protected $useTimestamps = false;
+
+
     public function getPoin()
     {
         return $this->db->table('data_poin')

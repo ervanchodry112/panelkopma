@@ -35,21 +35,23 @@ echo $this->section('main');
                 </div>
 
 
-                <!-- Download Button -->
-                <div class="col justify-content-end d-flex">
-                    <a href="toExcel.php" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
-                        <span class="me-1">
-                            <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
-                        </span>
-                        <span>
-                            XLS
-                        </span>
-                    </a>
-                </div>
-                <!-- Download Button -->
+                
 
             </div>
         </div>
+
+        <?php
+        if (session()->getFlashdata('pesan')) { ?>
+            <div class="row mx-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('pesan') ?>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+            session()->remove('pesan');
+        }
+        ?>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                 <thead>
@@ -63,10 +65,10 @@ echo $this->section('main');
                 <?php foreach ($kegiatan as $d) { ?>
                     <tr>
                         <td>
-                            <a href="" type="button" class="btn btn-success btn-sm">
+                            <a href="/dashboard/edit_kegiatan/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-success btn-sm">
                                 <ion-icon class="col" name="create-outline"></ion-icon>
                             </a>
-                            <a href="/psda/presensi/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-primary btn-sm">
+                            <a href="/dashboard/presensi/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-primary btn-sm">
                                 <ion-icon class="col" name="clipboard-outline"></ion-icon>
                             </a>
                             <a href="kegiatan/<?= $d['id_kegiatan'] ?>" class="btn btn-sm btn-warning">

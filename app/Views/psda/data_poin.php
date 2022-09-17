@@ -26,6 +26,19 @@ echo $this->section('main');
                 </div>
             </div>
         </div>
+        <?php
+        if (session()->getFlashdata('pesan')) {
+        ?>
+            <div class="row mx-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashData('pesan') ?>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+            session()->remove('pesan');
+        }
+        ?>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                 <thead>
@@ -40,7 +53,7 @@ echo $this->section('main');
                 <?php foreach ($data as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="" type="button" class="btn btn-sm btn-warning">
+                            <a href="/psda/add_value/<?= $d['nomor_anggota'] ?>" type="button" class="btn btn-sm btn-warning">
                                 <ion-icon name="add-outline"></ion-icon>
                         </td>
                         <td><?= $d['npm'] ?></td>

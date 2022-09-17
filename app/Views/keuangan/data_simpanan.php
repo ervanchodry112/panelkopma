@@ -47,6 +47,19 @@ $data = array();
 
             </div>
         </div>
+        <?php
+        if (session()->getFlashdata('pesan')) {
+        ?>
+            <div class="row mx-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashData('pesan') ?>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+            session()->remove('pesan');
+        }
+        ?>
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                 <tr>

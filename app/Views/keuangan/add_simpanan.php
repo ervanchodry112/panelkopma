@@ -12,7 +12,7 @@ echo $this->section('main');
             </div>
             <hr>
         </div>
-        <form action="/dashboard/save_simpanan" method="POST">
+        <form action="/keuangan/save_simpanan" method="POST">
             <?= csrf_field(); ?>
             <div class="row m-3 w-75">
                 <label for="npm" class="col-sm-3 col-form-label">NPM</label>
@@ -33,21 +33,9 @@ echo $this->section('main');
                     <input type="text" name="nominal" class="form-control" id="nominal" placeholder="0" autofocus>
                 </div>
             </div>
-
-            <?php
-            if (session()->getFlashdata('pesan')) { ?>
-                <div class="row ms-4 w-75">
-                    <div class="col-12 alert alert-success" role="alert">
-                        Data berhasil ditambahkan!
-                    </div>
-                </div>
-            <?php
-            }
-            ?>
-
             <div class="row ms-4 w-75">
                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Tambah</button>
-                <a href="data_simpanan" class="col-3 btn btn-secondary btn-sm">Batal</a>
+                <a href="/keuangan/data_simpanan" class="col-3 btn btn-secondary btn-sm">Batal</a>
             </div>
         </form>
 

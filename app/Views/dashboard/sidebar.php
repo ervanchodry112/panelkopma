@@ -20,6 +20,14 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= base_url('/dashboard/data_kegiatan') ?>" class="nav-link px-3 d-flex">
+                        <span class="me-2">
+                            <ion-icon style="font-size: 22px;" name="calendar-clear-outline"></ion-icon>
+                        </span>
+                        <span>Data Kegiatan</span>
+                    </a>
+                </li>
                 <li class="my-2">
                     <hr class="dropdown-divider">
                 </li>
@@ -57,14 +65,6 @@
 
                             </span>
                             <span>Data Poin</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= base_url('/psda/data_kegiatan') ?>" class="nav-link px-3 d-flex">
-                            <span class="me-2">
-                                <ion-icon style="font-size: 22px;" name="calendar-clear-outline"></ion-icon>
-                            </span>
-                            <span>Data Kegiatan</span>
                         </a>
                     </li>
                     <li>

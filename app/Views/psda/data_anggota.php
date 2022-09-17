@@ -34,7 +34,7 @@
         ?>
             <div class="row mx-2">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Data berhasil dihapus!
+                    <?= session()->getFlashData('pesan') ?>
                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     </tr>
                 </thead>
                 <?php foreach ($anggota as $d) { ?>
-                    <tr id="<?= $d['npm'] ?>">
+                    <tr>
                         <td class="d-flex">
                             <form action="delete_anggota/<?= $d['npm'] ?>" method="POST">
                                 <?= csrf_field(); ?>
@@ -65,7 +65,7 @@
                                     <ion-icon name="trash-outline"></ion-icon>
                                 </button>
                             </form>
-                            <a href="" type="button" class="btn btn-sm btn-primary">
+                            <a href="/psda/edit_anggota/<?= $d['npm'] ?>" type="button" class="ms-1 btn btn-sm btn-warning">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         </td>

@@ -63,10 +63,8 @@ class Keuangan extends BaseController
         $nomor_anggota = $this->data_anggota->select('nomor_anggota')->where('npm', $this->request->getVar('npm'))
             ->first();
         $id_pembayaran = uniqid();
-        // d($nomor_anggota);
-        // d($id_pembayaran);
-        // dd($this->request->getVar());
-        $this->bayar_simwa->save([
+
+        $this->bayar_simwa->insert([
             'id_pembayaran' => $id_pembayaran,
             'nomor_anggota' => $nomor_anggota['nomor_anggota'],
             'nominal' => $this->request->getVar('nominal'),
@@ -77,6 +75,29 @@ class Keuangan extends BaseController
         // $this->bayar_simwa->c
         session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
 
-        return redirect()->to('/keuangan/add_simpanan/' . $this->request->getVar('npm'));
+        return redirect()->to('/keuangan/data_simpanan/' . $this->request->getVar('npm'));
+    }
+
+    public function accept($id)
+    {
+        $temp = $this->bayar_simwa->select('nomor_anggota, nominal')->where('id_pembayaran', $id)->first();
+        $npm = $this->data_anggota->select('npm')->where('nomor_anggota', $temp['nomor_anggota'])->first();
+        $simpanan_lama = $this->data_simpanan->where('npm', $npm['npm'])->first();
+        $simwa = $simpanan_lama['simpanan_wajib'] + $temp['nominal'];
+        $this->bayar_simwa->update($id, [
+            'status' => 3
+        ]);
+        $this->data_simpanan->update($npm['npm'], [
+            'simpanan_wajib' => $simwa,
+            'total_simpanan' => $simpanan_lama['simpanan_pokok'] + $simwa,
+        ]);
+        return redirect()->to('/keuangan/pembayaran_simwa');
+    }
+    public function reject($id)
+    {
+        $this->bayar_simwa->update($id, [
+            'status' => 2
+        ]);
+        return redirect()->to('/keuangan/pembayaran_simwa');
     }
 }

@@ -37,11 +37,8 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Dashboard::index');
 
-$routes->get('/psda/kegiatan/(:any)', 'Psda::qr_code/$1');
-// $routes->get('/psda/qr_download/(:any)', 'Psda::qr_download/$1');
-// $routes->get('/psda/(:segment)', 'Psda::$1');
-// $routes->get('/psda/(:segment)/(:any)', 'Psda::$1/$2');
-// $routes->get('/psda', 'Psda::index');
+$routes->get('/dashboard/kegiatan/(:any)', 'Dashboard::qr_code/$1');
+$routes->get('/psda/add_value/(:segment)', 'Psda::add_value/$1');
 $routes->delete('/psda/delete_calon/(:num)', 'Psda::delete_calon/$1');
 $routes->delete('/psda/delete_anggota/(:any)', 'Psda::delete_anggota/$1');
 $routes->delete('/psda/delete_referal/(:any)', 'Psda::delete_referal/$1');

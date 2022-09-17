@@ -55,8 +55,7 @@ class Psda extends BaseController
     // Data Anggota
     public function data_anggota()
     {
-        $anggota =
-            $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->findAll();
+        $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->findAll();
         $data = [
             'title' => 'Data Anggota',
             'anggota' => $anggota,
@@ -96,6 +95,31 @@ class Psda extends BaseController
         session()->setFlashdata('pesan', 'Data berhasil dihapus');
         return redirect()->to('/psda/data_anggota');
     }
+
+    public function edit_anggota($npm)
+    {
+        $jur = $this->jurusan->findAll();
+        $data = [
+            'title' => 'Edit Data Anggota',
+            'anggota' => $this->data_anggota->where('data_anggota.npm', $npm)->join('jurusan', 'jurusan.id_jurusan=data_anggota.id_jurusan')->first(),
+            'jurusan' => $jur,
+        ];
+        return view('/psda/edit_anggota', $data);
+    }
+
+    public function update_anggota()
+    {
+        $this->data_anggota->save([
+            'npm' => $this->request->getVar('npm'),
+            'nomor_anggota' => $this->request->getVar('nomor_anggota'),
+            'nama_lengkap' => $this->request->getVar('nama'),
+            'email' => $this->request->getVar('email'),
+            'nomor_hp' => $this->request->getVar('no_handphone'),
+            'id_jurusan' => $this->request->getVar('jurusan')
+        ]);
+        session()->setFlashdata('pesan', 'Data berhasil diudpate');
+        return redirect()->to('/psda/data_anggota');
+    }
     // End of Anggota Function
 
     // Calon Anggota Function
@@ -118,106 +142,6 @@ class Psda extends BaseController
 
     // End of Calon Anggota Function 
 
-
-    // Kegiatan Function
-    public function data_kegiatan()
-    {
-        $data = [
-            'title' => 'Data Kegiatan',
-            'kegiatan' => $this->data_kegiatan->getKegiatan()
-        ];
-        return view('psda/data_kegiatan', $data);
-    }
-
-    public function add_kegiatan()
-    {
-        $data = [
-            'title' => 'Tambah Data Kegiatan'
-        ];
-        return view('psda/add_kegiatan', $data);
-    }
-
-    public function save_kegiatan()
-    {
-        $id = random_int(1000, 9999);
-        $this->data_kegiatan->save([
-            'id_kegiatan' => $id,
-            'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
-            'tanggal_kegiatan' => $this->request->getVar('tanggal'),
-            'tempat_kegiatan' => $this->request->getVar('tempat'),
-        ]);
-
-        session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
-
-        return redirect()->to('/psda/add_kegiatan');
-    }
-
-    public function presensi($id)
-    {
-        $data = [
-            'title' => 'Presensi',
-            'data' => $this->data_presensi->getPresensi($id),
-            'kegiatan' => $this->data_kegiatan->getKegiatan($id)
-        ];
-        return view('psda/presensi', $data);
-    }
-
-    public function qr_code($id)
-    {
-        $save_name = $id . '.png';
-        $dir = 'assets/media/qrcode/';
-        if (!file_exists($dir)) {
-            mkdir($dir, 0775, true);
-        }
-
-        /* QR Configuration  */
-        $config['cacheable']    = true;
-        $config['imagedir']     = $dir;
-        $config['quality']      = true;
-        $config['size']         = '1024';
-        $config['black']        = [255, 255, 255];
-        $config['white']        = [255, 255, 255];
-        $this->ciqrcode->initialize($config);
-
-        $params['data']     = $id;
-        $params['level']    = 'L';
-        $params['size']     = 10;
-        $params['savename'] = FCPATH . $config['imagedir'] . $save_name;
-
-        $this->ciqrcode->generate($params);
-
-        $data = [
-            'title' => 'QR Code',
-            'kegiatan' => $this->data_kegiatan->getKegiatan($id),
-            'file'    => $dir . $save_name
-        ];
-        return view('psda/qr_code', $data);
-    }
-
-    public function qr_download($file_name)
-    {
-        $dir = "assets/media/qrcode/";
-        $file = $dir . $file_name;
-        $ctype = "application/octet-stream";
-        if (!empty($file) && file_exists($file)) { /*check keberadaan file*/
-            header("Pragma:public");
-            header("Expired:0");
-            header("Cache-Control:must-revalidate");
-            header("Content-Control:public");
-            header("Content-Description: File Transfer");
-            header("Content-Type: $ctype");
-            header("Content-Disposition:attachment; filename=\"" . $file . "\";");
-            header("Content-Transfer-Encoding:binary");
-            header("Content-Length:" . filesize($file));
-            flush();
-            readfile($file);
-            exit();
-        } else {
-            echo "File tidak ditemukan";
-        }
-    }
-    // End of Kegiatan Function
-
     // Poin Function
     public function data_poin()
     {
@@ -227,6 +151,33 @@ class Psda extends BaseController
             'data' => $poin
         ];
         return view('psda/data_poin', $data);
+    }
+
+    public function add_value($seg1, $seg2, $seg3)
+    {
+        $nomor_anggota = $seg1 . '/' . $seg2 . '/' . $seg3;
+        $anggota = $this->data_anggota->join('data_poin', 'data_anggota.nomor_anggota=data_poin.nomor_anggota')
+            ->select('data_anggota.nama_lengkap, data_poin.nomor_anggota')->where('data_anggota.nomor_anggota', $nomor_anggota)
+            ->first();
+
+        $data = [
+            'title' => 'Tambah Poin',
+            'anggota' => $anggota,
+        ];
+        return view('psda/add_value', $data);
+    }
+
+    public function sum_value()
+    {
+        $poin_lama = $this->data_poin->select('poin')->where('nomor_anggota', $this->request->getVar('nomor_anggota'))->first();
+        $poin = $poin_lama['poin'] + $this->request->getVar('poin');
+        // dd($poin);
+        $this->data_poin->save([
+            'poin' => $poin,
+            'nomor_anggota' => $this->request->getVar('nomor_anggota'),
+        ]);
+        session()->setFlashdata('pesan', 'Poin berhasil ditambah');
+        return redirect()->to('/psda/data_poin');
     }
     // End of Poin Function
 
