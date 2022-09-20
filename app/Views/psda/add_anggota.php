@@ -55,17 +55,6 @@ echo $this->section('main');
                     </select>
                 </div>
             </div>
-            <?php
-            if (session()->getFlashdata('pesan')) { ?>
-                <div class="row ms-4 w-75">
-                    <div class="col-12 alert alert-success" role="alert">
-                        Data berhasil ditambahkan!
-                    </div>
-                </div>
-            <?php
-                session()->remove('pesan');
-            }
-            ?>
 
             <div class="row ms-4 w-75">
                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Tambah</button>

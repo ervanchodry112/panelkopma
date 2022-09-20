@@ -18,6 +18,9 @@ use App\Models\Home_model;
 use Kenjis\CI3Compatible\Core\CI_Input;
 use CodeIgniter\I18n\Time;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 use function bin2hex;
 use function file_exists;
 use function mkdir;
@@ -108,6 +111,49 @@ class Dashboard extends BaseController
             'kegiatan' => $this->data_kegiatan->getKegiatan($id)
         ];
         return view('dashboard/presensi', $data);
+    }
+
+    public function download_presensi($id)
+    {
+        $spreadsheet = new Spreadsheet();
+
+        $presensi = $this->data_presensi->getPresensi($id);
+        $kegiatan = $this->data_kegiatan->getKegiatan($id);
+        $filename = 'Presensi_' . $kegiatan['nama_kegiatan'] . '_' . $kegiatan['tanggal_kegiatan'] . '.xlsx';
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Timestamp');
+        $sheet->setCellValue('C1', 'Nama Lengkap');
+        $sheet->setCellValue('D1', 'Nomor Anggota');
+        $row = 2;
+
+        foreach ($presensi as $c) {
+            $sheet->setCellValue('A' . $row, $row - 1);
+            $sheet->setCellValue('B' . $row, $c['waktu']);
+            $sheet->setCellValue('C' . $row, $c['nama_lengkap']);
+            $sheet->setCellValue('D' . $row, $c['nomor_anggota']);
+            $row++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('assets/document/' . $filename);
+        $file = 'assets/document/' . $filename;
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file));
+
+        flush();
+
+        readfile($file);
+
+        exit;
     }
 
     public function qr_code($id)

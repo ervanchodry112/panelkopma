@@ -127,7 +127,7 @@
 
                 <div id="litbang-collapse" class="collapse">
                     <li>
-                        <a href="<?= base_url('/dashboard/hasil_survey') ?>" class="nav-link px-3 d-flex">
+                        <a href="<?= base_url('/litbang/hasil_survey') ?>" class="nav-link px-3 d-flex">
                             <span class="me-2">
                                 <ion-icon style="font-size: 22px;" name="chatbubbles-outline"></ion-icon>
                             </span>

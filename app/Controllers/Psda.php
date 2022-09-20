@@ -20,6 +20,9 @@ use App\Models\Home_model;
 use Kenjis\CI3Compatible\Core\CI_Input;
 use CodeIgniter\I18n\Time;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 use function bin2hex;
 use function file_exists;
 use function mkdir;
@@ -140,6 +143,64 @@ class Psda extends BaseController
         return redirect()->to('/psda/calon_anggota');
     }
 
+    public function download_calon()
+    {
+        $filename = 'calon_anggota.xlsx';
+        $spreadsheet = new Spreadsheet();
+
+        $calon = $this->calon_anggota->getCalonAnggota();
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'NPM');
+        $sheet->setCellValue('C1', 'Nama Lengkap');
+        $sheet->setCellValue('D1', 'Panggilan');
+        $sheet->setCellValue('E1', 'Jurusan');
+        $sheet->setCellValue('F1', 'Fakultas');
+        $sheet->setCellValue('G1', 'Nomor Whatsapp');
+        $sheet->setCellValue('H1', 'Email');
+        $sheet->setCellValue('I1', 'Asal Informasi');
+        $sheet->setCellValue('J1', 'Domisili');
+        $sheet->setCellValue('K1', 'Alasan Masuk Kopma');
+        $sheet->setCellValue('L1', 'Kode Referal');
+        $row = 2;
+
+        foreach ($calon as $c) {
+            $sheet->setCellValue('A' . $row, $row - 1);
+            $sheet->setCellValue('B' . $row, $c['npm']);
+            $sheet->setCellValue('C' . $row, $c['nama_lengkap']);
+            $sheet->setCellValue('D' . $row, $c['nama_panggilan']);
+            $sheet->setCellValue('E' . $row, $c['nama_jurusan']);
+            $sheet->setCellValue('F' . $row, $c['nama_fakultas']);
+            $sheet->setCellValue('G' . $row, $c['nomor_hp']);
+            $sheet->setCellValue('H' . $row, $c['email']);
+            $sheet->setCellValue('I' . $row, $c['nama_platform']);
+            $sheet->setCellValue('J' . $row, $c['domisili']);
+            $sheet->setCellValue('K' . $row, $c['alasan']);  
+            $sheet->setCellValue('L' . $row, $c['kode_referal']);
+            $row++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('assets/document/' . $filename);
+        $file = 'assets/document/' . $filename;
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file));
+
+        flush();
+
+        readfile($file);
+
+        exit;
+    }
     // End of Calon Anggota Function 
 
     // Poin Function

@@ -68,7 +68,7 @@ class Keuangan extends BaseController
             'id_pembayaran' => $id_pembayaran,
             'nomor_anggota' => $nomor_anggota['nomor_anggota'],
             'nominal' => $this->request->getVar('nominal'),
-            'status' => 3,
+            'status' => 1,
             'bukti_pembayaran' => '-'
         ]);
 

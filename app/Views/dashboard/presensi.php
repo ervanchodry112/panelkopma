@@ -39,7 +39,7 @@ if ($tgl_kegiatan < $today) {
                 <!-- Search Field -->
 
                 <!-- Download Button -->
-                <a href=" " class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center ms-3" style="width: 10%;">
+                <a href="/dashboard/download_presensi/<?= $kegiatan['id_kegiatan'] ?>" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center ms-3" style="width: 10%;">
                     <span class="me-1">
                         <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
                     </span>

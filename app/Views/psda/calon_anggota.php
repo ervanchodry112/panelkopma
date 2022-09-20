@@ -39,7 +39,7 @@ echo $this->section('main');
 
                 <!-- Download Button -->
                 <div class="col justify-content-end d-flex">
-                    <a href="toExcel.php" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
+                    <a href="/psda/download_calon" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
                         <span class="me-1">
                             <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
                         </span>
