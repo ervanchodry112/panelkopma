@@ -27,20 +27,26 @@ class Keuangan extends BaseController
 
     public function data_simpanan()
     {
-        $simpanan = $this->data_simpanan->getSimpanan();
+        $simpanan = $this->data_simpanan->join('data_anggota', 'data_simpanan.npm=data_anggota.npm')->paginate(25, 'data_simpanan');
+        $current_page = $this->request->getVar('page_data_simpanan') ? $this->request->getVar('page_data_simpanan') : 1;
         $data = [
             'title' => 'Data Simpanan',
-            'simpanan' => $simpanan
+            'simpanan' => $simpanan,
+            'pager' => $this->data_simpanan->pager,
+            'current_page' => $current_page
         ];
         return view('keuangan/data_simpanan', $data);
     }
 
     public function pembayaran_simwa()
     {
-        $simwa = $this->bayar_simwa->getPembayaran();
+        $simwa = $this->bayar_simwa->join('data_anggota', 'data_anggota.nomor_anggota=pembayaran_simwa.nomor_anggota')->paginate(25, 'pembayaran_simwa');
+        $current_page = $this->request->getVar('page_pembayaran_simwa') ? $this->request->getVar('page_pembayaran_simwa') : 1;
         $data = [
             'title' => 'Pembayaran Simpanan Wajib',
-            'simwa' => $simwa
+            'simwa' => $simwa,
+            'pager' => $this->bayar_simwa->pager,
+            'current_page' => $current_page
         ];
         return view('keuangan/pembayaran_simwa', $data);
     }

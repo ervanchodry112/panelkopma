@@ -63,6 +63,7 @@ $data = array();
         <div class="container overflow-scroll">
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                 <tr>
+                    <th scope="col">#</th>
                     <th scope="col">Action</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Nomor Anggota</th>
@@ -70,8 +71,10 @@ $data = array();
                     <th scope="col">Simpanan Wajib</th>
                     <th scope="col">Total Simpanan</th>
                 </tr>
-                <?php foreach ($simpanan as $d) { ?>
-                    <tr id="<?= $d['npm'] ?>">
+                <?php $i = 1 + (25 * ($current_page - 1));
+                foreach ($simpanan as $d) { ?>
+                    <tr>
+                        <th scope="row"><?= $i++ ?></th>
                         <td>
                             <a href="add_simpanan/<?= $d['npm'] ?>" type="button" class="btn btn-sm btn-warning">
                                 <ion-icon name="add-outline"></ion-icon>
@@ -86,6 +89,7 @@ $data = array();
                     </tr>
                 <?php } ?>
             </table>
+            <?= $pager->links('data_simpanan', 'custom_pagination') ?>
         </div>
     </div>
 </main>

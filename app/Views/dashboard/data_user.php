@@ -5,7 +5,7 @@
     <div class="container p-0">
         <div class="row pt-3 mb-3">
             <div class="col">
-                <h4 class="ps-3">Data Anggota</h4>
+                <h4 class="ps-3">User</h4>
             </div>
             <hr>
         </div>
@@ -13,7 +13,7 @@
             <div class="col d-flex justify-content-between">
                 <!-- Search Fiela -->
                 <div class="col d-flex align-items-center">
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="/psda/add_anggota">
+                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="/dashboard/add_user">
                         <span class="fs-6 align-middle">
                             <ion-icon name="add-outline"></ion-icon>
                         </span>
@@ -47,37 +47,18 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">NPM</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Nomor Anggota</th>
-                        <th scope="col">Jurusan</th>
-                        <th scope="col">Nomor WA</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Role</th>
                     </tr>
                 </thead>
-                <?php $i = 1 + (25 * ($currentPage - 1));
-                foreach ($anggota as $d) { ?>
+                <?php $i = 1;
+                foreach ($user as $d) { ?>
                     <tr>
                         <th scope="row"><?= $i++ ?></th>
-                        <td class="d-flex">
-                            <form action="delete_anggota/<?= $d['npm'] ?>" method="POST">
-                                <?= csrf_field(); ?>
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
-                                    <ion-icon name="trash-outline"></ion-icon>
-                                </button>
-                            </form>
-                            <a href="/psda/edit_anggota/<?= $d['npm'] ?>" type="button" class="ms-1 btn btn-sm btn-warning">
-                                <ion-icon name="create-outline"></ion-icon>
-                            </a>
-                        </td>
-                        <td><?= $d['npm'] ?></td>
-                        <td><?= $d['nama_lengkap'] ?></td>
-                        <td><?= $d['nomor_anggota'] ?></td>
-                        <td><?= $d['nama_jurusan'] ?></td>
-                        <td><?= $d['nomor_hp'] ?></td>
-                        <td><?= $d['email'] ?></td>
+                        <td><?= $d->username ?></td>
+                        <td>******</td>
+                        <td><?= ucwords($d->name) ?></td>
                     </tr>
                 <?php } ?>
             </table>

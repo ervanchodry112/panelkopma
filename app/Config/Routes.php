@@ -39,6 +39,10 @@ $routes->get('/', 'Dashboard::index');
 
 $routes->get('/dashboard/kegiatan/(:any)', 'Dashboard::qr_code/$1');
 $routes->get('/psda/add_value/(:segment)', 'Psda::add_value/$1');
+$routes->get('/admin', 'Admin::index', ['filter' => 'role:admin']);
+$routes->get('/admin/index', 'Admin::index', ['filter' => 'role:admin']);
+
+// $routes->get('/logout', 'AuthController::logout');
 $routes->delete('/psda/delete_calon/(:num)', 'Psda::delete_calon/$1');
 $routes->delete('/psda/delete_anggota/(:any)', 'Psda::delete_anggota/$1');
 $routes->delete('/psda/delete_referal/(:any)', 'Psda::delete_referal/$1');

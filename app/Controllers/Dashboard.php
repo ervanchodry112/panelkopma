@@ -17,7 +17,7 @@ use App\Libraries\Ciqrcode;
 use App\Models\Home_model;
 use Kenjis\CI3Compatible\Core\CI_Input;
 use CodeIgniter\I18n\Time;
-
+use Myth\Auth\Models\UserModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -30,12 +30,16 @@ class Dashboard extends BaseController
     protected $data_kegiatan;
     protected $data_presensi;
     protected $ciqrcode;
+    protected $data_user;
+    protected $auth;
 
     function __construct()
     {
         $this->data_kegiatan = new KegiatanModel();
         $this->data_presensi = new Presensi();
         $this->ciqrcode = new Ciqrcode();
+        $this->data_user = new UserModel();
+        $this->auth   = service('authentication');
     }
 
     public function index()
@@ -105,10 +109,17 @@ class Dashboard extends BaseController
 
     public function presensi($id)
     {
+        $presensi = $this->data_presensi->join('data_anggota', 'data_anggota.npm=presensi.id_data')
+            ->join('data_kegiatan', 'data_kegiatan.id_kegiatan=presensi.id_kegiatan')
+            ->where('presensi.id_kegiatan', $id)->paginate(25, 'presensi');
+
+        $current_page = $this->request->getVar('page_presensi') ? $this->request->getVar('page_presensi') : 1;
         $data = [
             'title' => 'Presensi',
-            'data' => $this->data_presensi->getPresensi($id),
-            'kegiatan' => $this->data_kegiatan->getKegiatan($id)
+            'data' => $presensi,
+            'kegiatan' => $this->data_kegiatan->getKegiatan($id),
+            'pager' => $this->data_presensi->pager,
+            'current_page' => $current_page
         ];
         return view('dashboard/presensi', $data);
     }
@@ -211,4 +222,22 @@ class Dashboard extends BaseController
         }
     }
     // End of Kegiatan Function
+
+    public function login()
+    {
+        $data = [
+            'title' => 'Login'
+        ];
+
+        return view('/auth/login', $data);
+    }
+
+    public function logout()
+    {
+        if ($this->auth->check()) {
+            $this->auth->logout();
+        }
+
+        return redirect()->to(site_url('/'));
+    }
 }

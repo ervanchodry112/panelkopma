@@ -17,3 +17,4 @@ class SimpananModel extends Model
             ->get()->getResultArray();
     }
 }
+    

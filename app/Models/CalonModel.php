@@ -8,7 +8,8 @@ class CalonModel extends Model
 {
     protected $table = 'calon_anggota';
     protected $primaryKey = 'npm';
-    protected $allowedFields = ['npm', 'nama_lengkap', 'id_jurusan', 'kode_referal', 'email', 'nomor_hp', 'domisili',
+    protected $allowedFields = [
+        'npm', 'nama_lengkap', 'id_jurusan', 'kode_referal', 'email', 'nomor_hp', 'domisili',
         'alasan', 'asal_informasi', 'nama_panggilan', 'tanggal_lahir', 'foto', 'ktm', 'bukti_pembayaran'
     ];
 

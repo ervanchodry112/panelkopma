@@ -27,7 +27,13 @@ echo $this->section('main');
     <div class="container overflow-scroll">
         <table class="table table-striped table-responsive tabel-data fs-6" style="font-size: 12px;" id="tableData">
             <tr>
-                <th scope="col">Action</th>
+                <?php
+                if (has_permission('mengelola_keuangan')) {
+                ?>
+                    <th scope="col">Action</th>
+                <?php
+                }
+                ?>
                 <th scope="col">No. Ref</th>
                 <th scope="col">Waktu</th>
                 <th scope="col">Nama Lengkap</th>
@@ -36,24 +42,31 @@ echo $this->section('main');
                 <th scope="col">Bukti</th>
                 <th scope="col">Status</th>
             </tr>
-            <?php foreach ($simwa as $d) { ?>
+            <?php $i = 1 + (25 * ($current_page - 1));
+            foreach ($simwa as $d) { ?>
                 <tr>
-                    <td>
-                        <?php
-                        if ($d['status'] == 1) {
-                        ?>
-                            <a href="/keuangan/accept/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-success btn-sm">
-                                <ion-icon name="checkmark-circle-outline"></ion-icon>
-                            </a>
-                            <a href="/keuangan/reject/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-danger btn-sm">
-                                <ion-icon name="ban-outline"></ion-icon>
-                            </a>
-                        <?php
-                        } else {
-                            echo '-';
-                        }
-                        ?>
-                    </td>
+                    <?php
+                    if (has_permission('mengelola_keuangan')) {
+                    ?>
+                        <td>
+                            <?php
+                            if ($d['status'] == 1) {
+                            ?>
+                                <a href="/keuangan/accept/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-success btn-sm">
+                                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                </a>
+                                <a href="/keuangan/reject/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-danger btn-sm">
+                                    <ion-icon name="ban-outline"></ion-icon>
+                                </a>
+                            <?php
+                            } else {
+                                echo '-';
+                            }
+                            ?>
+                        </td>
+                    <?php
+                    }
+                    ?>
                     <td><?= $d['id_pembayaran'] ?></td>
                     <td><?= $d['created_at'] ?></td>
                     <td><?= $d['nama_lengkap'] ?></td>

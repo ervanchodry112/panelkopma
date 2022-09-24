@@ -58,26 +58,78 @@ class Psda extends BaseController
     // Data Anggota
     public function data_anggota()
     {
-        $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->findAll();
+        $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->paginate(25, 'data_anggota');
+        $cur_page = $this->request->getVar('page_data_anggota') ? $this->request->getVar('page_data_anggota') : 1;
         $data = [
             'title' => 'Data Anggota',
             'anggota' => $anggota,
+            'pager' => $this->data_anggota->pager,
+            'currentPage' => $cur_page,
         ];
         return view('psda/data_anggota', $data);
     }
 
     public function add_anggota()
     {
+
         $jur = $this->jurusan->findAll();
         $data = [
             'title' => 'Tambah Data Anggota',
-            'jurusan' => $jur
+            'jurusan' => $jur,
+            'validation' => \Config\Services::validation()
         ];
         return view('psda/add_anggota', $data);
     }
 
     public function save_anggota()
     {
+        if (!$this->validate([
+            'npm' => [
+                'rules' => 'required|is_unique[data_anggota.npm]',
+                'errors' => [
+                    'required' => 'NPM harus diisi',
+                    'is_unique' => 'NPM sudah terdaftar'
+                ]
+            ],
+            'nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama harus diisi'
+                ]
+            ],
+            'nomor_anggota' => [
+                'rules' => 'required|is_unique[data_anggota.nomor_anggota]|min_length[16]|max_length[16]',
+                'errors' => [
+                    'required' => 'Nomor Anggota harus diisi',
+                    'is_unique' => 'Nomor Anggota sudah terdaftar',
+                    'min_length' => 'Nomor anggota harus 16 karakter',
+                    'max_length' => 'Nomor anggota harus 16 karakter'
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'Email harus diisi',
+                    'valid_email' => 'Email tidak valid',
+                ]
+            ],
+            'no_handphone' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'No Handphone harus diisi',
+                    'numeric' => 'No Handphone harus angka'
+                ]
+            ],
+            'jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jurusan harus diisi'
+                ]
+            ],
+        ])) {
+            return redirect()->to('/psda/add_anggota')->withInput();
+        }
+
         $this->data_anggota->insert([
             'npm' => $this->request->getVar('npm'),
             'nomor_anggota' => $this->request->getVar('nomor_anggota'),
@@ -128,10 +180,16 @@ class Psda extends BaseController
     // Calon Anggota Function
     public function calon_anggota()
     {
-        $calon = $this->calon_anggota->getCalonAnggota();
+        $calon = $this->calon_anggota->join('jurusan', 'calon_anggota.id_jurusan=jurusan.id_jurusan')
+            ->join('fakultas', 'jurusan.id_fakultas=fakultas.id_fakultas')
+            ->join('asal_informasi', 'calon_anggota.asal_informasi=asal_informasi.id_informasi')
+            ->paginate(25, 'calon_anggota');
+        $cur_page = $this->request->getVar('page_calon_anggota') ? $this->request->getVar('page_calon_anggota') : 1;
         $data = [
             'title' => 'Calon Anggota',
-            'calon_anggota' => $calon
+            'calon_anggota' => $calon,
+            'pager' => $this->calon_anggota->pager,
+            'current_page' => $cur_page,
         ];
         return view('psda/calon_anggota', $data);
     }
@@ -176,7 +234,7 @@ class Psda extends BaseController
             $sheet->setCellValue('H' . $row, $c['email']);
             $sheet->setCellValue('I' . $row, $c['nama_platform']);
             $sheet->setCellValue('J' . $row, $c['domisili']);
-            $sheet->setCellValue('K' . $row, $c['alasan']);  
+            $sheet->setCellValue('K' . $row, $c['alasan']);
             $sheet->setCellValue('L' . $row, $c['kode_referal']);
             $row++;
         }

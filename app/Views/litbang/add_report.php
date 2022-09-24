@@ -22,8 +22,9 @@ echo $this->section('main');
             <div class="row m-3 w-75">
                 <label for="nama_survey" class="col-sm-3 col-form-label">Nama Survey</label>
                 <div class="col-sm-9">
-                    <input type="text" name="nama_survey" class="form-control" id="nama_survey" placeholder="Nama Survey" autofocus>
+                    <input type="text" name="nama_survey" id="nama_survey" placeholder="Nama Survey" autofocus class="form-control <?= ($validation->hasError('nama_survey') ? 'is-invalid' : '') ?>" value="<?= old('nama_survey') ?>">
                     <div class="invalid-feedback">
+                        <?= $validation->getError('nama_survey') ?>
                     </div>
                 </div>
 
@@ -32,25 +33,37 @@ echo $this->section('main');
             <div class="row m-3 w-75">
                 <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi Survey</label>
                 <div class="col-sm-9">
-                    <input type="text" name="deskripsi" class="form-control" id="deskripsi" placeholder="Deskripsi Survey">
+                    <input type="text" name="deskripsi" id="deskripsi" placeholder="Deskripsi Survey" class="form-control <?= ($validation->hasError('deskripsi') ? 'is-invalid' : '') ?>" value="<?= old('deskripsi') ?>">
+                    <div class="invalid-feedback">
+                        <?= $validation->getError('deskripsi') ?>
+                    </div>
                 </div>
             </div>
             <div class="row m-3 w-75">
                 <label for="tanggal_mulai" class="col-sm-3 col-form-label">Tanggal Mulai</label>
                 <div class="col-sm-9">
-                    <input type="date" name="tanggal_mulai" class="form-control" id="tanggal_mulai" placeholder="Tanggal Mulai">
+                    <input type="date" name="tanggal_mulai" id="tanggal_mulai" placeholder="Tanggal Mulai" class="form-control <?= ($validation->hasError('tanggal_mulai') ? 'is-invalid' : '') ?>" value="<?= old('tanggal_mulai') ?>">
+                    <div class="invalid-feedback">
+                        <?= $validation->getError('tanggal_mulai') ?>
+                    </div>
                 </div>
             </div>
             <div class="row m-3 w-75">
                 <label for="tanggal_selesai" class="col-sm-3 col-form-label">Tanggal Selesai</label>
                 <div class="col-sm-9">
-                    <input type="date" name="tanggal_selesai" class="form-control" id="tanggal_selesai" placeholder="Tanggal Selesai">
+                    <input type="date" name="tanggal_selesai" id="tanggal_selesai" placeholder="Tanggal Selesai" class="form-control <?= ($validation->hasError('tanggal_selesai') ? 'is-invalid' : '') ?>" value="<?= old('tanggal_selesai') ?>">
+                    <div class="invalid-feedback">
+                        <?= $validation->getError('tanggal_selesai') ?>
+                    </div>
                 </div>
             </div>
             <div class="row m-3 w-75">
                 <label for="file" class="col-sm-3 col-form-label">Upload File</label>
                 <div class="col-sm-9">
-                    <input type="file" name="file" class="form-control" id="file">
+                    <input type="file" name="file" id="file" class="form-control <?= ($validation->hasError('file') ? 'is-invalid' : '') ?>" value="<?= old('file') ?>">
+                    <div class="invalid-feedback">
+                        <?= $validation->getError('file') ?>
+                    </div>
                 </div>
             </div>
 

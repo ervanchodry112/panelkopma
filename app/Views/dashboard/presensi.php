@@ -83,14 +83,17 @@ if ($tgl_kegiatan < $today) {
             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Action</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Nama Lengkap</th>
                         <th scope="col">Nomor Anggota</th>
                     </tr>
                 </thead>
-                <?php foreach ($data as $d) { ?>
+                <?php $i = 1 + (25 * ($current_page - 1));
+                foreach ($data as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
+                        <th scope="row"><?= $i++ ?></th>
                         <td>
                             <a href="" type="button" class="btn btn-sm btn-success">
                                 <ion-icon name="create-outline"></ion-icon>
@@ -102,6 +105,7 @@ if ($tgl_kegiatan < $today) {
                     </tr>
                 <?php } ?>
             </table>
+            <?= $pager->links('presensi', 'custom_pagination') ?>
         </div>
     </div>
 </main>

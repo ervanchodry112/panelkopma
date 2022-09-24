@@ -60,7 +60,7 @@
                 foreach ($laporan as $d) { ?>
                     <tr>
                         <th scope="row"><?= $i++ ?></td>
-                        <td class="d-flex">
+                        <td class="d-flex align-items-center">
                             <form action="/litbang/delete_report/<?= $d['id_laporan'] ?>" method="POST">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="_method" value="DELETE">
@@ -78,8 +78,9 @@
                         <td><?= $d['tanggal_selesai'] ?></td>
                         <td><?= $d['jumlah_responden'] ?></td>
                         <td class="d-flex align-items-center">
-                            <a href="<?= WRITEPATH . "/assets/uploads/document/hasil_survey/" . $d['file'] ?>" class="btn btn-primary btn-sm d-flex align-items-center">
-                                <ion-icon name="eye"></ion-icon>
+                            <a href="<?= "/litbang/view_report/" . $d['file'] ?>" class="btn btn-primary d-flex align-items-center">
+                                <ion-icon name="cloud-download-outline"></ion-icon>
+                                <span class="ms-1">Download</span>
                             </a>
                         </td>
                     </tr>

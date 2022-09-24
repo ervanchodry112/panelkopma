@@ -66,7 +66,7 @@ echo $this->section('main');
         }
         ?>
         <div class="container overflow-scroll">
-            <table class=" table table-striped table-responsive tabel-data" style="font-size: 12px;" id="tableData">
+            <table class=" table table-striped table-responsive table-hover table-sm" style="font-size: 12px;" id="tableData">
                 <thead>
                     <tr>
                         <th scope="col">Action</th>
@@ -84,8 +84,10 @@ echo $this->section('main');
                         <th scope="col">Berkas</th>
                     </tr>
                 </thead>
-                <?php foreach ($calon_anggota as $d) { ?>
+                <?php $i = 1 + (25 * ($current_page - 1));
+                foreach ($calon_anggota as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
+                        <th scope="row"><?= $i++ ?></th>
                         <td>
                             <form action="/psda/delete_calon/<?= $d['npm'] ?>" method="POST">
                                 <?= csrf_field(); ?>
@@ -120,6 +122,7 @@ echo $this->section('main');
                     </tr>
                 <?php } ?>
             </table>
+            <?= $pager->links('calon_anggota', 'custom_pagination') ?>
         </div>
     </div>
 </main>
