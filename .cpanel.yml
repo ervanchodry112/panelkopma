@@ -1,0 +1,22 @@
+# @format
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/u0715251/public_html/web_testing
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp -R app $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R tests $DEPLOYPATH
+    - /bin/cp -R writable $DEPLOYPATH
+    - /bin/cp .gitattributes $DEPLOYPATH
+    - /bin/cp .gitignore $DEPLOYPATH
+    - /bin/cp builds $DEPLOYPATH
+    - /bin/cp composer.json $DEPLOYPATH
+    - /bin/cp composer.lock $DEPLOYPATH
+    - /bin/cp env.txt $DEPLOYPATH
+    - /bin/cp LICENSE $DEPLOYPATH
+    - /bin/cp name $DEPLOYPATH
+    - /bin/cp phpunit.xml.dist $DEPLOYPATH
+    - /bin/cp preload.php $DEPLOYPATH
+    - /bin/cp README.md $DEPLOYPATH
+    - /bin/cp spark $DEPLOYPATH
