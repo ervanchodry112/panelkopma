@@ -13,7 +13,7 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <a href="/dashboard" class="nav-link px-3 d-flex">
+                    <a href="<?= base_url('dashboard') ?>" class="nav-link px-3 d-flex">
                         <span class="me-2">
                             <ion-icon style="font-size: 22px;" name="speedometer"></ion-icon>
                         </span>
@@ -44,7 +44,7 @@
                     </li>
                     <div id="psdacollapse" class="collapse">
                         <li>
-                            <a href="/psda/calon_anggota" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('psda/calon_anggota') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="people"></ion-icon>
                                 </span>
@@ -53,7 +53,7 @@
                         </li>
 
                         <li>
-                            <a href="<?= base_url('/psda/data_anggota/') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('psda/data_anggota/') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="people"></ion-icon>
                                 </span>
@@ -62,7 +62,7 @@
                         </li>
 
                         <li>
-                            <a href="<?= base_url('/psda/data_poin') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('psda/data_poin') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="checkmark-circle-outline"></ion-icon>
 
@@ -71,7 +71,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('/psda/kode_referal') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('psda/kode_referal') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="gift-outline"></ion-icon>
                                 </span>
@@ -97,7 +97,7 @@
                     <div id="keuangan-collapse" class="collapse">
 
                         <li>
-                            <a href="<?= base_url('/keuangan/data_simpanan') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('keuangan/data_simpanan') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="cash-outline"></ion-icon>
                                 </span>
@@ -105,7 +105,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('/keuangan/pembayaran_simwa') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('keuangan/pembayaran_simwa') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="cash-outline"></ion-icon>
                                 </span>
@@ -130,7 +130,7 @@
 
                     <div id="litbang-collapse" class="collapse">
                         <li>
-                            <a href="<?= base_url('/litbang/hasil_survey') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('litbang/hasil_survey') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="chatbubbles-outline"></ion-icon>
                                 </span>
@@ -154,7 +154,7 @@
 
                     <div id="admin-collapse" class="collapse">
                         <li>
-                            <a href="<?= base_url('/dashboard/surat_masuk') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('dashboard/surat_masuk') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="mail-open-outline"></ion-icon>
                                 </span>
@@ -162,7 +162,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('/dashboard/surat_keluar') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('dashboard/surat_keluar') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="push-outline"></ion-icon>
                                 </span>
@@ -170,7 +170,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('/dashboard/digilib') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('dashboard/digilib') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="book-outline"></ion-icon>
                                 </span>
@@ -187,7 +187,7 @@
 
                     ?>
                         <li>
-                            <a href="<?= base_url('/admin/data_user') ?>" class="nav-link px-3 d-flex">
+                            <a href="<?= base_url('admin/data_user') ?>" class="nav-link px-3 d-flex">
                                 <span class="me-2">
                                     <ion-icon style="font-size: 22px;" name="people"></ion-icon>
                                 </span>

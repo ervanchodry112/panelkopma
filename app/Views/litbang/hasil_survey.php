@@ -13,7 +13,7 @@
             <div class="col d-flex justify-content-between">
                 <!-- Search Fiela -->
                 <div class="col d-flex align-items-center">
-                    <a href="/litbang/add_report" class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3">
+                    <a href="<?= base_url('litbang/add_report') ?>" class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3">
                         <span class="fs-6 align-middle">
                             <ion-icon name="add-outline"></ion-icon>
                         </span>
@@ -61,14 +61,14 @@
                     <tr>
                         <th scope="row"><?= $i++ ?></td>
                         <td class="d-flex align-items-center">
-                            <form action="/litbang/delete_report/<?= $d['id_laporan'] ?>" method="POST">
+                            <form action="<?= base_url('litbang/delete_report/' . $d['id_laporan']) ?>" method="POST">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
                                     <ion-icon name="trash-outline"></ion-icon>
                                 </button>
                             </form>
-                            <a href="/litbang/edit_report/<?= $d['id_laporan'] ?>" type="button" class="ms-1 btn btn-sm btn-warning">
+                            <a href="<?= base_url('litbang/edit_report/' . $d['id_laporan']) ?>" type="button" class="ms-1 btn btn-sm btn-warning">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         </td>
@@ -78,7 +78,7 @@
                         <td><?= $d['tanggal_selesai'] ?></td>
                         <td><?= $d['jumlah_responden'] ?></td>
                         <td class="d-flex align-items-center">
-                            <a href="<?= "/litbang/view_report/" . $d['file'] ?>" class="btn btn-primary d-flex align-items-center">
+                            <a href="<?= base_url('litbang/view_report/' . $d['file']) ?>" class="btn btn-primary d-flex align-items-center">
                                 <ion-icon name="cloud-download-outline"></ion-icon>
                                 <span class="ms-1">Download</span>
                             </a>

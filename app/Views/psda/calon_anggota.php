@@ -39,7 +39,7 @@ echo $this->section('main');
 
                 <!-- Download Button -->
                 <div class="col justify-content-end d-flex">
-                    <a href="/psda/download_calon" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
+                    <a href="<?= base_url('psda/download_calon') ?>" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
                         <span class="me-1">
                             <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
                         </span>
@@ -69,6 +69,7 @@ echo $this->section('main');
             <table class=" table table-striped table-responsive table-hover table-sm" style="font-size: 12px;" id="tableData">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Action</th>
                         <th scope="col">NPM</th>
                         <th scope="col">Nama</th>
@@ -89,7 +90,7 @@ echo $this->section('main');
                     <tr id="<?= $d['npm'] ?>">
                         <th scope="row"><?= $i++ ?></th>
                         <td>
-                            <form action="/psda/delete_calon/<?= $d['npm'] ?>" method="POST">
+                            <form action="<?= base_url('psda/delete_calon/' . $d['npm']) ?>" method="POST">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" onclick="return confirm('Apakah anda yakin>')" class="btn btn-danger btn-sm">

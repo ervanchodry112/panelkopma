@@ -53,7 +53,7 @@ echo $this->section('main');
                 <?php foreach ($data as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <a href="/psda/add_value/<?= $d['nomor_anggota'] ?>" type="button" class="btn btn-sm btn-warning">
+                            <a href="<?= base_url('psda/add_value/' . $d['nomor_anggota']) ?>" type="button" class="btn btn-sm btn-warning">
                                 <ion-icon name="add-outline"></ion-icon>
                         </td>
                         <td><?= $d['npm'] ?></td>

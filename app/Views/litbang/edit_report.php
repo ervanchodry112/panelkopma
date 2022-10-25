@@ -17,7 +17,7 @@ echo $this->section('main');
             </div>
             <hr>
         </div>
-        <form action="/litbang/save_report" method="POST" enctype="multipart/form-data">
+        <form action="<?= base_url('litbang/save_report') ?>" method="POST" enctype="multipart/form-data">
             <?= csrf_field(); ?>
             <input type="hidden" name="id_laporan" value="<?= $laporan['id_laporan'] ?>">
             <input type="hidden" name="file_lama" value="<?= $laporan['file'] ?>">
@@ -71,7 +71,7 @@ echo $this->section('main');
 
     <div class="row ms-4 w-75">
         <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Simpan</button>
-        <a href="/litbang/hasil_survey" class="col-3 btn btn-secondary btn-sm">Batal</a>
+        <a href="<?= base_url('litbang/hasil_survey') ?>" class="col-3 btn btn-secondary btn-sm">Batal</a>
     </div>
     </form>
 

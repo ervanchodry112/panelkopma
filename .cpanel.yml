@@ -2,7 +2,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/u0715251/public_html/web_testing
+    - export DEPLOYPATH=/home/u0715251/public_html/panel
     - /bin/cp index.html $DEPLOYPATH
     - /bin/cp -R app $DEPLOYPATH
     - /bin/cp -R public $DEPLOYPATH

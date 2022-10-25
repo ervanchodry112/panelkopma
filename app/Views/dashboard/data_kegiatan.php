@@ -18,24 +18,22 @@ echo $this->section('main');
                 <div class="col d-flex align-items-center">
 
                     <!-- Add Button -->
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="add_kegiatan">
-                        <span class="fs-6 py-2 align-middle">
-                            <ion-icon name="add-outline"></ion-icon>
-                        </span>
-                        <span class="align-middle">Add</span>
+                    <a class="btn btn-success btn-sm d-flex text-white align-items-center me-2 rounded-3" href="<?= base_url('dashboard/add_kegiatan') ?>">
+                        <ion-icon name="add-outline"></ion-icon>
+                        Add
                     </a>
                     <!-- Add Button -->
 
                     <!-- Search Field -->
-                    <ion-icon name="search-outline"></ion-icon>
+                    <!-- <ion-icon name="search-outline"></ion-icon>
                     <form class="form w-50">
                         <input type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
-                    </form>
+                    </form> -->
                     <!-- Search Fiela -->
                 </div>
 
 
-                
+
 
             </div>
         </div>
@@ -65,13 +63,13 @@ echo $this->section('main');
                 <?php foreach ($kegiatan as $d) { ?>
                     <tr>
                         <td>
-                            <a href="/dashboard/edit_kegiatan/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-success btn-sm">
+                            <a href="<?= base_url('dashboard/edit_kegiatan/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-success btn-sm">
                                 <ion-icon class="col" name="create-outline"></ion-icon>
                             </a>
-                            <a href="/dashboard/presensi/<?= $d['id_kegiatan'] ?>" type="button" class="btn btn-primary btn-sm">
+                            <a href="<?= base_url('dashboard/presensi/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-primary btn-sm">
                                 <ion-icon class="col" name="clipboard-outline"></ion-icon>
                             </a>
-                            <a href="kegiatan/<?= $d['id_kegiatan'] ?>" class="btn btn-sm btn-warning">
+                            <a href="<?= base_url('dashboard/kegiatan/' . $d['id_kegiatan']) ?>" class="btn btn-sm btn-warning">
                                 <ion-icon name="qr-code-outline"></ion-icon>
                                 </button>
                         </td>

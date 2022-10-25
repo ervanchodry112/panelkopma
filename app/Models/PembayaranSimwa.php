@@ -8,7 +8,7 @@ class PembayaranSimwa extends Model
 {
     protected $table = 'pembayaran_simwa';
     protected $primaryKey = 'id_pembayaran';
-    protected $allowedFields = ['id_pembayaran', 'nomor_anggota', 'nominal', 'created_at', 'status', 'bukti_pembayaran'];
+    protected $allowedFields = ['id_pembayaran', 'nomor_anggota', 'nominal', 'status', 'bukti_pembayaran', 'timestamp'];
     protected $autoIncrement = false;
 
     protected $useTimestamps = true;

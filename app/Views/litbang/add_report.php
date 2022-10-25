@@ -17,7 +17,7 @@ echo $this->section('main');
             </div>
             <hr>
         </div>
-        <form action="/litbang/save_report" method="POST" enctype="multipart/form-data">
+        <form action="<?= base_url('litbang/save_report') ?>" method="POST" enctype="multipart/form-data">
             <?= csrf_field(); ?>
             <div class="row m-3 w-75">
                 <label for="nama_survey" class="col-sm-3 col-form-label">Nama Survey</label>
@@ -69,7 +69,7 @@ echo $this->section('main');
 
             <div class="row ms-4 w-75">
                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Tambah</button>
-                <a href="/litbang/hasil_survey" class="col-3 btn btn-secondary btn-sm">Batal</a>
+                <a href="<?= base_url('litbang/hasil_survey') ?>" class="col-3 btn btn-secondary btn-sm">Batal</a>
             </div>
         </form>
 

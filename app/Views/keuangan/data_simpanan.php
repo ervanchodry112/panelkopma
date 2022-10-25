@@ -34,14 +34,14 @@ $data = array();
 
                 <!-- Download Button -->
                 <div class="col justify-content-end d-flex">
-                    <a href="toExcel.php" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
+                    <!-- <a href="toExcel.php" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
                         <span class="me-1">
                             <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
                         </span>
                         <span>
                             XLS
                         </span>
-                    </a>
+                    </a> -->
                 </div>
                 <!-- Download Button -->
 
@@ -76,7 +76,7 @@ $data = array();
                     <tr>
                         <th scope="row"><?= $i++ ?></th>
                         <td>
-                            <a href="add_simpanan/<?= $d['npm'] ?>" type="button" class="btn btn-sm btn-warning">
+                            <a href="<?= base_url('keuangan/add_simpanan/' . $d['npm']) ?>" type="button" class="btn btn-sm btn-warning">
                                 <ion-icon name="add-outline"></ion-icon>
                             </a>
                         </td>

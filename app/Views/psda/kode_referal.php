@@ -15,7 +15,7 @@ echo $this->section('main');
             <div class="col d-flex justify-content-between">
                 <!-- Search Fiela -->
                 <div class="col d-flex align-items-center">
-                    <a href="/psda/add_referal" class="btn btn-success btn-sm text-white d-flex align-items-center me-2 rounded-3">
+                    <a href="<?= base_url('psda/add_referal') ?>" class="btn btn-success btn-sm text-white d-flex align-items-center me-2 rounded-3">
                         <ion-icon name="add-outline" class="fs-6 align-middle"></ion-icon>
                         <span class="align-middle">Add</span>
                     </a>
@@ -54,7 +54,7 @@ echo $this->section('main');
                 <?php foreach ($referal as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <td>
-                            <form action="delete_referal/<?= $d['nomor_anggota'] ?>" method="POST">
+                            <form action="<?= base_url('delete_referal/' . $d['nomor_anggota']) ?>" method="POST">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">

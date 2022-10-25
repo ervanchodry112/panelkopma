@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\AnggotaModel;
 use App\Models\SimpananModel;
 use App\Models\PembayaranSimwa;
+use CodeIgniter\I18n\Time;
 
 class Keuangan extends BaseController
 {
@@ -72,6 +73,7 @@ class Keuangan extends BaseController
 
         $this->bayar_simwa->insert([
             'id_pembayaran' => $id_pembayaran,
+            'timestamp' => Time::now('Asia/Jakarta'),
             'nomor_anggota' => $nomor_anggota['nomor_anggota'],
             'nominal' => $this->request->getVar('nominal'),
             'status' => 1,

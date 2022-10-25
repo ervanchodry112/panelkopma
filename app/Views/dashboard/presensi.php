@@ -25,7 +25,7 @@ if ($tgl_kegiatan < $today) {
         <!-- Search Field -->
         <div class="row mx-2 mb-2">
             <div class="col d-flex justify-content-between align-items-center">
-                <a href="/dashboard/data_kegiatan" class="link text-reset d-flex align-items-center">
+                <a href="<?= base_url('dashboard/data_kegiatan') ?>" class="link text-reset d-flex align-items-center">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                     <span class="mx-1">Back</span>
                 </a>
@@ -39,7 +39,7 @@ if ($tgl_kegiatan < $today) {
                 <!-- Search Field -->
 
                 <!-- Download Button -->
-                <a href="/dashboard/download_presensi/<?= $kegiatan['id_kegiatan'] ?>" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center ms-3" style="width: 10%;">
+                <a href="<?= base_url('dashboard/download_presensi/' . $kegiatan['id_kegiatan']) ?>" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center ms-3" style="width: 10%;">
                     <span class="me-1">
                         <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
                     </span>
@@ -84,7 +84,6 @@ if ($tgl_kegiatan < $today) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Action</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Nama Lengkap</th>
                         <th scope="col">Nomor Anggota</th>
@@ -94,11 +93,6 @@ if ($tgl_kegiatan < $today) {
                 foreach ($data as $d) { ?>
                     <tr id="<?= $d['npm'] ?>">
                         <th scope="row"><?= $i++ ?></th>
-                        <td>
-                            <a href="" type="button" class="btn btn-sm btn-success">
-                                <ion-icon name="create-outline"></ion-icon>
-                            </a>
-                        </td>
                         <td><?= $d['waktu'] ?></td>
                         <td><?= $d['nama_lengkap'] ?></td>
                         <td><?= $d['nomor_anggota'] ?></td>

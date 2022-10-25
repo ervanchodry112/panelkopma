@@ -51,7 +51,7 @@ echo $this->section('main');
 
             <div class="row ms-4 w-75">
                 <button type="submit" class="btn btn-primary w-25 me-2"><?= lang('Auth.register') ?></button>
-                <a href="<?= base_url() ?>/dashboard/data_user" class="col-3 btn btn-secondary ">Batal</a>
+                <a href="<?= base_url('dashboard/data_user') ?>" class="col-3 btn btn-secondary ">Batal</a>
             </div>
         </form>
 

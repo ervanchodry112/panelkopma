@@ -12,7 +12,7 @@ echo $this->section('main');
             </div>
             <hr>
         </div>
-        <form action="save_referal" method="POST">
+        <form action="<?= base_url('psda/save_referal') ?>" method="POST">
             <?= csrf_field(); ?>
             <div class="row m-3 w-75">
                 <label for="nama_lengkap" class="col-sm-3 col-form-label">Nama Lengkap</label>
@@ -47,7 +47,7 @@ echo $this->section('main');
 
             <div class="row ms-4 w-75">
                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Tambah</button>
-                <a href="kode_referal" class="col-3 btn btn-secondary btn-sm">Batal</a>
+                <a href="<?= base_url('psda/kode_referal') ?>" class="col-3 btn btn-secondary btn-sm">Batal</a>
             </div>
         </form>
 

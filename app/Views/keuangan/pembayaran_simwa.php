@@ -43,7 +43,9 @@ echo $this->section('main');
                 <th scope="col">Status</th>
             </tr>
             <?php $i = 1 + (25 * ($current_page - 1));
-            foreach ($simwa as $d) { ?>
+            foreach ($simwa as $d) {
+                /*dd($d['created_at'])*/ ?>
+
                 <tr>
                     <?php
                     if (has_permission('mengelola_keuangan')) {
@@ -52,10 +54,10 @@ echo $this->section('main');
                             <?php
                             if ($d['status'] == 1) {
                             ?>
-                                <a href="/keuangan/accept/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-success btn-sm">
+                                <a href="<?= base_url('keuangan/accept/' . $d['id_pembayaran']) ?>" type="button" class="btn btn-success btn-sm">
                                     <ion-icon name="checkmark-circle-outline"></ion-icon>
                                 </a>
-                                <a href="/keuangan/reject/<?= $d['id_pembayaran'] ?>" type="button" class="btn btn-danger btn-sm">
+                                <a href="<?= base_url('keuangan/reject/' . $d['id_pembayaran']) ?>" type="button" class="btn btn-danger btn-sm">
                                     <ion-icon name="ban-outline"></ion-icon>
                                 </a>
                             <?php

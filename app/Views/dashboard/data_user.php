@@ -13,7 +13,7 @@
             <div class="col d-flex justify-content-between">
                 <!-- Search Fiela -->
                 <div class="col d-flex align-items-center">
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="/dashboard/add_user">
+                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="<?= base_url('dashboard/add_user') ?>">
                         <span class="fs-6 align-middle">
                             <ion-icon name="add-outline"></ion-icon>
                         </span>

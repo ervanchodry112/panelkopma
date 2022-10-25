@@ -12,7 +12,7 @@ echo $this->section('main');
             </div>
             <hr>
         </div>
-        <form action="/dashboard/update_kegiatan" method="POST">
+        <form action="<?= base_url('dashboard/update_kegiatan') ?>" method="POST">
             <?= csrf_field(); ?>
             <input type="hidden" value="<?= $kegiatan['id_kegiatan'] ?>" name="id_kegiatan">
             <div class="row m-3 w-75">
@@ -36,7 +36,7 @@ echo $this->section('main');
 
             <div class="row ms-4 w-75">
                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Simpan</button>
-                <a href="/dashboard/data_kegiatan" class="col-3 btn btn-secondary btn-sm">Kembali</a>
+                <a href="<?= base_url('dashboard/data_kegiatan') ?>" class="col-3 btn btn-secondary btn-sm">Kembali</a>
             </div>
         </form>
 

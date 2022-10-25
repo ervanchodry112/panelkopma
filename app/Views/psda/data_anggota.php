@@ -13,7 +13,7 @@
             <div class="col d-flex justify-content-between">
                 <!-- Search Fiela -->
                 <div class="col d-flex align-items-center">
-                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="/psda/add_anggota">
+                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="<?= base_url('psda/add_anggota') ?>">
                         <span class="fs-6 align-middle">
                             <ion-icon name="add-outline"></ion-icon>
                         </span>
@@ -61,14 +61,14 @@
                     <tr>
                         <th scope="row"><?= $i++ ?></th>
                         <td class="d-flex">
-                            <form action="delete_anggota/<?= $d['npm'] ?>" method="POST">
+                            <form action="<?= base_url('delete_anggota/' . $d['npm']) ?>" method="POST">
                                 <?= csrf_field(); ?>
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
                                     <ion-icon name="trash-outline"></ion-icon>
                                 </button>
                             </form>
-                            <a href="/psda/edit_anggota/<?= $d['npm'] ?>" type="button" class="ms-1 btn btn-sm btn-warning">
+                            <a href="<?= base_url('psda/edit_anggota/' . $d['npm']) ?>" type="button" class="ms-1 btn btn-sm btn-warning">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         </td>
