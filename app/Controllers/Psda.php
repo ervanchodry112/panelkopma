@@ -58,7 +58,18 @@ class Psda extends BaseController
     // Data Anggota
     public function data_anggota()
     {
-        $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->paginate(25, 'data_anggota');
+        //select all data with chunk
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')
+                ->like('data_anggota.npm', $search)->orLike('data_anggota.nama_lengkap', $search)
+                ->orLike('data_anggota.nomor_anggota', $search)
+                ->paginate(25, 'data_anggota');
+        } else {
+            $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->paginate(25, 'data_anggota');
+        }
+
+
         $cur_page = $this->request->getVar('page_data_anggota') ? $this->request->getVar('page_data_anggota') : 1;
         $data = [
             'title' => 'Data Anggota',
@@ -303,8 +314,25 @@ class Psda extends BaseController
     // Referal Function
     public function kode_referal()
     {
-        $ref = $this->referal->getReferal();
-        // dd($ref);
+        $search = $this->request->getVar('search');
+
+        if ($search != null) {
+            $ref = $this->referal->select('*')->selectCount('calon_anggota.kode_referal', 'jumlah')
+                ->like('data_anggota.nama_lengkap', $search)
+                ->orLike('referal.kode_referal', $search)
+                ->orLike('data_anggota.nomor_anggota', $search)
+                ->join('calon_anggota', 'calon_anggota.kode_referal=referal.kode_referal')
+                ->join('data_anggota', 'data_anggota.nomor_anggota=referal.nomor_anggota')
+                ->groupBy('referal.kode_referal')
+                ->findAll();
+        } else {
+            $ref = $this->referal->select('*')->selectCount('calon_anggota.kode_referal', 'jumlah')
+                ->join('calon_anggota', 'calon_anggota.kode_referal=referal.kode_referal')
+                ->join('data_anggota', 'data_anggota.nomor_anggota=referal.nomor_anggota')
+                ->groupBy('referal.kode_referal')
+                ->findAll();
+        }
+        // dd($sear);
         $data = [
             'title' => 'Kode Referal',
             'referal' => $ref

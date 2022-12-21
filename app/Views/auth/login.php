@@ -1,59 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+echo $this->extend('layout/template');
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>Login</title>
+echo $this->section('sidebar');
+?>
 
-    <link rel="stylesheet" href="<?= base_url('css/bootstrap.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>" />
-    <link rel="shortcut icon" href="<?= base_url('img/logo-kopma-unila.png'); ?>" />
-</head>
+<main>
+    <div class="container">
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center pt -3 pb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                        <div class="d-flex justify-content-center py-4">
+                        </div><!-- End Logo -->
 
-<body>
-    <div class="container my-5 shadow" id="login-form" style="border: 1px solid rgb(0,0,0,.1); border-radius: 15px;">
-        <h1 class="text-center my-3"><?= lang('Auth.loginTitle') ?></h1>
-        <hr class="w-75 mx-auto">
+                        <div class="card mb-3">
 
-        <?= view('Myth\Auth\Views\_message_block') ?>
-        <form action="<?= url_to('login') ?>" method="post">
-            <?= csrf_field() ?>
-            <div class="row w-75 mx-auto mb-3">
-                <div class="col">
-                    <label for="username"><?= lang('Auth.username') ?></label>
-                    <input class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" type="text" name="login" id="username" placeholder="<?= lang('Auth.username') ?>" autocomplete="off">
-                    <div class="invalid-feedback">
-                        <?= session('errors.login') ?>
+                            <div class="card-body ">
+                                <div class="pt-4 pb-2 text-center">
+                                    <img src="/img/logo-kopma-unila.png" width="60rem" alt="Kopma Unila">
+                                    <h5 class="card-title text-center pb-0 fs-4"><?= lang('Auth.loginTitle') ?></h5>
+                                </div>
+                                <?= view('Myth\Auth\Views\_message_block') ?>
+                                <form action="<?= url_to('login') ?>" class="row g-3 needs-validation px-3" method="post">
+                                    <?= csrf_field() ?>
+
+                                    <div class="col-12">
+                                        <label for="yourUsername" class="form-label">Username</label>
+                                        <div class="input-group has-validation">
+                                            <input type="text" name="login" class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>" id="yourUsername" required>
+                                            <div class="invalid-feedback"><?= session('errors.login') ?></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourPassword" class="form-label">Password</label>
+                                        <input type="password" name="password" class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" id="yourPassword" required>
+                                        <div class="invalid-feedback"><?= session('errors.password') ?></div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" type="submit"><?= lang('Auth.loginAction') ?></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row w-75 mx-auto mb-3">
-                <div class="col">
-                    <label for="pass"><?= lang('Auth.password') ?></label>
-                    <input class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" type="password" name="password" id="password" placeholder="<?= lang('Auth.password') ?>">
-                    <div class="invalid-feedback">
-                        <?= session('errors.password') ?>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row w-75 mx-auto mb-4">
-                <div class="col">
-                    <button type="submit" class="btn btn-primary btn-block w-100"><?= lang('Auth.loginAction') ?></button>
-                </div>
-            </div>
-        </form>
+        </section>
     </div>
+</main><!-- End #main -->
 
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="http://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="<?= base_url('js/jsfunctions.js'); ?>"></script>
-    <script src="<?= base_url('js/qrcode.js'); ?>"></script>
-
-</body>
-
-</html>
+<?= $this->endSection() ?>

@@ -17,6 +17,7 @@ use App\Libraries\Ciqrcode;
 use App\Models\Home_model;
 use Kenjis\CI3Compatible\Core\CI_Input;
 use CodeIgniter\I18n\Time;
+use DateTime;
 use Myth\Auth\Models\UserModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -81,14 +82,17 @@ class Dashboard extends BaseController
     public function save_kegiatan()
     {
         $id = random_int(1000, 9999);
-        $this->data_kegiatan->save([
+        $data = [
             'id_kegiatan' => $id,
             'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
             'tanggal_kegiatan' => $this->request->getVar('tanggal'),
             'tempat_kegiatan' => $this->request->getVar('tempat'),
-        ]);
+        ];
+        if (!$this->data_kegiatan->save($data)) {
+            session()->setFlashdata('error', 'Gagal Menambahkan Data');
+        }
 
-        session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
+        session()->setFlashdata('success', 'Data berhasil ditambahkan');
 
         return redirect()->to('/dashboard/data_kegiatan');
     }
@@ -113,11 +117,23 @@ class Dashboard extends BaseController
             ->join('data_kegiatan', 'data_kegiatan.id_kegiatan=presensi.id_kegiatan')
             ->where('presensi.id_kegiatan', $id)->paginate(25, 'presensi');
 
+        $kegiatan = $this->data_kegiatan->getKegiatan($id);
+
+        $tgl_kegiatan = new DateTime($kegiatan['tanggal_kegiatan']);
+        $today = new DateTime();
+
+        if ($tgl_kegiatan < $today) {
+            $status = 'Selesai';
+        } else {
+            $status = 'Belum Selesai';
+        }
+
         $current_page = $this->request->getVar('page_presensi') ? $this->request->getVar('page_presensi') : 1;
         $data = [
             'title' => 'Presensi',
             'data' => $presensi,
-            'kegiatan' => $this->data_kegiatan->getKegiatan($id),
+            'kegiatan' => $kegiatan,
+            'status' => $status,
             'pager' => $this->data_presensi->pager,
             'current_page' => $current_page
         ];
@@ -191,9 +207,21 @@ class Dashboard extends BaseController
 
         $this->ciqrcode->generate($params);
 
+        $kegiatan = $this->data_kegiatan->getKegiatan($id);
+
+        $tgl_kegiatan = new DateTime($kegiatan['tanggal_kegiatan']);
+        $today = new DateTime();
+
+        if ($tgl_kegiatan < $today) {
+            $status = 'Selesai';
+        } else {
+            $status = 'Belum Selesai';
+        }
+
         $data = [
             'title' => 'QR Code',
-            'kegiatan' => $this->data_kegiatan->getKegiatan($id),
+            'kegiatan' => $kegiatan,
+            'status'    => $status,
             'file'    => $dir . $save_name
         ];
         return view('dashboard/qr_code', $data);
