@@ -18,19 +18,25 @@ echo $this->section('main');
                     <div class="card-body my-3">
                         <!-- Buat Konten Disini -->
 
-                        <form action="<?= /*url_to('register')*/ base_url('admin/register') ?>" method="POST">
-                            <?= view('Myth\Auth\Views\_message_block') ?>
+                        <?php
+                        if (session()->getFlashdata('pesan')) {
+                            echo session()->getFlashdata('pesan');
+                        }
+                        ?>
+
+                        <form action="<?= base_url('admin/attempt_reset') ?>" method="POST">
                             <?= csrf_field(); ?>
+                            <input type="hidden" name="id" value="<?= $user->id ?>">
                             <div class="row m-3 w-75">
                                 <label for="email" class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="email" class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" id="email" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>">
+                                    <input type="text" name="email" class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" id="email" placeholder="<?= lang('Auth.email') ?>" value="<?= $user->email ?>" disabled>
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
                                 <label for="username" class="col-sm-3 col-form-label">Username</label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="username" class="form-control <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" id="username" placeholder="<?= lang('Auth.username') ?>" value="<?= old('username') ?>">
+                                    <input type="text" name="username" class="form-control <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" id="username" placeholder="<?= lang('Auth.username') ?>" value="<?= $user->username ?>" disabled>
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
@@ -52,28 +58,8 @@ echo $this->section('main');
                                 </div>
                             </div>
 
-                            <div class="row m-3 w-75">
-                                <label for="role" class="col-sm-3 col-form-label">Role</label>
-                                <div class="col-sm-9">
-                                    <select class="form-select" name="role" id="role">
-                                        <option selected>--Pilih Role---</option>
-                                        <?php
-                                        foreach ($role as $r) {
-                                        ?>
-                                            <option value="<?= $r->id ?>"><?= $r->name ?></option>;
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        <?= $validation->getError('role') ?>
-                                    </div>
-                                </div>
-                            </div>
-
-
                             <div class="row ms-4 w-75">
-                                <button type="submit" class="btn btn-primary w-25 me-2"><?= lang('Auth.register') ?></button>
+                                <button type="submit" class="btn btn-primary w-25 me-2">Simpan</button>
                                 <a href="<?= base_url('admin/data_user') ?>" class="col-3 btn btn-secondary ">Batal</a>
                             </div>
                         </form>

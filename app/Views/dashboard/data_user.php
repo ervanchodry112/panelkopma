@@ -13,27 +13,19 @@
                     <div class="card-body pt-3">
 
                         <div class="row mx-1 mb-3">
-                            <div class="col d-flex justify-content-between">
+                            <div class="col d-flex justify-content-between align-items-center">
                                 <!-- Search Fiela -->
-                                <div class="col d-flex align-items-center">
-                                    <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="<?= base_url('dashboard/add_user') ?>">
-                                        <span class="fs-6 align-middle">
-                                            <ion-icon name="add-outline"></ion-icon>
-                                        </span>
-                                        <span class="align-middle">Add</span>
-                                    </a>
-                                    <ion-icon name="search-outline" class="ms-auto"></ion-icon>
-                                    <form class="form w-25">
-                                        <input type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
-                                    </form>
-                                </div>
+                                <a class="btn btn-success btn-sm text-white align-items-center me-2 rounded-3" href="<?= base_url('admin/add_user') ?>">
+                                    <ion-icon name="add-outline"></ion-icon>
+                                    Add
+                                </a>
                                 <!-- Search Field -->
 
                                 <!-- </div> -->
                             </div>
                         </div>
                         <?php
-                        if (session()->getFlashdata('pesan')) {
+                        if (session()->has('pesan')) {
                         ?>
                             <div class="row mx-2">
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,8 +43,8 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Username</th>
-                                        <th scope="col">Password</th>
                                         <th scope="col">Role</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <?php $i = 1;
@@ -60,8 +52,21 @@
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>
                                         <td><?= $d->username ?></td>
-                                        <td>******</td>
                                         <td><?= ucwords($d->name) ?></td>
+                                        <td class="w-100 d-flex justify-content-start">
+                                            <form action="<?= base_url('admin/reset_password') ?>" class="me-2" method="post">
+                                                <input type="hidden" name="id" value="<?= $d->id ?>">
+                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                    <i class="bi bi-key"></i>
+                                                </button>
+                                            </form>
+                                            <form action="<?= base_url('admin/delete_user') ?>" method="post">
+                                                <input type="hidden" name="id" value="<?= $d->id ?>">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <ion-icon name="trash-outline"></ion-icon>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                             </table>

@@ -224,14 +224,6 @@
             }
         }
         ?>
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="<?= base_url('dashboard/users') ?>">
-                <i class="bi bi-people-fill"></i>
-                <span>Users</span>
-            </a>
-        </li>
-
         <li class="nav-item">
             <a class="nav-link collapsed" href="<?= base_url('/logout') ?>">
                 <i class="bi bi-box-arrow-right"></i>
