@@ -165,6 +165,12 @@
 
             <div id="litbang-collapse" class="collapse">
                 <li class="nav-item">
+                    <a href="<?= base_url('litbang/survey_berjalan') ?>" class="nav-link collapsed px-3 d-flex">
+                        <i class="bi bi-clipboard2-data"></i>
+                        <span>Survey Berjalan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= base_url('litbang/hasil_survey') ?>" class="nav-link collapsed px-3 d-flex">
                         <i class="bi bi-clipboard2-data"></i>
                         <span>Hasil Survey</span>

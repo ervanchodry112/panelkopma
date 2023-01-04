@@ -5,8 +5,8 @@ echo $this->section('sidebar');
 ?>
 
 <main>
-    <div class="container">
-        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center pt -3 pb-5">
+    <div class="container border">
+        <section class="section register min-vh-100 d-flex align-items-center justify-content-center pt -3 pb-5">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">

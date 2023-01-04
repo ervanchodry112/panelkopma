@@ -37,6 +37,7 @@ class Psda extends BaseController
     protected $referal;
     protected $ciqrcode;
     protected $data_presensi;
+    protected $simpanan;
 
     public function __construct()
     {
@@ -48,6 +49,7 @@ class Psda extends BaseController
         $this->referal = new ReferalModel();
         $this->ciqrcode = new Ciqrcode();
         $this->data_presensi = new Presensi();
+        $this->simpanan = new SimpananModel();
     }
 
     public function index()
@@ -66,7 +68,7 @@ class Psda extends BaseController
                 ->orLike('data_anggota.nomor_anggota', $search)
                 ->paginate(25, 'data_anggota');
         } else {
-            $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->paginate(25, 'data_anggota');
+            $anggota = $this->data_anggota->join('jurusan', 'jurusan.id_jurusan = data_anggota.id_jurusan')->paginate(50, 'data_anggota');
         }
 
 
@@ -141,18 +143,56 @@ class Psda extends BaseController
             return redirect()->to('/psda/add_anggota')->withInput();
         }
 
-        $this->data_anggota->insert([
+        $save = [
             'npm' => $this->request->getVar('npm'),
             'nomor_anggota' => $this->request->getVar('nomor_anggota'),
             'nama_lengkap' => $this->request->getVar('nama'),
             'email' => $this->request->getVar('email'),
             'nomor_hp' => $this->request->getVar('no_handphone'),
             'id_jurusan' => $this->request->getVar('jurusan')
-        ]);
+        ];
+
+        if ($this->data_anggota->insert($save)) {
+            $status = true;
+            if (!$this->data_poin->insert([
+                'nomor_anggota' => $this->request->getVar('nomor_anggota'),
+                'poin' => 0
+            ])) {
+                $this->data_anggota->delete($this->request->getVar('npm'));
+                $status = false;
+            }
+
+            if (!$this->simpanan->insert([
+                'simpanan_pokok' => 0,
+                'simpanan_wajib' => 0,
+                'total_simpanan' => 0,
+                'npm'   => $this->request->getVar('npm'),
+                'nomor_anggota' => $this->request->getVar('nomor_anggota'),
+            ])) {
+                $this->data_anggota->delete($this->request->getVar('npm'));
+                $this->data_poin->delete($this->request->getVar('nomor_anggota'));
+                $status = false;
+            }
+
+            if (!$this->referal->insert([
+                'nomor_anggota' => $this->request->getVar('nomor_anggota'),
+                'referal' => substr($this->request->getVar('nama'), 0, 3) . substr($this->request->getVar('nomor_anggota'), 0, 4),
+            ])) {
+                $this->data_anggota->delete($this->request->getVar('npm'));
+                $this->data_poin->delete($this->request->getVar('nomor_anggota'));
+                $this->simpanan->delete($this->request->getVar('nomor_anggota'));
+                $status = false;
+            }
+
+            if (!$status) {
+                session()->setFlashdata('pesan', 'Data gagal ditambahkan');
+                return redirect()->to('/psda/add_anggota');
+            }
+        }
 
         session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
 
-        return redirect()->to('/psda/add_anggota');
+        return redirect()->to('/psda/data_anggota');
     }
 
     public function delete_anggota($npm)
@@ -191,10 +231,20 @@ class Psda extends BaseController
     // Calon Anggota Function
     public function calon_anggota()
     {
-        $calon = $this->calon_anggota->join('jurusan', 'calon_anggota.id_jurusan=jurusan.id_jurusan')
-            ->join('fakultas', 'jurusan.id_fakultas=fakultas.id_fakultas')
-            ->join('asal_informasi', 'calon_anggota.asal_informasi=asal_informasi.id_informasi')
-            ->paginate(25, 'calon_anggota');
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $calon = $this->calon_anggota->join('jurusan', 'calon_anggota.id_jurusan=jurusan.id_jurusan')
+                ->join('fakultas', 'jurusan.id_fakultas=fakultas.id_fakultas')
+                ->like('calon_anggota.npm', $search)
+                ->orLike('calon_anggota.nama_lengkap', $search)
+                ->orLike('jurusan.nama_jurusan', $search)
+                ->orlike('fakultas.nama_fakultas', $search)
+                ->paginate(25, 'calon_anggota');
+        } else {
+            $calon = $this->calon_anggota->join('jurusan', 'calon_anggota.id_jurusan=jurusan.id_jurusan')
+                ->join('fakultas', 'jurusan.id_fakultas=fakultas.id_fakultas')
+                ->paginate(25, 'calon_anggota');
+        }
         $cur_page = $this->request->getVar('page_calon_anggota') ? $this->request->getVar('page_calon_anggota') : 1;
         $data = [
             'title' => 'Calon Anggota',
@@ -230,8 +280,10 @@ class Psda extends BaseController
         $sheet->setCellValue('H1', 'Email');
         $sheet->setCellValue('I1', 'Asal Informasi');
         $sheet->setCellValue('J1', 'Domisili');
-        $sheet->setCellValue('K1', 'Alasan Masuk Kopma');
-        $sheet->setCellValue('L1', 'Kode Referal');
+        $sheet->setCellValue('K1', 'Tempat Lahir');
+        $sheet->setCellValue('L1', 'Tanggal Lahir');
+        $sheet->setCellValue('M1', 'Alasan Masuk Kopma');
+        $sheet->setCellValue('N1', 'Kode Referal');
         $row = 2;
 
         foreach ($calon as $c) {
@@ -243,10 +295,12 @@ class Psda extends BaseController
             $sheet->setCellValue('F' . $row, $c['nama_fakultas']);
             $sheet->setCellValue('G' . $row, $c['nomor_hp']);
             $sheet->setCellValue('H' . $row, $c['email']);
-            $sheet->setCellValue('I' . $row, $c['nama_platform']);
+            $sheet->setCellValue('I' . $row, $c['asal_informasi']);
             $sheet->setCellValue('J' . $row, $c['domisili']);
-            $sheet->setCellValue('K' . $row, $c['alasan']);
-            $sheet->setCellValue('L' . $row, $c['kode_referal']);
+            $sheet->setCellValue('K' . $row, $c['tempat_lahir']);
+            $sheet->setCellValue('L' . $row, $c['tanggal_lahir']);
+            $sheet->setCellValue('M' . $row, $c['alasan']);
+            $sheet->setCellValue('N' . $row, $c['kode_referal']);
             $row++;
         }
         $writer = new Xlsx($spreadsheet);
@@ -326,13 +380,14 @@ class Psda extends BaseController
                 ->groupBy('referal.kode_referal')
                 ->findAll();
         } else {
-            $ref = $this->referal->select('*')->selectCount('calon_anggota.kode_referal', 'jumlah')
-                ->join('calon_anggota', 'calon_anggota.kode_referal=referal.kode_referal')
+            $ref = $this->referal->select('data_anggota.nama_lengkap, data_anggota.nomor_anggota, referal.kode_referal')
+                ->selectCount('calon_anggota.kode_referal', 'jumlah')
                 ->join('data_anggota', 'data_anggota.nomor_anggota=referal.nomor_anggota')
+                ->join('calon_anggota', 'calon_anggota.kode_referal=referal.kode_referal', 'left')
                 ->groupBy('referal.kode_referal')
                 ->findAll();
         }
-        // dd($sear);
+        // dd($ref);
         $data = [
             'title' => 'Kode Referal',
             'referal' => $ref

@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\GroupUserModel;
-use App\Models\UserModel as ModelsUserModel;
 use Myth\Auth\Models\UserModel;
 
 class Admin extends BaseController
@@ -14,7 +13,7 @@ class Admin extends BaseController
 
     public function __construct()
     {
-        $this->data_user = new UserModel;
+        $this->data_user = new UserModel();
         $this->group = new GroupUserModel();
         if (!in_groups('admin')) {
             return redirect()->to('/dashboard');
@@ -53,8 +52,8 @@ class Admin extends BaseController
 
     public function reset_password()
     {
-        $user = $this->data_user->where('id', $this->request->getVar('id'))->first();
-
+        $user = $this->data_user->where('username', $this->request->getVar('id'))->first();
+        // dd($user->id);
         $data = [
             'title' => 'Reset Password',
             'validation' => \Config\Services::validation(),
@@ -66,37 +65,41 @@ class Admin extends BaseController
 
     public function attempt_reset()
     {
+        // dd($this->request->getVar());
         $new = $this->request->getVar();
-
         $validation = [
             'password' => [
-                'rules' => 'required|min_length[8]',
+                'rules' => 'required|min_length[4]',
                 'errors' => [
                     'required' => 'Password harus diisi.',
-                    'min_length' => 'Password minimal 8 karakter.'
+                    'min_length' => 'Password minimal 4 karakter.'
                 ]
             ],
-            'password_confirm' => [
+            'pass_confirm' => [
                 'rules' => 'required|matches[password]',
                 'errors' => [
                     'required' => 'Konfirm password harus diisi.',
                 ],
             ],
         ];
+        // dd($new);
 
         if (!$this->validate($validation)) {
+            // dd('gagal validasi');
+            echo '<script>alert("Gagal validasi")</script>';
             return redirect()->to('/admin/reset_password')->withInput();
         }
-
+        // dd($new);
         $reset = [
             'id' => $new['id'],
             'password_hash' => password_hash($new['password'], PASSWORD_DEFAULT),
         ];
         if (!$this->data_user->save($reset)) {
+            dd("gagal");
             session()->setFlashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Gagal!</strong> Password gagal direset.
             <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>');
-            return redirect()->to('/admin/reset_password');
+            return redirect()->to('/admin/reset_password')->withInput();
         }
         session()->setFlashdata('pesan', '<strong>Berhasil!</strong> Password berhasil direset.');
         return redirect()->to('/admin/data_user');

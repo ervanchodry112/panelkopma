@@ -4,15 +4,20 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\HasilSurveyModel;
+use App\Models\SurveyBerjalanModel;
+use CodeIgniter\I18n\Time;
 use Config\Validation;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Date;
 
 class Litbang extends BaseController
 {
     protected $hasil_survey;
+    protected $survey;
 
     public function __construct()
     {
         $this->hasil_survey = new HasilSurveyModel();
+        $this->survey = new SurveyBerjalanModel();
     }
     public function index()
     {
@@ -196,5 +201,148 @@ class Litbang extends BaseController
         readfile($file);
 
         exit;
+    }
+
+    public function survey_berjalan()
+    {
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $data_survey = $this->survey->like('nama_survey', $search)->findAll();
+        } else {
+            $data_survey = $this->survey->findAll();
+        }
+
+        $data = [
+            'title' => 'Survey Berjalan',
+            'validation' => \Config\Services::validation(),
+            'survey' => $data_survey,
+        ];
+        return view('litbang/survey_berjalan', $data);
+    }
+
+    public function tambah_survey()
+    {
+        $data = [
+            'title' => 'Tambah Survey',
+            'validation' => \Config\Services::validation(),
+        ];
+        return view('litbang/tambah_survey', $data);
+    }
+
+    public function save_survey()
+    {
+        $input = $this->request->getVar();
+
+        $validation = [
+            'nama_survey' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'tgl_mulai' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tentukan tanggal survey dimulai!'
+                ]
+            ],
+            'tgl_selesai' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tentukan tanggal survey selesai!'
+                ]
+            ],
+            'link' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Link survey harus diisi!',
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validation)) {
+            return redirect()->to('/litbang/tambah_survey')->withInput();
+        }
+
+        $data = [
+            'nama_survey' => $input['nama_survey'],
+            'deskripsi' => $input['deskripsi'],
+            'tgl_mulai' => $input['tgl_mulai'],
+            'tgl_selesai' => $input['tgl_selesai'],
+            'link' => $input['link']
+        ];
+
+        if (!$this->survey->save($data)) {
+            session()->setFlashdata('error', 'Gagal menambahkan data survey');
+            return redirect()->to('/litbang/tambah_survey')->withInput();
+        }
+
+        session()->setFlashdata('success', 'Berhasil menambahkan data survey');
+        return redirect()->to('/litbang/survey_berjalan');
+    }
+
+    public function edit_survey()
+    {
+        $id = $this->request->getVar('id');
+
+        $data_survey = $this->survey->where('id', $id)->first();
+        $data = [
+            'title' => 'Edit Survey',
+            'validation' => \Config\Services::validation(),
+            'survey' => $data_survey,
+        ];
+
+        return view('litbang/edit_survey', $data);
+    }
+
+    public function attempt_edit_survey()
+    {
+        $input = $this->request->getVar();
+        $save = [
+            'id' => $input['id'],
+            'nama_survey' => $input['nama_survey'],
+            'deskripsi' => $input['deskripsi'],
+            'tgl_mulai' => $input['tgl_mulai'],
+            'tgl_selesai' => $input['tgl_selesai'],
+            'link' => $input['link']
+        ];
+
+        if (!$this->survey->save($save)) {
+            session()->setFlashdata('error', 'Gagal mengubah data survey');
+            return redirect()->to('/litbang/edit_survey?id=' . $input['id'])->withInput();
+        }
+
+        session()->setFlashdata('success', 'Berhasil mengubah data survey');
+        return redirect()->to('/litbang/survey_berjalan');
+    }
+
+    public function delete_survey()
+    {
+        $id = $this->request->getVar('id');
+        if (!$this->survey->where('id', $id)->delete()) {
+            session()->setFlashdata('error', 'Gagal menghapus data survey');
+            return redirect()->to('/litbang/survey_berjalan');
+        }
+
+        session()->setFlashdata('success', 'Berhasil menghapus data survey');
+        return redirect()->to('/litbang/survey_berjalan');
+    }
+
+    public function finish_survey()
+    {
+        $id = $this->request->getVar('id');
+
+        $save = [
+            'id' => $id,
+            'tgl_selesai' => Time::today('Asia/Jakarta')->toDateString(),
+        ];
+
+        if (!$this->survey->save($save)) {
+            session()->setFlashdata('error', 'Gagal menyelesaikan survey');
+            return redirect()->to('/litbang/survey_berjalan');
+        }
+
+        session()->setFlashdata('success', 'Berhasil menyelesaikan survey');
+        return redirect()->to('/litbang/survey_berjalan');
     }
 }

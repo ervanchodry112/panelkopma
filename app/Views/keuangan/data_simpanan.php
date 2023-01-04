@@ -19,22 +19,20 @@
                         <!-- Buat Konten Disini -->
                         <div class="row mx-2 my-3">
                             <div class="col d-flex justify-content-between">
+                                <!-- Search Field -->
+                                <form class="form w-50 d-flex align-items-center">
+                                    <button type="submit" class="btn btn-sm">
+                                        <ion-icon name="search-outline"></ion-icon>
+                                    </button>
+                                    <input name="search" type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
+                                </form>
+                                <!-- Search Fiela -->
 
+                            </div>
 
-                                <div class="col d-flex align-items-center">
-
-                                    <!-- Search Field -->
-                                    <ion-icon name="search-outline"></ion-icon>
-                                    <form class="form w-50">
-                                        <input type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
-                                    </form>
-                                    <!-- Search Fiela -->
-                                </div>
-
-
-                                <!-- Download Button -->
-                                <div class="col justify-content-end d-flex">
-                                    <!-- <a href="toExcel.php" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
+                            <!-- Download Button -->
+                            <div class="col justify-content-end d-flex">
+                                <!-- <a href="toExcel.php" class="btn btn-success btn-sm p-auto rounded-pill shadow-sm d-flex justify-content-center" style="width: 35%;">
                                         <span class="me-1">
                                             <ion-icon style="font-size: 16px;" name="download-outline"></ion-icon>
                                         </span>
@@ -42,10 +40,9 @@
                                             XLS
                                         </span>
                                     </a> -->
-                                </div>
-                                <!-- Download Button -->
-
                             </div>
+                            <!-- Download Button -->
+
                         </div>
                         <?php
                         if (session()->getFlashdata('pesan')) {
@@ -62,7 +59,7 @@
                         ?>
                         <div class="container overflow-scroll">
                             <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
-                                <tr>
+                                <thead>
                                     <th scope="col">#</th>
                                     <th scope="col">Action</th>
                                     <th scope="col">Nama</th>
@@ -70,22 +67,25 @@
                                     <th scope="col">Simpanan Pokok</th>
                                     <th scope="col">Simpanan Wajib</th>
                                     <th scope="col">Total Simpanan</th>
-                                </tr>
+                                </thead>
                                 <?php $i = 1 + (25 * ($current_page - 1));
                                 foreach ($simpanan as $d) { ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>
                                         <td>
-                                            <a href="<?= base_url('keuangan/add_simpanan/' . $d['npm']) ?>" type="button" class="btn btn-sm btn-warning">
-                                                <ion-icon name="add-outline"></ion-icon>
-                                            </a>
+                                            <form action="<?= base_url('keuangan/add_simpanan') ?>" method="post">
+                                                <input type="hidden" name="nomor_anggota" value="<?= $d['nomor_anggota'] ?>">
+                                                <button type="submit" class="btn btn-sm btn-warning">
+                                                    <ion-icon name="add-outline"></ion-icon>
+                                                </button>
+                                            </form>
                                         </td>
                                         <td><?= $d['nama_lengkap'] ?></td>
                                         <td><?= $d['nomor_anggota'] ?></td>
                                         <!-- <td class="text-start"></td> -->
-                                        <td>Rp <?= $d['simpanan_pokok'] ?></td>
-                                        <td>Rp <?= $d['simpanan_wajib'] ?></td>
-                                        <td>Rp <?= $d['simpanan_pokok'] + $d['simpanan_wajib'] ?></td>
+                                        <td>Rp<?= number_format($d['simpanan_pokok'], 2) ?></td>
+                                        <td>Rp<?= number_format($d['simpanan_wajib'], 2) ?></td>
+                                        <td>Rp<?= number_format($d['simpanan_pokok'] + $d['simpanan_wajib'], 2) ?></td>
                                     </tr>
                                 <?php } ?>
                             </table>

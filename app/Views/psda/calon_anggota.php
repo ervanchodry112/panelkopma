@@ -31,10 +31,12 @@ echo $this->section('main');
                                          </button> -->
                                 <!-- Button Input Data Form CSV -->
                                 <!-- Search Fiela -->
-                                <div class="col d-flex align-items-center">
-                                    <ion-icon name="search-outline"></ion-icon>
-                                    <form class="form w-50">
-                                        <input type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
+                                <div class="col ">
+                                    <form class="form w-50 d-flex align-items-center" action="<?= base_url('psda/calon_anggota') ?>">
+                                        <button type="submit" class="btn btn-white btn-sm">
+                                            <ion-icon name="search-outline"></ion-icon>
+                                        </button>
+                                        <input name="search" type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
                                     </form>
                                 </div>
                                 <!-- Search Field -->
@@ -86,6 +88,8 @@ echo $this->section('main');
                                         <th scope="col">Email</th>
                                         <th scope="col">Asal Informasi</th>
                                         <th scope="col">Domisili</th>
+                                        <th scope="col">Tempat Lahir</th>
+                                        <th scope="col">Tanggal Lahir</th>
                                         <th scope="col">Alasan Masuk Kopma</th>
                                         <th scope="col">Kode Referal</th>
                                         <th scope="col">Berkas</th>
@@ -99,7 +103,7 @@ echo $this->section('main');
                                             <form action="<?= base_url('psda/delete_calon/' . $d['npm']) ?>" method="POST">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" onclick="return confirm('Apakah anda yakin>')" class="btn btn-danger btn-sm">
+                                                <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
                                                     <ion-icon name="trash-outline"></ion-icon>
                                                 </button>
                                             </form>
@@ -113,6 +117,8 @@ echo $this->section('main');
                                         <td><?= $d['email'] ?></td>
                                         <td><?= $d['nama_platform'] ?></td>
                                         <td><?= $d['domisili'] ?></td>
+                                        <td><?= $d['tempat_lahir'] ?></td>
+                                        <td><?= $d['tanggal_lahir'] ?></td>
                                         <td><?= $d['alasan'] ?></td>
                                         <td><?= $d['kode_referal'] ?></td>
                                         <td class="gy-2">

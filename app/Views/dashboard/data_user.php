@@ -55,13 +55,13 @@
                                         <td><?= ucwords($d->name) ?></td>
                                         <td class="w-100 d-flex justify-content-start">
                                             <form action="<?= base_url('admin/reset_password') ?>" class="me-2" method="post">
-                                                <input type="hidden" name="id" value="<?= $d->id ?>">
+                                                <input type="hidden" name="id" value="<?= $d->username ?>">
                                                 <button type="submit" class="btn btn-warning btn-sm">
                                                     <i class="bi bi-key"></i>
                                                 </button>
                                             </form>
                                             <form action="<?= base_url('admin/delete_user') ?>" method="post">
-                                                <input type="hidden" name="id" value="<?= $d->id ?>">
+                                                <input type="hidden" name="id" value="<?= $d->username ?>">
                                                 <button type="submit" class="btn btn-danger btn-sm">
                                                     <ion-icon name="trash-outline"></ion-icon>
                                                 </button>

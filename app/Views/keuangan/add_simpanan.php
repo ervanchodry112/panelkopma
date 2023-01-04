@@ -21,15 +21,15 @@ echo $this->section('main');
                         <form action="<?= base_url('keuangan/save_simpanan') ?>" method="POST">
                             <?= csrf_field(); ?>
                             <div class="row m-3 w-75">
-                                <label for="npm" class="col-sm-4 col-form-label">NPM</label>
+                                <label for="nomor_anggota" class="col-sm-4 col-form-label">Nomor Anggota</label>
                                 <div class="col-sm-8 w-50">
-                                    <input type="text" name="npm" class="form-control" id="npm" value="<?= $npm ?>" disabled>
+                                    <input type="text" name="nomor_anggota" class="form-control-plaintext" id="nomor_anggota" value="<?= $nomor_anggota ?>" readonly>
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
                                 <label for="nama" class="col-sm-4 col-form-label">Nama</label>
                                 <div class="col-sm-8 w-50">
-                                    <input type="text" name="nama" class="form-control" id="nama" value="<?= $nama['nama_lengkap'] ?>" disabled>
+                                    <input type="text" name="nama" class="form-control-plaintext" id="nama" value="<?= $nama['nama_lengkap'] ?>" readonly>
                                 </div>
                             </div>
                             <div class="row m-3 w-75">

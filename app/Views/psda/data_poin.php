@@ -49,19 +49,17 @@ echo $this->section('main');
                                 <thead>
                                     <tr>
                                         <th scope="col">Action</th>
-                                        <th scope="col">NPM</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Nomor Anggota</th>
                                         <th scope="col">Poin</th>
                                     </tr>
                                 </thead>
                                 <?php foreach ($data as $d) { ?>
-                                    <tr id="<?= $d['npm'] ?>">
+                                    <tr>
                                         <td>
                                             <a href="<?= base_url('psda/add_value/' . $d['nomor_anggota']) ?>" type="button" class="btn btn-sm btn-warning">
                                                 <ion-icon name="add-outline"></ion-icon>
                                         </td>
-                                        <td><?= $d['npm'] ?></td>
                                         <td><?= $d['nama_lengkap'] ?></td>
                                         <td><?= $d['nomor_anggota'] ?></td>
                                         <td><?= $d['poin'] + (int) (($d['simpanan_wajib'] / 10000) * 3) ?></td>

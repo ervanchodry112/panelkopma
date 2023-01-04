@@ -4,23 +4,19 @@ echo $this->section('main');
 ?>
 
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1><?= $title ?></h1>
-        <nav>
-            <ol class="breadcrumb">
 
-            </ol>
-        </nav>
-    </div>
-    <!-- End Page Title -->
 
     <section class="section dashboard">
         <div class="row">
             <div class="col-12">
                 <!-- Buat Konten Disini -->
-                <div class="card">
+                <div class="card p-3">
+                    <div class="card-header">
+
+                        <h2><?= $title ?></h2>
+                    </div>
                     <div class="card-body py-3 my-2">
-                        <?php   
+                        <?php
                         if (session()->getFlashdata('success')) { ?>
                             <div class="row mx-1">
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -61,30 +57,38 @@ echo $this->section('main');
                                             <th scope="col">Tanggal</th>
                                         </tr>
                                     </thead>
-                                    <?php foreach ($kegiatan as $d) { ?>
-                                        <tr>
-                                            <td>
-                                                <a href="<?= base_url('dashboard/edit_kegiatan/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-success btn-sm">
-                                                    <ion-icon class="col" name="create-outline"></ion-icon>
-                                                </a>
-                                                <a href="<?= base_url('dashboard/presensi/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-primary btn-sm">
-                                                    <ion-icon class="col" name="clipboard-outline"></ion-icon>
-                                                </a>
-                                                <a href="<?= base_url('dashboard/kegiatan/' . $d['id_kegiatan']) ?>" class="btn btn-sm btn-warning">
-                                                    <ion-icon name="qr-code-outline"></ion-icon>
-                                                    </button>
-                                            </td>
-                                            <td>
-                                                <?= $d['nama_kegiatan'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $d['tempat_kegiatan'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $d['tanggal_kegiatan'] ?>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
+                                    <?php
+                                    if ($kegiatan == null) {
+                                        echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
+                                    } else {
+                                        foreach ($kegiatan as $d) {
+                                    ?>
+                                            <tr>
+                                                <td>
+                                                    <a href="<?= base_url('dashboard/edit_kegiatan/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-success btn-sm">
+                                                        <ion-icon class="col" name="create-outline"></ion-icon>
+                                                    </a>
+                                                    <a href="<?= base_url('dashboard/presensi/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-primary btn-sm">
+                                                        <ion-icon class="col" name="clipboard-outline"></ion-icon>
+                                                    </a>
+                                                    <a href="<?= base_url('dashboard/kegiatan/' . $d['id_kegiatan']) ?>" class="btn btn-sm btn-warning">
+                                                        <ion-icon name="qr-code-outline"></ion-icon>
+                                                        </button>
+                                                </td>
+                                                <td>
+                                                    <?= $d['nama_kegiatan'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $d['tempat_kegiatan'] ?>
+                                                </td>
+                                                <td>
+                                                    <?= $d['tanggal_kegiatan'] ?>
+                                                </td>
+                                            </tr>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
                                 </table>
                             </div>
                         </div>

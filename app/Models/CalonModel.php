@@ -18,7 +18,6 @@ class CalonModel extends Model
         return $this->db->table('calon_anggota')
             ->join('jurusan', 'calon_anggota.id_jurusan=jurusan.id_jurusan')
             ->join('fakultas', 'jurusan.id_fakultas=fakultas.id_fakultas')
-            ->join('asal_informasi', 'calon_anggota.asal_informasi=asal_informasi.id_informasi')
             ->get()->getResultArray();
     }
 }

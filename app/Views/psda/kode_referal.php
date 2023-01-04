@@ -65,26 +65,35 @@ echo $this->section('main');
                                     <!-- <th scope="col">Jumlah</th> -->
                                 </thead>
                                 <tbody>
-                                    <?php $i = 1;
-                                    foreach ($referal as $d) { ?>
-                                        <tr id="<?= $d['npm'] ?>">
-                                            <th scope="row"><?= $i++ ?></th>
-                                            <td><?= $d['nama_lengkap'] ?></td>
-                                            <td><?= $d['nomor_anggota'] ?></td>
-                                            <td><?= $d['kode_referal'] ?></td>
-                                            <td><?= $d['jumlah'] ?></td>
-                                            <td>
-                                                <form action="<?= base_url('delete_referal/' . $d['nomor_anggota']) ?>" method="POST">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
-                                                        <ion-icon name="trash-outline"></ion-icon>
-                                                    </button>
-                                                </form>
-                                            </td>
-
+                                    <?php
+                                    if ($referal == null) {
+                                    ?>
+                                        <tr>
+                                            <td colspan='6'>Data tidak ditemukan</td>
                                         </tr>
-                                    <?php } ?>
+                                        <?php
+                                    } else {
+                                        $i = 1;
+                                        foreach ($referal as $d) { ?>
+                                            <tr>
+                                                <th scope="row"><?= $i++ ?></th>
+                                                <td><?= $d['nama_lengkap'] ?></td>
+                                                <td><?= $d['nomor_anggota'] ?></td>
+                                                <td><?= $d['kode_referal'] ?></td>
+                                                <td><?= $d['jumlah'] ?></td>
+                                                <td>
+                                                    <form action="<?= base_url('delete_referal/' . $d['nomor_anggota']) ?>" method="POST">
+                                                        <?= csrf_field(); ?>
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
+                                                            <ion-icon name="trash-outline"></ion-icon>
+                                                        </button>
+                                                    </form>
+                                                </td>
+
+                                            </tr>
+                                    <?php }
+                                    } ?>
                                 </tbody>
                             </table>
                         </div>

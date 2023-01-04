@@ -66,7 +66,7 @@ echo $this->section('main');
                                         <td><?= $d['created_at'] ?></td>
                                         <td><?= $d['nama_lengkap'] ?></td>
                                         <td><?= $d['nomor_anggota'] ?></td>
-                                        <td><?= $d['nominal'] ?></td>
+                                        <td>Rp<?= number_format($d['nominal'], 2) ?></td>
                                         <td>
                                             <?php
                                             if ($d['bukti_pembayaran'] == '-') {

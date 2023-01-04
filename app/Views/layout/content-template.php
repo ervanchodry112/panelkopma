@@ -1,6 +1,6 @@
 <?php
-echo $this->extend('layout/navbar');
-echo $this->section('content');
+echo $this->extend('dashboard/sidebar');
+echo $this->section('main');
 ?>
 
 <main id="main" class="main">
