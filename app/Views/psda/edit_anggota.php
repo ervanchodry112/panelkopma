@@ -21,21 +21,21 @@ echo $this->section('main');
                         <form action="<?= base_url('psda/update_anggota') ?>" method="POST">
                             <?= csrf_field(); ?>
                             <div class="row m-3 w-75">
+                                <label for="nomor_anggota" class="col-sm-3 col-form-label">Nomor Anggota</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="nomor_anggota" class="form-control" id="nomor_anggota" value="<?= $anggota['nomor_anggota'] ?>" readonly>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
                                 <label for="npm" class="col-sm-3 col-form-label">NPM</label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="npm" class="form-control" id="npm" value="<?= $anggota['npm'] ?>" readonly>
+                                    <input type="text" name="npm" class="form-control" id="npm" value="<?= $anggota['npm'] ?>">
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
                                 <label for="nama" class="col-sm-3 col-form-label">Nama Lengkap</label>
                                 <div class="col-sm-9">
                                     <input type="text" name="nama" class="form-control" id="nama" value="<?= $anggota['nama_lengkap'] ?>">
-                                </div>
-                            </div>
-                            <div class="row m-3 w-75">
-                                <label for="nomor_anggota" class="col-sm-3 col-form-label">Nomor Anggota</label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="nomor_anggota" class="form-control" id="nomor_anggota" value="<?= $anggota['nomor_anggota'] ?>">
                                 </div>
                             </div>
                             <div class="row m-3 w-75">

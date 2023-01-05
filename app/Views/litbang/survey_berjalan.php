@@ -93,7 +93,7 @@ echo $this->section('main');
                                             <td><?= date_format(date_create($s->tgl_selesai), 'd F Y') ?></td>
                                             <td><?= $s->link; ?></td>
                                             <td>
-                                                <div style="height: min-content;" class="alert p-1 text-center alert-sm alert-<?= ($status ? 'primary' : 'danger') ?>">
+                                                <div style="height: min-content;" class="badge bg-<?= ($status ? 'success' : 'danger') ?>">
                                                     <strong><?= ($status ? 'Selesai' : 'Berjalan') ?></strong>
                                                 </div>
                                             </td>

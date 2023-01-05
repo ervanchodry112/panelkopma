@@ -28,6 +28,7 @@ class Keuangan extends BaseController
 
     public function data_simpanan()
     {
+        // dd(abs(Time::today()->difference('2022-10-01')->getMonths()));
         $search = $this->request->getVar('search');
         if ($search) {
             $simpanan = $this->data_simpanan->join('data_anggota', 'data_simpanan.nomor_anggota=data_anggota.nomor_anggota')
@@ -42,7 +43,9 @@ class Keuangan extends BaseController
             'title' => 'Data Simpanan',
             'simpanan' => $simpanan,
             'pager' => $this->data_simpanan->pager,
-            'current_page' => $current_page
+            'current_page' => $current_page,
+            'date'  => Time::today(),
+            'validation' => \Config\Services::validation(),
         ];
         return view('keuangan/data_simpanan', $data);
     }
@@ -55,7 +58,8 @@ class Keuangan extends BaseController
             'title' => 'Pembayaran Simpanan Wajib',
             'simwa' => $simwa,
             'pager' => $this->bayar_simwa->pager,
-            'current_page' => $current_page
+            'current_page' => $current_page,
+            'validation' => \Config\Services::validation(),
         ];
         return view('keuangan/pembayaran_simwa', $data);
     }

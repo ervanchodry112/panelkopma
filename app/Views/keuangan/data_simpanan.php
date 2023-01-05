@@ -13,7 +13,6 @@
                 <div class="card">
                     <div class="card-header mx-3 mt-3">
                         <h3><?= $title ?></h3>
-
                     </div>
                     <div class="card-body">
                         <!-- Buat Konten Disini -->
@@ -67,9 +66,25 @@
                                     <th scope="col">Simpanan Pokok</th>
                                     <th scope="col">Simpanan Wajib</th>
                                     <th scope="col">Total Simpanan</th>
+                                    <th scope="col">Tagihan</th>
                                 </thead>
-                                <?php $i = 1 + (25 * ($current_page - 1));
-                                foreach ($simpanan as $d) { ?>
+                                <?php
+                                $i = 1 + (25 * ($current_page - 1));
+                                foreach ($simpanan as $d) {
+                                    // dd($d['tgl_diksar']);
+                                    $tagihan = 0;
+                                    if ($d['tgl_diksar'] < '2022-01-01') {
+                                        $tagihan = date_diff(date_create($d['tgl_diksar']), date_create('2022-01-01'))->m * 5000;
+                                        $month = abs($date->difference('2022-01-01')->getMonths());
+                                    } else {
+                                        $month = abs($date->difference($d['tgl_diksar'])->getMonths());
+                                    }
+                                    $tagihan = ($tagihan + ($month * 10000)) - $d['simpanan_wajib'];
+                                    // dd($tagihan);
+                                    if ($tagihan < 0) {
+                                        $tagihan = 0;
+                                    }
+                                ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>
                                         <td>
@@ -80,12 +95,13 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        <td><?= $d['nama_lengkap'] ?></td>
+                                        <td class="text-start"><?= $d['nama_lengkap'] ?></td>
                                         <td><?= $d['nomor_anggota'] ?></td>
                                         <!-- <td class="text-start"></td> -->
                                         <td>Rp<?= number_format($d['simpanan_pokok'], 2) ?></td>
                                         <td>Rp<?= number_format($d['simpanan_wajib'], 2) ?></td>
                                         <td>Rp<?= number_format($d['simpanan_pokok'] + $d['simpanan_wajib'], 2) ?></td>
+                                        <td>Rp<?= number_format($tagihan, 2) ?></td>
                                     </tr>
                                 <?php } ?>
                             </table>

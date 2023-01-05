@@ -51,27 +51,33 @@
                         }
                         ?>
                         <div class="container overflow-scroll">
-                            <table class="table table-striped table-responsive fs-6" style="font-size: 12px;" id="tableData">
+                            <table class="table table-striped table-responsive" style="font-size: .8em;" id="tableData">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Action</th>
                                         <th scope="col">NPM</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Nomor Anggota</th>
                                         <th scope="col">Jurusan</th>
                                         <th scope="col">Nomor WA</th>
                                         <th scope="col">Email</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <?php $i = 1 + (25 * ($currentPage - 1));
                                 foreach ($anggota as $d) { ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>
+                                        <td><?= $d['npm'] ?></td>
+                                        <td><?= $d['nama_lengkap'] ?></td>
+                                        <td><?= $d['nomor_anggota'] ?></td>
+                                        <td><?= $d['nama_jurusan'] ?></td>
+                                        <td><?= $d['nomor_hp'] ?></td>
+                                        <td><?= $d['email'] ?></td>
                                         <td class="d-flex">
-                                            <form action="<?= base_url('delete_anggota/' . $d['npm']) ?>" method="POST">
+                                            <form action="<?= base_url('psda/delete_anggota') ?>" method="POST">
                                                 <?= csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="nomor_anggota" value="<?= $d['nomor_anggota'] ?>">
                                                 <button type="submit" onclick="return confirm('Apakah anda yakin?')" class="btn btn-danger btn-sm">
                                                     <ion-icon name="trash-outline"></ion-icon>
                                                 </button>
@@ -80,12 +86,6 @@
                                                 <ion-icon name="create-outline"></ion-icon>
                                             </a>
                                         </td>
-                                        <td><?= $d['npm'] ?></td>
-                                        <td><?= $d['nama_lengkap'] ?></td>
-                                        <td><?= $d['nomor_anggota'] ?></td>
-                                        <td><?= $d['nama_jurusan'] ?></td>
-                                        <td><?= $d['nomor_hp'] ?></td>
-                                        <td><?= $d['email'] ?></td>
                                     </tr>
                                 <?php } ?>
                             </table>

@@ -48,10 +48,58 @@ class Survey extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->createTable('survey_berjalan');
 
+        // Create tabel program_kerja
+        $this->forge->addField([
+            'id' => [
+                'type' => 'INT',
+                'constraint' => 4,
+                'auto_increment' => true,
+            ],
+            'nama_program' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'deskripsi' => [
+                'type' => 'TEXT',
+            ],
+            'rencana_pelaksanaan' => [
+                'type' => 'DATE',
+                'null' => true,
+            ],
+            'user' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
+            ],
+            'tahun' => [
+                'type' => 'YEAR',
+                'constraint' => 4,
+            ],
+            'status' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'deleted_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+        ]);
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addForeignKey('user', 'users', 'username', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('program_kerja');
     }
 
     public function down()
     {
+        $this->forge->dropTable('program_kerja');
         $this->forge->dropTable('survey_berjalan');
     }
 }

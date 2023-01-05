@@ -15,6 +15,7 @@ use App\Models\Presensi;
 
 use App\Libraries\Ciqrcode;
 use App\Models\Home_model;
+use App\Models\ProgramKerja;
 use Kenjis\CI3Compatible\Core\CI_Input;
 use CodeIgniter\I18n\Time;
 use DateTime;
@@ -33,6 +34,7 @@ class Dashboard extends BaseController
     protected $ciqrcode;
     protected $data_user;
     protected $auth;
+    protected $progja;
 
     function __construct()
     {
@@ -41,6 +43,7 @@ class Dashboard extends BaseController
         $this->ciqrcode = new Ciqrcode();
         $this->data_user = new UserModel();
         $this->auth   = service('authentication');
+        $this->progja = new ProgramKerja();
     }
 
     public function index()
@@ -267,5 +270,142 @@ class Dashboard extends BaseController
         }
 
         return redirect()->to(site_url('/'));
+    }
+
+    public function program_kerja()
+    {
+        $search = $this->request->getVar('search');
+        if (user()->username == 'admin' || user()->username == 'ketua_umum' || user()->username == 'badan_pengawas') {
+            if ($search) {
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                    ->join('users', 'program_kerja.user=users.id')->like('nama_program', $search)
+                    ->orLike('users.username', $search)->findAll();
+            } else {
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                    ->join('users', 'program_kerja.user=users.id')->findAll();
+            }
+        } else {
+            if ($search) {
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                    ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->like('nama_program', $search)
+                    ->orLike('users.username', $search)->findAll();
+            } else {
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                    ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->findAll();
+            }
+        }
+        $data = [
+            'title' => 'Program Kerja',
+            'progja' => $program_kerja,
+        ];
+
+        return view('/dashboard/program_kerja', $data);
+    }
+
+    public function add_progja()
+    {
+        // dd(Time::now()->getYear());
+        $data = [
+            'title' => 'Tambah Program Kerja',
+            'validation' => \Config\Services::validation(),
+        ];
+
+        return view('/dashboard/add_progja', $data);
+    }
+
+    public function save_progja()
+    {
+        $input = $this->request->getVar();
+
+        $validation = [
+            'nama_program' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama Program Kerja harus diisi'
+                ]
+            ],
+            'deskripsi' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Deskripsi Program Kerja harus diisi'
+                ]
+            ],
+            'rencana_pelaksanaan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Rencana Pelaksanaan Program Kerja harus diisi'
+                ]
+            ],
+            'status' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Status Program Kerja harus diisi'
+                ]
+            ],
+        ];
+
+        $edit = isset($input['id']);
+
+        // dd($edit);
+
+        if (!$this->validate($validation)) {
+            return redirect()->to(site_url('dashboard/' . ($edit ? 'edit_progja' : 'add_progja')))->withInput();
+        }
+
+
+        if ($edit) {
+            $save = [
+                'id'                    => $input['id'],
+                'nama_program'          => $input['nama_program'],
+                'deskripsi'             => $input['deskripsi'],
+                'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
+                'user'                  => user()->id,
+                'tahun'                 => Time::now('Asia/Jakarta', 'id_ID')->getYear(),
+                'status'                => $input['status'],
+            ];
+        } else {
+            $save = [
+                'nama_program'          => $input['nama_program'],
+                'deskripsi'             => $input['deskripsi'],
+                'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
+                'user'                  => user()->id,
+                'tahun'                 => Time::now('Asia/Jakarta', 'id_ID')->getYear(),
+                'status'                => $input['status'],
+            ];
+        }
+
+        if (!$this->progja->save($save)) {
+            session()->setFlashdata('error', 'Gagal Menambahkan Program Kerja');
+            return redirect()->to(site_url('dashboard/' . ($edit ? 'edit_progja' : 'add_progja')));
+        }
+
+        session()->setFlashdata('success', 'Berhasil Menambahkan Program Kerja');
+        return redirect()->to(site_url('dashboard/program_kerja'));
+    }
+
+    public function edit_progja()
+    {
+        $id = $this->request->getVar('id');
+        $progja = $this->progja->where('id', $id)->first();
+        $data = [
+            'title' => 'Edit Program Kerja',
+            'progja' => $progja,
+            'validation' => \Config\Services::validation(),
+        ];
+
+        return view('/dashboard/edit_progja', $data);
+    }
+
+    public function delete_progja()
+    {
+        $id = $this->request->getVar('id');
+
+        if (!$this->progja->where('id', $id)->delete()) {
+            session()->setFlashdata('error', 'Gagal Menghapus Program Kerja');
+            return redirect()->to(site_url('dashboard/program_kerja'));
+        }
+
+        session()->setFlashdata('success', 'Berhasil Menghapus Program Kerja');
+        return redirect()->to(site_url('dashboard/program_kerja'));
     }
 }
