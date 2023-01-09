@@ -173,19 +173,19 @@
 
             <div id="admin-collapse" class="collapse">
                 <li class="nav-item">
-                    <a href="<?= base_url('dashboard/surat_masuk') ?>" class="nav-link collapsed px-3 d-flex">
+                    <a href="<?= base_url('administrasi/surat_masuk') ?>" class="nav-link collapsed px-3 d-flex">
                         <i class="bi bi-box-arrow-in-right"></i>
                         <span>Surat Masuk</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="<?= base_url('dashboard/surat_keluar') ?>" class="nav-link collapsed px-3 d-flex">
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Surat Keluar</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
-                    <a href="<?= base_url('dashboard/digilib') ?>" class="nav-link collapsed px-3 d-flex">
+                    <a href="<?= base_url('administrasi/digilib') ?>" class="nav-link collapsed px-3 d-flex">
                         <i class="bi bi-book"></i>
                         <span>Digilib</span>
                     </a>
@@ -201,8 +201,14 @@
                 <li class="nav-heading">Admin</li>
                 <li class="nav-item">
                     <a href="<?= base_url('admin/data_user') ?>" class="nav-link collapsed px-3 d-flex">
-                        <i class="bi bi-person-fill-gear"></i>
+                        <i class="bi bi-person-gear"></i>
                         <span>Akun</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('admin/akun_juko') ?>" class="nav-link collapsed px-3 d-flex">
+                        <i class="bi bi-people"></i>
+                        <span>Akun Si Juko</span>
                     </a>
                 </li>
         <?php

@@ -46,22 +46,26 @@ echo $this->section('main');
                                     </div>
                                 </div>
                             </div>
-                            <div class="row m-3 w-75">
-                                <label for="status" class="col-sm-3 col-form-label">Status</label>
-                                <div class="col-sm-9">
-                                    <select name="status" class="form-select <?= ($validation->hasError('status') ? 'is-invalid' : '') ?>" value="<?= old('status') ?>"" id=" status">
-                                        <option selected>--Pilih Status--</option>
-                                        <option value="Belum Terlaksana">Belum Terlaksana</option>
-                                        <option value="Sudah Terlaksana">Sudah Terlaksana</option>
-                                        <option value="Tidak Terlaksana">Tidak Terlaksana</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        <?= $validation->getError('status') ?>
+                            <?php
+                            if (in_groups('admin')) {
+                            ?>
+                                <div class="row m-3 w-75">
+                                    <label for="status" class="col-sm-3 col-form-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <select name="status" class="form-select <?= ($validation->hasError('status') ? 'is-invalid' : '') ?>" value="<?= old('status') ?>"" id=" status">
+                                            <option selected>--Pilih Status--</option>
+                                            <option value="Belum Terlaksana">Belum Terlaksana</option>
+                                            <option value="Sudah Terlaksana">Sudah Terlaksana</option>
+                                            <option value="Tidak Terlaksana">Tidak Terlaksana</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('status') ?>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
                             <?php
+                            }
                             if (session()->getFlashdata('pesan')) { ?>
                                 <div class="row ms-4 w-75">
                                     <div class="col-12 alert alert-success" role="alert">

@@ -81,9 +81,9 @@
                                     }
                                     $tagihan = ($tagihan + ($month * 10000)) - $d['simpanan_wajib'];
                                     // dd($tagihan);
-                                    if ($tagihan < 0) {
-                                        $tagihan = 0;
-                                    }
+                                    // if ($tagihan < 0) {
+                                    //     $tagihan = 0;
+                                    // }
                                 ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>

@@ -9,7 +9,12 @@ class PoinModel extends Model
     protected $table = 'data_poin';
     protected $primaryKey = 'nomor_anggota';
     protected $allowedFields = ['nomor_anggota', 'poin'];
-    protected $useTimestamps = false;
+
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 
 
     public function getPoin()

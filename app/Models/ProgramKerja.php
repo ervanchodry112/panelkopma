@@ -14,7 +14,7 @@ class ProgramKerja extends Model
     protected $returnType       = ProgramKerja::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama_program', 'deskripsi', 'rencana_pelaksanaan', 'user', 'tahun', 'status'];
+    protected $allowedFields    = ['nama_program', 'deskripsi', 'rencana_pelaksanaan', 'user', 'tahun', 'lpj', 'status'];
 
     // Dates
     protected $useTimestamps = true;

@@ -16,6 +16,12 @@ class GroupUserModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = ['group_id', 'user_id'];
 
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
 
     public function saveGroup($user_id, $group_id)
     {

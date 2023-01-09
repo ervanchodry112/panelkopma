@@ -89,13 +89,31 @@ echo $this->section('main');
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
                                                 </form>
+                                                <?php
+                                                if ($p->status == 'Sudah Terlaksana' && $p->lpj != null) {
+                                                ?>
+                                                    <a href="<?= base_url('dashboard/view_lpj/' . $p->lpj) ?>" class="btn btn-sm btn-primary me-2" target="_blank">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <form action="<?= base_url('dashboard/upload_lpj') ?>" method="post">
+                                                        <input type="hidden" name="id" value="<?= $p->id ?>">
+                                                        <button class="btn btn-sm btn-primary me-2">
+                                                            <i class="bi bi-upload"></i>
+                                                        </button>
+                                                    </form>
+
+                                                <?php
+                                                }
+                                                ?>
                                                 <form action="<?= base_url('dashboard/delete_progja') ?>" method="post">
                                                     <input type="hidden" name="id" value="<?= $p->id ?>">
                                                     <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </form>
-
                                             </td>
                                         </tr>
                                 <?php

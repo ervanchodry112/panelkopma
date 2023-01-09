@@ -63,6 +63,15 @@ echo $this->section('main');
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
+                                <label for="jumlah_responden" class="col-sm-3 col-form-label">Jumlah Responden</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="jumlah_responden" id="jumlah_responden" placeholder="0" class="form-control <?= ($validation->hasError('jumlah_responden') ? 'is-invalid' : '') ?>" value="<?= old('jumlah_responden') ?>">
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('jumlah_responden') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
                                 <label for="file" class="col-sm-3 col-form-label">Upload File</label>
                                 <div class="col-sm-9">
                                     <input type="file" name="file" id="file" class="form-control <?= ($validation->hasError('file') ? 'is-invalid' : '') ?>" value="<?= old('file') ?>">

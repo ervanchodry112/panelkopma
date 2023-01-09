@@ -10,6 +10,13 @@ class SimpananModel extends Model
     protected $primaryKey = 'nomor_anggota';
     protected $allowedFields = ['nomor_anggota', 'simpanan_pokok', 'simpanan_wajib'];
 
+
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+    
     public function getSimpanan()
     {
         return $this->db->table('data_simpanan')

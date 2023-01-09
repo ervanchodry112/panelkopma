@@ -13,6 +13,12 @@ class CalonModel extends Model
         'alasan', 'asal_informasi', 'nama_panggilan', 'tanggal_lahir', 'foto', 'ktm', 'bukti_pembayaran'
     ];
 
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
     public function getCalonAnggota()
     {
         return $this->db->table('calon_anggota')

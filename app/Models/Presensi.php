@@ -9,6 +9,13 @@ class Presensi extends Model
     protected $table            = 'presensi';
     protected $primaryKey       = 'id_presensi';
     protected $useAutoIncrement = true;
+    protected $allowedFields    = ['waktu', 'id_data', 'id_kegiatan'];
+
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 
     public function getPresensi($id_kegiatan = false)
     {

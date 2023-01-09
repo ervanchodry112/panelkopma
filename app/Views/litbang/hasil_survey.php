@@ -54,20 +54,31 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Action</th>
                                         <th scope="col">Nama Survey</th>
                                         <th scope="col">Deskripsi</th>
                                         <th scope="col">Tangal Mulai</th>
                                         <th scope="col">Tanggal Selesai</th>
                                         <th scope="col">Responden</th>
-                                        <th scope="col">File</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <?php $i = 1;
                                 foreach ($laporan as $d) { ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></td>
+
+                                        <td><?= $d['nama_survey'] ?></td>
+                                        <td><?= $d['deskripsi'] ?></td>
+                                        <td><?= $d['tanggal_mulai'] ?></td>
+                                        <td><?= $d['tanggal_selesai'] ?></td>
+                                        <td><?= $d['jumlah_responden'] ?></td>
                                         <td class="d-flex align-items-center">
+                                            <a href="<?= base_url('litbang/edit_report/' . $d['id_laporan']) ?>" type="button" class="ms-1 btn btn-sm btn-warning">
+                                                <ion-icon name="create-outline"></ion-icon>
+                                            </a>
+                                            <a href="<?= base_url('litbang/view_report/' . $d['file']) ?>" target="_blank" class="btn btn-sm btn-primary mx-1">
+                                                <ion-icon name="eye-outline"></ion-icon>
+                                            </a>
                                             <form action="<?= base_url('litbang/delete_report/' . $d['id_laporan']) ?>" method="POST">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="_method" value="DELETE">
@@ -75,20 +86,6 @@
                                                     <ion-icon name="trash-outline"></ion-icon>
                                                 </button>
                                             </form>
-                                            <a href="<?= base_url('litbang/edit_report/' . $d['id_laporan']) ?>" type="button" class="ms-1 btn btn-sm btn-warning">
-                                                <ion-icon name="create-outline"></ion-icon>
-                                            </a>
-                                        </td>
-                                        <td><?= $d['nama_survey'] ?></td>
-                                        <td><?= $d['deskripsi'] ?></td>
-                                        <td><?= $d['tanggal_mulai'] ?></td>
-                                        <td><?= $d['tanggal_selesai'] ?></td>
-                                        <td><?= $d['jumlah_responden'] ?></td>
-                                        <td class="d-flex align-items-center">
-                                            <a href="<?= base_url('litbang/view_report/' . $d['file']) ?>" class="btn btn-primary d-flex align-items-center">
-                                                <ion-icon name="cloud-download-outline"></ion-icon>
-                                                <span class="ms-1">Download</span>
-                                            </a>
                                         </td>
                                     </tr>
                                 <?php } ?>

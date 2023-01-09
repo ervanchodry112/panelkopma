@@ -277,23 +277,24 @@ class Dashboard extends BaseController
         $search = $this->request->getVar('search');
         if (user()->username == 'admin' || user()->username == 'ketua_umum' || user()->username == 'badan_pengawas') {
             if ($search) {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->like('nama_program', $search)
                     ->orLike('users.username', $search)->findAll();
             } else {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->findAll();
             }
         } else {
             if ($search) {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->like('nama_program', $search)
                     ->orLike('users.username', $search)->findAll();
             } else {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->findAll();
             }
         }
+        // dd($program_kerja);
         $data = [
             'title' => 'Program Kerja',
             'progja' => $program_kerja,
@@ -336,12 +337,6 @@ class Dashboard extends BaseController
                     'required' => 'Rencana Pelaksanaan Program Kerja harus diisi'
                 ]
             ],
-            'status' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Status Program Kerja harus diisi'
-                ]
-            ],
         ];
 
         $edit = isset($input['id']);
@@ -361,8 +356,10 @@ class Dashboard extends BaseController
                 'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
                 'user'                  => user()->id,
                 'tahun'                 => Time::now('Asia/Jakarta', 'id_ID')->getYear(),
-                'status'                => $input['status'],
             ];
+            if (in_groups('admin')) {
+                $save['status'] = $input['status'];
+            }
         } else {
             $save = [
                 'nama_program'          => $input['nama_program'],
@@ -370,7 +367,7 @@ class Dashboard extends BaseController
                 'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
                 'user'                  => user()->id,
                 'tahun'                 => Time::now('Asia/Jakarta', 'id_ID')->getYear(),
-                'status'                => $input['status'],
+                'status'                => 'Belum Terlaksana',
             ];
         }
 
@@ -399,7 +396,8 @@ class Dashboard extends BaseController
     public function delete_progja()
     {
         $id = $this->request->getVar('id');
-
+        $progja = $this->progja->where('id', $id)->first();
+        unlink('assets/uploads/document/lpj/' . $progja->lpj);
         if (!$this->progja->where('id', $id)->delete()) {
             session()->setFlashdata('error', 'Gagal Menghapus Program Kerja');
             return redirect()->to(site_url('dashboard/program_kerja'));
@@ -407,5 +405,67 @@ class Dashboard extends BaseController
 
         session()->setFlashdata('success', 'Berhasil Menghapus Program Kerja');
         return redirect()->to(site_url('dashboard/program_kerja'));
+    }
+
+    public function upload_lpj()
+    {
+        $id = $this->request->getVar('id');
+        $progja = $this->progja->where('id', $id)->first();
+        $data = [
+            'title' => 'Upload LPJ',
+            'validation' => \Config\Services::validation(),
+            'progja' => $progja,
+        ];
+
+        return view('/dashboard/upload_lpj', $data);
+    }
+
+    public function save_lpj()
+    {
+        $input = $this->request->getVar();
+        $validation = [
+            'lpj' => [
+                'rules' => 'uploaded[lpj]|ext_in[lpj,pdf]|mime_in[lpj,application/pdf]',
+                'errors' => [
+                    'uploaded' => 'File LPJ harus diisi',
+                    'ext_in' => 'File LPJ harus berformat PDF',
+                    'mime_in' => 'File LPJ harus berformat PDF',
+                ]
+            ],
+        ];
+
+        if (!$this->validate($validation)) {
+            return redirect()->to(site_url('dashboard/upload_lpj'))->withInput();
+        }
+
+        $file = $this->request->getFile('lpj');
+        $name = $input['nama_program'] . '_' . Time::now('Asia/Jakarta', 'id_ID')->getYear() . '.pdf';
+        $file->move('assets/uploads/document/lpj', $name);
+        // dd($file);
+        $save = [
+            'id' => $input['id'],
+            'lpj' => $name,
+            'status' => 'Sudah Terlaksana',
+        ];
+        // dd($save);
+
+        if (!$this->progja->save($save)) {
+            unlink('assets/uploads/document/lpj/' . $save['lpj']);
+            session()->setFlashdata('error', 'Gagal Mengupload LPJ');
+            return redirect()->to(site_url('dashboard/upload_lpj'));
+        }
+
+        session()->setFlashdata('success', 'Berhasil Mengupload LPJ');
+        return redirect()->to(site_url('dashboard/program_kerja'));
+    }
+
+    public function view_lpj($id)
+    {
+        $data = [
+            'title' => 'View LPJ',
+            'file'  => $id,
+        ];
+
+        return view('/dashboard/view_lpj', $data);
     }
 }

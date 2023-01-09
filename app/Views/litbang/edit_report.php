@@ -75,7 +75,15 @@ echo $this->section('main');
                         </div>
                     </div>
                 </div>
-
+                <div class="row m-3 w-75">
+                    <label for="jumlah_responden" class="col-sm-3 col-form-label">Jumlah Responden</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="jumlah_responden" id="jumlah_responden" placeholder="0" class="form-control <?= ($validation->hasError('jumlah_responden') ? 'is-invalid' : '') ?>" value="<?= old('jumlah_responden') ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('jumlah_responden') ?>
+                        </div>
+                    </div>
+                </div>
                 <div class="row ms-4 w-75">
                     <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Simpan</button>
                     <a href="<?= base_url('litbang/hasil_survey') ?>" class="col-3 btn btn-secondary btn-sm">Batal</a>

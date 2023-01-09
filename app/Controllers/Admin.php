@@ -4,17 +4,20 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\GroupUserModel;
+use App\Models\SiJukoAccount;
 use Myth\Auth\Models\UserModel;
 
 class Admin extends BaseController
 {
     protected $data_user;
     protected $group;
+    protected $akun;
 
     public function __construct()
     {
         $this->data_user = new UserModel();
         $this->group = new GroupUserModel();
+        $this->akun = new SiJukoAccount();
         if (!in_groups('admin')) {
             return redirect()->to('/dashboard');
         }
@@ -185,5 +188,14 @@ class Admin extends BaseController
 
         session()->setFlashdata('pesan', '<strong>Berhasil!</strong> User berhasil ditambahkan.');
         return redirect()->to('/admin/data_user');
+    }
+
+    public function akun_juko()
+    {
+        $data = [
+            'title' => 'Akun Si Juko',
+        ];
+
+        return view('dashboard/akun_juko', $data);
     }
 }

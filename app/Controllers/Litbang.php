@@ -91,6 +91,12 @@ class Litbang extends BaseController
                     'required' => 'Tentukan tanggal survey selesai!'
                 ]
             ],
+            'jumlah_responden' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Masukkan jumlah responden!'
+                ]
+            ],
             'file' => [
                 'rules' => 'uploaded[file]|ext_in[file,pdf]|mime_in[file,application/pdf]',
                 'errors' => [
@@ -116,6 +122,7 @@ class Litbang extends BaseController
             'deskripsi' => $this->request->getVar('deskripsi'),
             'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
             'tanggal_selesai' => $this->request->getVar('tanggal_selesai'),
+            'jumlah_responden' => $this->request->getVar('jumlah_responden'),
             'file' => $fileName
         ]);
 
@@ -149,6 +156,12 @@ class Litbang extends BaseController
                     'required' => 'Tentukan tanggal survey selesai!'
                 ]
             ],
+            'jumlah_responden' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Masukkan jumlah responden!'
+                ]
+            ],
             'file' => [
                 'rules' => 'ext_in[file,pdf]|mime_in[file,application/pdf]',
                 'errors' => [
@@ -176,31 +189,19 @@ class Litbang extends BaseController
             'deskripsi' => $this->request->getVar('deskripsi'),
             'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
             'tanggal_selesai' => $this->request->getVar('tanggal_selesai'),
+            'jumlah_responden' => $this->request->getVar('jumlah_responden'),
             'file' => $fileName
         ]);
     }
 
     public function view_report($name)
     {
-        $file = "assets/uploads/document/hasil_survey/" . $name;
+        $data = [
+            'title' => $name,
+            'file' => $name,
+        ];
 
-        header("Content-Type: application/vnd.ms-excel");
-
-        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
-
-        header('Expires: 0');
-
-        header('Cache-Control: must-revalidate');
-
-        header('Pragma: public');
-
-        header('Content-Length:' . filesize($file));
-
-        flush();
-
-        readfile($file);
-
-        exit;
+        return view('litbang/view_report', $data);
     }
 
     public function survey_berjalan()

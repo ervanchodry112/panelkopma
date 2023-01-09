@@ -11,8 +11,15 @@ class KegiatanModel extends Model
     protected $useAutoIncrement = false;
     protected $allowedFields = ['id_kegiatan', 'nama_kegiatan', 'tanggal_kegiatan', 'tempat_kegiatan'];
 
-    public function getKegiatan($id = false){
-        if(!$id){
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    public function getKegiatan($id = false)
+    {
+        if (!$id) {
             return $this->findAll();
         }
         return $this->where(['id_kegiatan' => $id])->first();

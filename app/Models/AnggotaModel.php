@@ -14,4 +14,10 @@ class AnggotaModel extends Model
         'npm', 'nomor_anggota', 'nama_lengkap', 'email',
         'nomor_hp', 'id_jurusan'
     ];
+
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 }

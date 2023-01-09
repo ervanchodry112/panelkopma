@@ -326,6 +326,13 @@ class MainTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'tempat_kegiatan' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'tanggal_kegiatan' => [
+                'type' => 'DATE',
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
