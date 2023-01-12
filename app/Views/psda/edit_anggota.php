@@ -51,14 +51,52 @@ echo $this->section('main');
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
+                                <label for="jenis_kelamin" class="col-sm-3 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-9">
+                                    <select name="jenis_kelamin" class="form-select" id="jenis_kelamin" value="<?= $anggota['jenis_kelamin'] ?>">
+                                        <option value="<?= $anggota['jenis_kelamin'] ?>" selected><?= $anggota['jenis_kelamin'] ?></option>
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
+                                <label for="keanggotaan" class="col-sm-3 col-form-label">Status Keanggotaan</label>
+                                <div class="col-sm-9">
+                                    <select name="keanggotaan" class="form-select" id="keanggotaan" value="<?= $anggota['keanggotaan'] ?>">
+                                        <option value="<?= $anggota['keanggotaan'] ?>" selected><?= $anggota['keanggotaan'] ?></option>
+                                        <option value="Anggota">Anggota</option>
+                                        <option value="Anggota Luar BIasa">Anggota Luar Biasa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
                                 <label for="jurusan" class="col-sm-3 col-form-label">Jurusan</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select" name="jurusan" id="jurusan">
-                                        <option value="<?= $anggota['id_jurusan'] ?>" selected><?= $anggota['nama_jurusan'] ?></option>
-                                        <?php foreach ($jurusan as $jur) { ?>
-                                            <option value="<?= $jur['id_jurusan'] ?>"><?= $jur['nama_jurusan'] ?></option>
-                                        <?php } ?>
+                                    <input type="text" class="form-control <?= ($validation->hasError('jurusan') ? 'is-invalid' : '') ?>" value="<?= $anggota['jurusan'] ?>" name="jurusan" id="jurusan">
+
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('jurusan') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
+                                <label for="fakultas" class="col-sm-3 col-form-label">Fakultas</label>
+                                <div class="col-sm-9">
+                                    <select type="text" class="form-select <?= ($validation->hasError('fakultas') ? 'is-invalid' : '') ?>" name="fakultas" id="fakultas">
+                                        <option value="<?= $anggota['fakultas'] ?>" selected><?= $anggota['fakultas'] ?></option>
+                                        <option value="Fakultas Matematika dan Ilmu Pengetahuan Alam">Fakultas Matematika dan Ilmu Pengetahuan Alam</option>
+                                        <option value="Fakultas Keguruan dan Ilmu Pendidikan">Fakultas Keguruan dan Ilmu Pendidikan</option>
+                                        <option value="Fakultas Ilmu Sosial dan Ilmu Politik">Fakultas Ilmu Sosial dan Ilmu Politik</option>
+                                        <option value="Fakultas Ekonomi dan Bisnis">Fakultas Ekonomi dan Bisnis</option>
+                                        <option value="Fakultas Teknik">Fakultas Teknik</option>
+                                        <option value="Fakultas Pertanian">Fakultas Pertanian</option>
+                                        <option value="Fakultas Kedokteran">Fakultas Kedokteran</option>
+                                        <option value="Fakultas Hukum">Fakultas Hukum</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('fakultas') ?>
+                                    </div>
                                 </div>
                             </div>
 

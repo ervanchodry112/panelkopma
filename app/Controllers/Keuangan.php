@@ -7,6 +7,8 @@ use App\Models\AnggotaModel;
 use App\Models\SimpananModel;
 use App\Models\PembayaranSimwa;
 use CodeIgniter\I18n\Time;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Keuangan extends BaseController
 {
@@ -120,5 +122,103 @@ class Keuangan extends BaseController
             'status' => 2
         ]);
         return redirect()->to('/keuangan/pembayaran_simwa');
+    }
+
+    public function upload_data()
+    {
+        $file = $this->request->getFile('file');
+        if ($file->getExtension() == 'xlsx') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } else if ($file->getExtension() == 'xls') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            session()->setFlashdata('error', 'File yang anda masukkan bukan file excel');
+            return redirect()->to('/keuangan/data_anggota');
+        }
+
+        $spreadsheet = $reader->load($file);
+        $spreadsheet->setActiveSheetIndex(0);
+        $spreadsheet->getActiveSheet()->removeRow(1);
+        $spreadsheet = $spreadsheet->getActiveSheet()->toArray();
+        // dd($spreadsheet);
+
+        foreach ($spreadsheet as $s) {
+            $save = [
+                'nomor_anggota' => $s[1],
+                'simpanan_pokok' => $s[2],
+                'simpanan_wajib'    => $s[3],
+            ];
+
+            if (!$this->data_simpanan->save($save)) {
+                session()->setFlashdata('error', 'Terjadi kesalahan pada data ' . $s[0]);
+                return redirect()->to('/keuangan/data_simpanan');
+            }
+        }
+        session()->setFlashdata('pesan', 'Data berhasil diupload');
+        return redirect()->to('/keuangan/data_simpanan');
+    }
+
+    public function save_excel()
+    {
+        $filename = 'simpanan.xlsx';
+
+        $spreadsheet = new Spreadsheet();
+        $writer = new Xlsx($spreadsheet);
+
+        $simpanan = $this->data_simpanan->join('data_anggota', 'data_anggota.nomor_anggota=data_simpanan.nomor_anggota')->findAll();
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nama Lengkap');
+        $sheet->setCellValue('C1', 'Nomor Anggota');
+        $sheet->setCellValue('D1', 'Keanggotaan');
+        $sheet->setCellValue('E1', 'Simpanan Pokok');
+        $sheet->setCellValue('F1', 'Simpanan Wajib');
+        $sheet->setCellValue('G1', 'Total Simpanan');
+        $sheet->setCellValue('H1', 'Tagihan');
+        $row = 2;
+        $i = 1;
+        $date = Time::today('Asia/Jakarta');
+
+        foreach ($simpanan as $c) {
+            $tagihan = 0;
+            if ($c['tgl_diksar'] < '2022-01-01') {
+                $tagihan = date_diff(date_create($c['tgl_diksar']), date_create('2022-01-01'))->m * 5000;
+                $month = abs($date->difference('2022-01-01')->getMonths());
+            } else {
+                $month = abs($date->difference($c['tgl_diksar'])->getMonths());
+            }
+            $tagihan = ($tagihan + ($month * 10000)) - $c['simpanan_wajib'];
+
+            $sheet->setCellValue('A' . $row, $i++);
+            $sheet->setCellValue('B' . $row, $c['nama_lengkap']);
+            $sheet->setCellValue('C' . $row, $c['nomor_anggota']);
+            $sheet->setCellValue('D' . $row, $c['keanggotaan']);
+            $sheet->setCellValue('E' . $row, $c['simpanan_pokok']);
+            $sheet->setCellValue('F' . $row, $c['simpanan_wajib']);
+            $sheet->setCellValue('G' . $row, $c['simpanan_pokok'] + $c['simpanan_wajib']);
+            $sheet->setCellValue('H' . $row, $tagihan);
+            $row++;
+        }
+
+        $writer->save('assets/download/document/' . $filename);
+        $file = 'assets/download/document/' . $filename;
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file));
+
+        flush();
+
+        readfile($file);
+
+        exit;
     }
 }

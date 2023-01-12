@@ -16,7 +16,7 @@ echo $this->section('main');
                     </div>
                     <div class="card-body my-3">
                         <!-- Buat Konten Disini -->
-                        <form action="<?= base_url('administrasi/save_edit_surat') ?>" method="POST" enctype="multipart/form-data">
+                        <form action="<?= base_url('administrasi/save_edit_surat_masuk') ?>" method="POST" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
                             <input type="hidden" name="id" id="id" value="<?= (old('id') ? old('id') : $surat_masuk->id_surat) ?>">
                             <div class="row m-3 w-75">
@@ -44,6 +44,15 @@ echo $this->section('main');
                                     <input type="text" name="isi_surat" class="form-control <?= ($validation->hasError('isi_surat') ? 'is-invalid' : '') ?>" value="<?= (old('isi_surat') ? old('isi_surat') : $surat_masuk->isi_surat) ?>" id=" isi_surat" placeholder="Isi Surat">
                                     <div class="invalid-feedback">
                                         <?= $validation->getError('isi_surat') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
+                                <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="perihal" class="form-control <?= ($validation->hasError('perihal') ? 'is-invalid' : '') ?>" value="<?= (old('perihal') ? old('perihal') : $surat_masuk->perihal) ?>" id=" perihal" placeholder="Isi Surat">
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('perihal') ?>
                                     </div>
                                 </div>
                             </div>

@@ -19,21 +19,35 @@ echo $this->section('main');
                             <div class="col d-flex justify-content-between">
                                 <!-- Search Fiela -->
                                 <div class="row d-flex align-items-center">
-                                    <div class="col">
-                                        <a href="<?= base_url('dashboard/add_progja') ?>" class="d-flex align-items-center btn btn-success btn-sm text-white me-2 rounded-3">
+                                    <div class="col-3">
+                                        <a href="<?= base_url('dashboard/add_progja') ?>" class="d-flex align-items-center btn btn-success btn-sm text-white rounded-3">
                                             <ion-icon name="add-outline"></ion-icon>
                                             <span class="d-flex align-self-center ms-1">Add</span>
                                         </a>
                                     </div>
+                                    <div class="col-9">
+                                        <form class="form w-100 d-flex align-items-center" method="POST" action="<?= base_url('dashboard/program_kerja') ?>">
+                                            <button type="submit" class="btn btn-white">
+                                                <ion-icon name="search-outline"></ion-icon>
+                                            </button>
+                                            <input name="search" type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
+                                        </form>
+                                    </div>
                                 </div>
-                                <form class="form w-25 ms-auto d-flex align-items-center" method="POST" action="<?= base_url('dashboard/program_kerja') ?>">
-                                    <button type="submit" class="btn btn-white">
-                                        <ion-icon name="search-outline"></ion-icon>
-                                    </button>
-                                    <input name="search" type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
-                                </form>
                                 <!-- Search Field -->
-
+                                <form action="<?= base_url('dashboard/program_kerja') ?>" method="post" class="d-flex align-items-center">
+                                    <select name="tahun" id="tahun" class="form-select form-sm ms-auto">
+                                        <option value="">Pilih Tahun</option>
+                                        <?php
+                                        foreach ($tahun as $t) {
+                                        ?>
+                                            <option value="<?= $t ?>" <?= ($t == $tahun_selected) ? 'selected' : '' ?>><?= $t ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                    <button type="submit" class="btn btn-success btn-sm ms-3">GO</button>
+                                </form>
                                 <!-- </div> -->
                             </div>
                         </div>
@@ -50,7 +64,7 @@ echo $this->section('main');
                             session()->remove('pesan');
                         }
                         ?>
-                        <table class="table table-striped table-responsive fs-6">
+                        <table class="table text-center table-striped table-responsive fs-6 align-middle">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -58,6 +72,7 @@ echo $this->section('main');
                                     <th scope="col">Deskripsi</th>
                                     <th scope="col">Pelaksanaan</th>
                                     <th scope="col">Bidang</th>
+                                    <th scope="col">Tahun Program</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -76,44 +91,55 @@ echo $this->section('main');
                                             <td><?= $p->deskripsi ?></td>
                                             <td><?= date_format(date_create($p->rencana_pelaksanaan), 'd F Y') ?></td>
                                             <td><?= ucfirst($p->username) ?></td>
+                                            <td><?= $p->tahun ?></td>
                                             <td>
                                                 <div class="badge bg-<?= ($p->status == 'Sudah Terlaksana') ? 'success' : ($p->status == 'Belum Terlaksana' ? 'warning' : 'danger') ?>">
 
                                                     <?= ucfirst($p->status) ?>
                                                 </div>
                                             </td>
-                                            <td class="d-flex">
-                                                <form action="<?= base_url('dashboard/edit_progja') ?>" method="post">
-                                                    <input type="hidden" name="id" value="<?= $p->id ?>">
-                                                    <button class="btn btn-sm btn-warning me-2">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </button>
-                                                </form>
-                                                <?php
-                                                if ($p->status == 'Sudah Terlaksana' && $p->lpj != null) {
-                                                ?>
-                                                    <a href="<?= base_url('dashboard/view_lpj/' . $p->lpj) ?>" class="btn btn-sm btn-primary me-2" target="_blank">
-                                                        <i class="bi bi-eye"></i>
-                                                    </a>
-                                                <?php
-                                                } else {
-                                                ?>
-                                                    <form action="<?= base_url('dashboard/upload_lpj') ?>" method="post">
-                                                        <input type="hidden" name="id" value="<?= $p->id ?>">
-                                                        <button class="btn btn-sm btn-primary me-2">
-                                                            <i class="bi bi-upload"></i>
-                                                        </button>
-                                                    </form>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
 
-                                                <?php
-                                                }
-                                                ?>
-                                                <form action="<?= base_url('dashboard/delete_progja') ?>" method="post">
-                                                    <input type="hidden" name="id" value="<?= $p->id ?>">
-                                                    <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
+                                                        <form action="<?= base_url('dashboard/edit_progja') ?>" method="post">
+                                                            <input type="hidden" name="id" value="<?= $p->id ?>">
+                                                            <button class="btn btn-sm btn-warning my-2">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </form>
+                                                        <?php
+                                                        if ($p->status == 'Sudah Terlaksana' && $p->lpj != null && $p->proposal != null) {
+                                                        ?>
+                                                            <a href="<?= base_url('dashboard/view_proposal/' . $p->proposal) ?>" class="btn btn-sm btn-primary d-flex align-items-center justify-content-center my-2" target="_blank">
+                                                                <i class="bi bi-eye me-2"></i>
+                                                                Proposal
+                                                            </a>
+                                                            <a href="<?= base_url('dashboard/view_lpj/' . $p->lpj) ?>" class="btn btn-sm btn-primary d-flex align-items-center justify-content-center my-2" target="_blank">
+                                                                <i class="bi bi-eye me-2"></i>
+                                                                LPJ
+                                                            </a>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <form action="<?= base_url('dashboard/upload_lpj') ?>" method="post">
+                                                                <input type="hidden" name="id" value="<?= $p->id ?>">
+                                                                <button class="btn btn-sm btn-primary my-2">
+                                                                    <i class="bi bi-upload"></i>
+                                                                </button>
+                                                            </form>
+
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                        <form action="<?= base_url('dashboard/delete_progja') ?>" method="post">
+                                                            <input type="hidden" name="id" value="<?= $p->id ?>">
+                                                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                 <?php

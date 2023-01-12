@@ -46,6 +46,16 @@ echo $this->section('main');
                             </div>
 
                             <div class="row m-3 w-75">
+                                <label for="proposal" class="col-sm-3 col-form-label">File Proposal</label>
+                                <div class="col-sm-9">
+                                    <input type="file" name="proposal" class="form-control <?= ($validation->hasError('proposal') ? 'is-invalid' : '') ?>" value="<?= (old('proposal') ? old('proposal') : $progja->proposal) ?>" id=" proposal">
+                                    <div class="text-muted" style="font-size: .8em;">*File PDF</div>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('proposal') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
                                 <label for="lpj" class="col-sm-3 col-form-label">File LPJ</label>
                                 <div class="col-sm-9">
                                     <input type="file" name="lpj" class="form-control <?= ($validation->hasError('lpj') ? 'is-invalid' : '') ?>" value="<?= (old('lpj') ? old('lpj') : $progja->lpj) ?>" id=" lpj">

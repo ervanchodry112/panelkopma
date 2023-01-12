@@ -111,26 +111,27 @@ echo $this->section('main');
                                         <td><?= $d['npm'] ?></td>
                                         <td><?= $d['nama_lengkap'] ?></td>
                                         <td><?= $d['nama_panggilan'] ?></td>
-                                        <td><?= $d['nama_jurusan'] ?></td>
-                                        <td><?= $d['nama_fakultas'] ?></td>
+                                        <td><?= $d['jurusan'] ?></td>
+                                        <td><?= $d['fakultas'] ?></td>
                                         <td><?= $d['nomor_hp'] ?></td>
                                         <td><?= $d['email'] ?></td>
-                                        <td><?= $d['nama_platform'] ?></td>
+                                        <td><?= $d['asal_informasi'] ?></td>
                                         <td><?= $d['domisili'] ?></td>
                                         <td><?= $d['tempat_lahir'] ?></td>
                                         <td><?= $d['tanggal_lahir'] ?></td>
                                         <td><?= $d['alasan'] ?></td>
                                         <td><?= $d['kode_referal'] ?></td>
                                         <td class="gy-2">
-                                            <a class="m-1 w-100 row btn btn-danger btn-sm" target="blank" href="../pendaftaran/include/upload/foto/<?= $d['foto'] ?>">
+                                            <a href="<?= base_url('assets/uploads/document/regist/foto/' . $d['foto']) ?>" class="m-1 w-100 row btn btn-danger btn-sm" target="_blank">
                                                 <div class="col bukti-btn">Foto</div>
                                             </a>
-                                            <a class="m-1 w-100 row btn btn-warning text-light btn-sm" target="blank" href="../pendaftaran/include/upload/ktm/<?= $d['ktm'] ?>">
+                                            <a href="<?= base_url('assets/uploads/document/regist/ktm/' . $d['ktm']) ?>" class="m-1 w-100 row btn btn-warning btn-sm" target="_blank">
                                                 <div class="col bukti-btn">KTM</div>
                                             </a>
-                                            <a class="m-1 w-100 row btn btn-success btn-sm" target="blank" href="../pendaftaran/include/upload/bukti-pembayaran/<?= $d['bukti_pembayaran'] ?>">
-                                                <div class="col bukti-btn">Pembayaran</div>
+                                            <a href="<?= base_url('assets/uploads/document/regist/bukti_pembayaran/' . $d['bukti_pembayaran']) ?>" class="m-1 w-100 row btn btn-success btn-sm" target="_blank">
+                                                <div class="col bukti-btn">Bukti Pembayaran</div>
                                             </a>
+
                                         </td>
                                     </tr>
                                 <?php } ?>

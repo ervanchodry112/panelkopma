@@ -41,7 +41,7 @@ echo $this->section('main');
                         <div class="row mb-2">
                             <div class="col-3">
                                 <div class="ms-3">
-                                    <a href="<?= base_url('administrasi/add_surat') ?>" class="btn btn-sm btn-primary w-75 justify-content-center d-flex align-items-center">
+                                    <a href="<?= base_url('administrasi/add_surat_masuk') ?>" class="btn btn-sm btn-primary w-75 justify-content-center d-flex align-items-center">
                                         <i class="bi bi-plus-circle me-1"></i>
                                         Tambah Surat
                                     </a>
@@ -64,6 +64,7 @@ echo $this->section('main');
                                         <tr>
                                             <th scope="col">No. Surat</th>
                                             <th scope="col">Isi Surat</th>
+                                            <th scope="col">Perihal</th>
                                             <th scope="col">Asal Surat</th>
                                             <th scope="col">Tanggal Surat</th>
                                             <th scope="col">Kode</th>
@@ -84,6 +85,9 @@ echo $this->section('main');
                                                     <?= $d->isi_surat ?>
                                                 </td>
                                                 <td>
+                                                    <?= $d->perihal ?>
+                                                </td>
+                                                <td>
                                                     <?= $d->asal_surat ?>
                                                 </td>
                                                 <td>
@@ -93,13 +97,13 @@ echo $this->section('main');
                                                     <?= $d->kode ?>
                                                 </td>
                                                 <td class="d-flex align-items-center justify-content-evenly">
-                                                    <a href="<?= base_url('administrasi/edit_surat/' . $d->id_surat) ?>" type="button" class="btn btn-warning btn-sm">
+                                                    <a href="<?= base_url('administrasi/edit_surat_masuk/' . $d->id_surat) ?>" type="button" class="btn btn-warning btn-sm">
                                                         <ion-icon class="col" name="create-outline"></ion-icon>
                                                     </a>
-                                                    <a href="<?= base_url('administrasi/view_surat/' . $d->file) ?>" type="button" class="btn btn-primary btn-sm" target="_blank">
+                                                    <a href="<?= base_url('administrasi/view_surat_masuk/' . $d->file) ?>" type="button" class="btn btn-primary btn-sm" target="_blank">
                                                         <i class="bi bi-eye"></i>
                                                     </a>
-                                                    <form action="<?= base_url('administrasi/delete_surat') ?>" method="post">
+                                                    <form action="<?= base_url('administrasi/delete_surat_masuk') ?>" method="post">
                                                         <input type="hidden" name="id_surat" value="<?= $d->id_surat ?>">
                                                         <button type="submit" class="btn btn-sm btn-danger">
                                                             <i class="bi bi-trash"></i>

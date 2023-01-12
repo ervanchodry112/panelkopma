@@ -16,7 +16,7 @@ echo $this->section('main');
                     </div>
                     <div class="card-body my-3">
                         <!-- Buat Konten Disini -->
-                        <form action="<?= base_url('administrasi/save_surat') ?>" method="POST" enctype="multipart/form-data">
+                        <form action="<?= base_url('administrasi/save_surat_masuk') ?>" method="POST" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
                             <div class="row m-3 w-75">
                                 <label for="no_surat" class="col-sm-3 col-form-label">Nomor Surat</label>
@@ -43,6 +43,15 @@ echo $this->section('main');
                                     <input type="text" name="isi_surat" class="form-control <?= ($validation->hasError('isi_surat') ? 'is-invalid' : '') ?>" value="<?= old('isi_surat') ?>"" id=" isi_surat" placeholder="Isi Surat">
                                     <div class="invalid-feedback">
                                         <?= $validation->getError('isi_surat') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
+                                <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="perihal" class="form-control <?= ($validation->hasError('perihal') ? 'is-invalid' : '') ?>" value="<?= old('perihal') ?>"" id=" perihal" placeholder="Isi Surat">
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('perihal') ?>
                                     </div>
                                 </div>
                             </div>

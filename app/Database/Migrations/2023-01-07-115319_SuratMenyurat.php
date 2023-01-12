@@ -25,6 +25,10 @@ class SuratMenyurat extends Migration
             'isi_surat' => [
                 'type' => 'TEXT',
             ],
+            'perihal' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'kode' => [
                 'type' => 'VARCHAR',
                 'constraint' => 50,
@@ -55,6 +59,54 @@ class SuratMenyurat extends Migration
         $this->forge->addPrimaryKey('id_surat');
         $this->forge->addUniqueKey('no_surat');
         $this->forge->createTable('surat_masuk');
+
+        $this->forge->addField([
+            'id_surat' => [
+                'type' => 'INT',
+                'constraint' => 10,
+                'auto_increment' => true,
+            ],
+            'no_surat' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'tujuan' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'isi_surat' => [
+                'type' => 'TEXT',
+            ],
+            'kode' => [
+                'type' => 'VARCHAR',
+                'constraint' => 3,
+            ],
+            'tgl_surat' => [
+                'type' => 'DATE',
+            ],
+            'tgl_catat' => [
+                'type' => 'DATE',
+            ],
+            'file' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'deleted_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+        ]);
+        $this->forge->addPrimaryKey('id_surat');
+        $this->forge->addUniqueKey('no_surat');
+        $this->forge->createTable('surat_keluar');
 
         // create table digilib
         $this->forge->addField([
@@ -94,6 +146,7 @@ class SuratMenyurat extends Migration
     public function down()
     {
         $this->forge->dropTable('surat_masuk');
+        $this->forge->dropTable('surat_keluar');
         $this->forge->dropTable('digilib');
     }
 }

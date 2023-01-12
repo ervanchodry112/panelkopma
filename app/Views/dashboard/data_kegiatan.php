@@ -51,10 +51,11 @@ echo $this->section('main');
                                 <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Action</th>
                                             <th scope="col">Nama Kegiatan</th>
                                             <th scope="col">Lokasi</th>
                                             <th scope="col">Tanggal</th>
+                                            <th scope="col">Arsip Kegiatan</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <?php
@@ -65,17 +66,6 @@ echo $this->section('main');
                                     ?>
                                             <tr>
                                                 <td>
-                                                    <a href="<?= base_url('dashboard/edit_kegiatan/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-success btn-sm">
-                                                        <ion-icon class="col" name="create-outline"></ion-icon>
-                                                    </a>
-                                                    <a href="<?= base_url('dashboard/presensi/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-primary btn-sm">
-                                                        <ion-icon class="col" name="clipboard-outline"></ion-icon>
-                                                    </a>
-                                                    <a href="<?= base_url('dashboard/kegiatan/' . $d['id_kegiatan']) ?>" class="btn btn-sm btn-warning">
-                                                        <ion-icon name="qr-code-outline"></ion-icon>
-                                                        </button>
-                                                </td>
-                                                <td>
                                                     <?= $d['nama_kegiatan'] ?>
                                                 </td>
                                                 <td>
@@ -83,6 +73,38 @@ echo $this->section('main');
                                                 </td>
                                                 <td>
                                                     <?= $d['tanggal_kegiatan'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    if ($d['link'] != null) {
+                                                    ?>
+                                                        <a href="<?= $d['link'] ?>" class="btn btn-primary btn-sm" target="_blank">
+                                                            <i class="bi bi-box-arrow-up-right"></i>
+                                                        </a>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                    <a href="<?= base_url('dashboard/presensi/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-success btn-sm">
+                                                        <ion-icon class="col" name="clipboard-outline"></ion-icon>
+                                                    </a>
+                                                    <a href="<?= base_url('dashboard/kegiatan/' . $d['id_kegiatan']) ?>" class="btn btn-sm btn-info">
+                                                        <ion-icon name="qr-code-outline"></ion-icon>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-12 d-flex align-items-center justify-content-evenly">
+                                                            <a href="<?= base_url('dashboard/edit_kegiatan/' . $d['id_kegiatan']) ?>" type="button" class="btn btn-warning btn-sm">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </a>
+                                                            <form action="<?= base_url('dashboard/delete_kegiatan') ?>" method="post">
+                                                                <input type="hidden" name="id_kegiatan" id="id_kegiatan" value="<?= $d['id_kegiatan'] ?>">
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                     <?php

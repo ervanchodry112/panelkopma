@@ -47,6 +47,19 @@ echo $this->section('main');
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
+                                <label for="jenis_kelamin" class="col-sm-3 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-9">
+                                    <select type="text" name="jenis_kelamin" id="jenis_kelamin" class="form-select <?= ($validation->hasError('jenis_kelamin') ? 'is-invalid' : '') ?>" value="<?= old('jenis_kelamin') ?>">
+                                        <option selected>-- Jenis Kelamin --</option>
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('jenis_kelamin') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
                                 <label for="email" class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
                                     <input type="email" name="email" id="email" placeholder="Email" class="form-control <?= ($validation->hasError('email') ? 'is-invalid' : '') ?>" value="<?= old('email') ?>">
@@ -65,16 +78,44 @@ echo $this->section('main');
                                 </div>
                             </div>
                             <div class="row m-3 w-75">
-                                <label for="fakultas" class="col-sm-3 col-form-label">Jurusan</label>
+                                <label for="status_keanggotaan" class="col-sm-3 col-form-label">Status Keanggotaan</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select <?= ($validation->hasError('jurusan') ? 'is-invalid' : '') ?>" name="jurusan" id="fakultas">
-                                        <option selected>-- Jurusan --</option>
-                                        <?php foreach ($jurusan as $jur) { ?>
-                                            <option value="<?= $jur['id_jurusan'] ?>"><?= $jur['nama_jurusan'] ?></option>
-                                        <?php } ?>
+                                    <select class="form-select <?= ($validation->hasError('status_keanggotaan') ? 'is-invalid' : '') ?>" name="status_keanggotaan" id="status_keanggotaan">
+                                        <option selected>-- Status Keanggotaan --</option>
+                                        <option value="Anggota">Anggota</option>
+                                        <option value="Anggota Luar Biasa">Anggota Luar Biasa</option>
                                     </select>
                                     <div class="invalid-feedback">
+                                        <?= $validation->getError('status_keanggotaan') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
+                                <label for="jurusan" class="col-sm-3 col-form-label">Jurusan</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control <?= ($validation->hasError('jurusan') ? 'is-invalid' : '') ?>" value="<?= old('jurusan') ?>" name="jurusan" id="jurusan">
+
+                                    <div class="invalid-feedback">
                                         <?= $validation->getError('jurusan') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-3 w-75">
+                                <label for="fakultas" class="col-sm-3 col-form-label">Fakultas</label>
+                                <div class="col-sm-9">
+                                    <select type="text" class="form-select <?= ($validation->hasError('fakultas') ? 'is-invalid' : '') ?>" name="fakultas" id="fakultas">
+                                        <option selected>-- Pilih Fakultas --</option>
+                                        <option value="Fakultas Matematika dan Ilmu Pengetahuan Alam">Fakultas Matematika dan Ilmu Pengetahuan Alam</option>
+                                        <option value="Fakultas Keguruan dan Ilmu Pendidikan">Fakultas Keguruan dan Ilmu Pendidikan</option>
+                                        <option value="Fakultas Ilmu Sosial dan Ilmu Politik">Fakultas Ilmu Sosial dan Ilmu Politik</option>
+                                        <option value="Fakultas Ekonomi dan Bisnis">Fakultas Ekonomi dan Bisnis</option>
+                                        <option value="Fakultas Teknik">Fakultas Teknik</option>
+                                        <option value="Fakultas Pertanian">Fakultas Pertanian</option>
+                                        <option value="Fakultas Kedokteran">Fakultas Kedokteran</option>
+                                        <option value="Fakultas Hukum">Fakultas Hukum</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('fakultas') ?>
                                     </div>
                                 </div>
                             </div>

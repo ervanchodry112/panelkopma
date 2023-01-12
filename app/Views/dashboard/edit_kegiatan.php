@@ -35,6 +35,12 @@ echo $this->section('main');
                                     <input type="text" name="tempat" class="form-control" id="tempat" value="<?= $kegiatan['tempat_kegiatan'] ?>">
                                 </div>
                             </div>
+                            <div class="row m-3 w-75">
+                                <label for="link" class="col-sm-3 col-form-label">Link Arsip (Gdrive)</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="link" class="form-control" id="link" value="<?= $kegiatan['link'] ?>">
+                                </div>
+                            </div>
 
                             <div class="row ms-4 w-75">
                                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Simpan</button>

@@ -75,6 +75,14 @@ class Survey extends Migration
                 'type' => 'YEAR',
                 'constraint' => 4,
             ],
+            'proposal' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'lpj' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
             'status' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,

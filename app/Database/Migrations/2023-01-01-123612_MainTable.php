@@ -93,6 +93,14 @@ class MainTable extends Migration
                 'constraint' => 16,
                 'null' => true,
             ],
+            'jenis_kelamin' => [
+                'type'  => 'VARCHAR',
+                'constraint'    => 1,
+            ],
+            'status_keanggotaan' => [
+                'type'  => 'VARCHAR',
+                'constraint'    => 30,
+            ],
             'tgl_diksar' => [
                 'type' => 'DATE',
                 'null' => true,
@@ -264,6 +272,10 @@ class MainTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 16,
             ],
+            'jenis_kelamin' => [
+                'type' => 'VARCHAR',
+                'constraint' => 1,
+            ],
             'domisili' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
@@ -332,6 +344,10 @@ class MainTable extends Migration
             ],
             'tanggal_kegiatan' => [
                 'type' => 'DATE',
+            ],
+            'link'  => [
+                'type'  => 'VARCHAR',
+                'constraint'    => 255,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

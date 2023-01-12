@@ -46,6 +46,15 @@ echo $this->section('main');
                                     </div>
                                 </div>
                             </div>
+                            <div class="row m-3 w-75">
+                                <label for="tahun" class="col-sm-3 col-form-label">Tahun Program Kerja</label>
+                                <div class="col-sm-9">
+                                    <input type="number" placeholder="20XX" name="tahun" class="form-control <?= ($validation->hasError('tahun') ? 'is-invalid' : '') ?>" value="<?= old('tahun') ?>"" id=" tahun">
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('tahun') ?>
+                                    </div>
+                                </div>
+                            </div>
                             <?php
                             if (in_groups('admin')) {
                             ?>

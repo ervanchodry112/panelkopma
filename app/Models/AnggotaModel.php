@@ -12,7 +12,7 @@ class AnggotaModel extends Model
     protected $useSoftDeletes = 'true';
     protected $allowedFields = [
         'npm', 'nomor_anggota', 'nama_lengkap', 'email',
-        'nomor_hp', 'id_jurusan'
+        'nomor_hp', 'jurusan', 'fakultas', 'jenis_kelamin', 'keanggotaan',
     ];
 
     protected $useTimestamps = true;

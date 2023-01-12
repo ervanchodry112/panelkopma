@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Database\Seeds\DataAnggota;
+use App\Models\AnggotaModel;
 use App\Models\GroupUserModel;
 use App\Models\SiJukoAccount;
+use CodeIgniter\I18n\Time;
 use Myth\Auth\Models\UserModel;
 
 class Admin extends BaseController
@@ -12,12 +15,14 @@ class Admin extends BaseController
     protected $data_user;
     protected $group;
     protected $akun;
+    protected $data_anggota;
 
     public function __construct()
     {
         $this->data_user = new UserModel();
         $this->group = new GroupUserModel();
         $this->akun = new SiJukoAccount();
+        $this->data_anggota = new AnggotaModel();
         if (!in_groups('admin')) {
             return redirect()->to('/dashboard');
         }
@@ -192,10 +197,121 @@ class Admin extends BaseController
 
     public function akun_juko()
     {
+        // dd(Time::now());
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $account = $this->akun->select('data_anggota.nama_lengkap, akun.nomor_anggota, akun.username')->join('data_anggota', 'data_anggota.nomor_anggota=akun.nomor_anggota')->like('akun.nomor_anggota', $search)->orLike('akun.username', $search)
+                ->orLike('data_anggota.nama_lengkap', $search)->findAll();
+        } else {
+            $account = $this->akun->select('data_anggota.nama_lengkap, akun.nomor_anggota, akun.username')->join('data_anggota', 'data_anggota.nomor_anggota=akun.nomor_anggota')->findAll();
+        }
         $data = [
             'title' => 'Akun Si Juko',
+            'akun' => $account,
         ];
 
         return view('dashboard/akun_juko', $data);
+    }
+
+    public function add_akun()
+    {
+        $data = [
+            'title' => 'Tambah Akun Si Juko',
+            'validation' => \Config\Services::validation(),
+        ];
+
+
+        return view('dashboard/add_akun', $data);
+    }
+
+    public function save_akun()
+    {
+        $input = $this->request->getVar();
+        // dd($input);
+        $validation = [
+            'nomor_anggota' => [
+                'rules' => 'required|is_unique[akun.nomor_anggota]',
+                'errors' => [
+                    'required' => 'Nomor anggota harus diisi.',
+                    'matches' => 'Nomor Anggota tidak ditemukan.',
+                    'is_unique' => 'Nomor anggota sudah terdaftar.',
+                ],
+            ],
+            'username' => [
+                'rules' => 'required|is_unique[akun.username]',
+                'errors' => [
+                    'required' => 'Username harus diisi',
+                    'is_unique' => 'Username sudah terdaftar',
+                ],
+            ],
+            'password' => [
+                'rules' => 'required|min_length[4]',
+                'errors' => [
+                    'required' => 'Password harus diisi',
+                    'min_length' => 'Password minimal 4 karakter',
+                ]
+            ],
+            'pass_confirm' => [
+                'rules' => 'required|matches[password]',
+                'errors' => [
+                    'required' => 'Konfirmasi password harus diisi',
+                    'matches' => 'Password tidak sama',
+                ]
+            ],
+        ];
+
+
+        if (!$this->validate($validation)) {
+            return redirect()->to('/admin/add_akun')->withInput();
+        }
+        $exist = $this->data_anggota->like('nomor_anggota', $input['nomor_anggota'])->first();
+        if (!$exist) {
+            session()->setFlashdata('pesan', '<strong>Gagal!</strong> Nomor anggota tidak ditemukan.');
+            return redirect()->to('/admin/add_akun');
+        }
+
+        $data = [
+            'nomor_anggota' => $input['nomor_anggota'],
+            'username' => $input['username'],
+            'password' => password_hash($input['password'], PASSWORD_DEFAULT),
+        ];
+
+        if (!$this->akun->insert($data)) {
+            session()->setFlashdata('pesan', '<strong>Gagal!</strong> Akun gagal ditambahkan.');
+            return redirect()->to('/admin/add_akun');
+        }
+        // dd('berhasil');
+        session()->setFlashdata('pesan', '<strong>Berhasil!</strong> Akun berhasil ditambahkan.');
+        return redirect()->to('/admin/akun_juko');
+    }
+
+    public function reset_password_juko()
+    {
+        $nomor_anggota = $this->request->getVar('nomor_anggota');
+        $reset = [
+            'nomor_anggota' => $nomor_anggota,
+            'password'      => password_hash('bravokopma', PASSWORD_DEFAULT),
+        ];
+
+        if (!$this->akun->save($reset)) {
+            session()->setFlashdata('error', 'Password gagal direset');
+            return redirect()->to('/admin/akun_juko');
+        }
+
+        session()->setFlashdata('success', "Password berhasil direset\nPassword default: bravokopma");
+        return redirect()->to('/admin/akun_juko');
+    }
+
+    public function delete_akun()
+    {
+        $nomor_anggota = $this->request->getVar('nomor_anggota');
+
+        if (!$this->akun->where('nomor_anggota', $nomor_anggota)->delete()) {
+            session()->setFlashdata('error', 'Akun gagal dihapus');
+            return redirect()->to('/admin/akun_juko');
+        }
+
+        session()->setFlashdata('success', 'Akun berhasil dihapus');
+        return redirect()->to('/admin/akun_juko');
     }
 }

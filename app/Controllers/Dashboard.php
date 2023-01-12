@@ -35,6 +35,9 @@ class Dashboard extends BaseController
     protected $data_user;
     protected $auth;
     protected $progja;
+    protected $data_anggota;
+    protected $calon_anggota;
+    protected $data_simpanan;
 
     function __construct()
     {
@@ -44,12 +47,35 @@ class Dashboard extends BaseController
         $this->data_user = new UserModel();
         $this->auth   = service('authentication');
         $this->progja = new ProgramKerja();
+        $this->data_anggota = new AnggotaModel();
+        $this->calon_anggota = new CalonModel();
+        $this->data_simpanan = new SimpananModel();
     }
 
     public function index()
     {
+        $jumlah_anggota = $this->data_anggota->selectCount('nomor_anggota', 'jumlah')->first();
+        $jumlah_simpanan = $this->data_simpanan->selectSum('simpanan_wajib', 'jumlah')->first();
+        $jumlah_baru = $this->calon_anggota->selectCount('npm', 'jumlah')->first();
+        $kegiatan = $this->data_kegiatan->where('tanggal_kegiatan >', Time::now('Asia/Jakarta', 'id_ID'))
+            ->orderBy('tanggal_kegiatan', 'ASC')->findAll();
+
+        $kegiatan_selesai = $this->data_presensi->selectCount('presensi.id_data', 'peserta')
+            ->groupBy('data_kegiatan.id_kegiatan')
+            ->select('data_kegiatan.nama_kegiatan, data_kegiatan.tanggal_kegiatan, data_kegiatan.tempat_kegiatan')
+            ->join('data_kegiatan', 'presensi.id_kegiatan=presensi.id_data', 'right')
+            ->where('data_kegiatan.tanggal_kegiatan <', Time::now('Asia/Jakarta', 'id_ID'))
+            ->findAll();
+
+        // dd($kegiatan_selesai);
+
         $data = [
             'title' => 'Dashboard',
+            'jumlah_anggota' => $jumlah_anggota,
+            'jumlah_simpanan' => $jumlah_simpanan,
+            'jumlah_baru' => $jumlah_baru,
+            'kegiatan' => $kegiatan,
+            'kegiatan_selesai' => $kegiatan_selesai,
         ];
 
         return view('dashboard/index', $data);
@@ -58,9 +84,15 @@ class Dashboard extends BaseController
     // Kegiatan Function
     public function data_kegiatan()
     {
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $kegiatan = $this->data_kegiatan->like('nama_kegiatan', $search)->orderBy('tanggal_kegiatan', 'DESC')->findAll();
+        } else {
+            $kegiatan = $this->data_kegiatan->orderBy('tanggal_kegiatan', 'DESC')->findAll();
+        }
         $data = [
             'title' => 'Data Kegiatan',
-            'kegiatan' => $this->data_kegiatan->getKegiatan()
+            'kegiatan' => $kegiatan,
         ];
         return view('dashboard/data_kegiatan', $data);
     }
@@ -75,11 +107,24 @@ class Dashboard extends BaseController
 
     public function edit_kegiatan($id)
     {
+        $kegiatan = $this->data_kegiatan->where('id_kegiatan', $id)->first();
         $data = [
             'title' => 'Edit Data Kegiatan',
-            'kegiatan' => $this->data_kegiatan->getKegiatan($id)
+            'kegiatan' => $kegiatan,
         ];
         return view('dashboard/edit_kegiatan', $data);
+    }
+
+    public function delete_kegiatan()
+    {
+        $id = $this->request->getVar('id_kegiatan');
+        $this->data_presensi->where('id_kegiatan', $id)->delete();
+        if (!$this->data_kegiatan->where('id_kegiatan', $id)->delete()) {
+            session()->setFlashdata('error', 'Gagal Menghapus Data');
+            return redirect()->to('/dashboard/data_kegiatan');
+        }
+        session()->setFlashdata('success', 'Berhasil menghapus data');
+        return redirect()->to('/dashboard/data_kegiatan');
     }
 
     public function save_kegiatan()
@@ -90,6 +135,7 @@ class Dashboard extends BaseController
             'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
             'tanggal_kegiatan' => $this->request->getVar('tanggal'),
             'tempat_kegiatan' => $this->request->getVar('tempat'),
+            'link' => $this->request->getVar('link'),
         ];
         if (!$this->data_kegiatan->save($data)) {
             session()->setFlashdata('error', 'Gagal Menambahkan Data');
@@ -107,6 +153,7 @@ class Dashboard extends BaseController
             'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
             'tanggal_kegiatan' => $this->request->getVar('tanggal'),
             'tempat_kegiatan' => $this->request->getVar('tempat'),
+            'link' => $this->request->getVar('link'),
         ]);
 
         session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
@@ -165,8 +212,8 @@ class Dashboard extends BaseController
             $row++;
         }
         $writer = new Xlsx($spreadsheet);
-        $writer->save('assets/document/' . $filename);
-        $file = 'assets/document/' . $filename;
+        $writer->save('assets/download/document/' . $filename);
+        $file = 'assets/download/document/' . $filename;
         header("Content-Type: application/vnd.ms-excel");
 
         header('Content-Disposition: attachment; filename="' . basename($file) . '"');
@@ -210,7 +257,7 @@ class Dashboard extends BaseController
 
         $this->ciqrcode->generate($params);
 
-        $kegiatan = $this->data_kegiatan->getKegiatan($id);
+        $kegiatan = $this->data_kegiatan->where('id_kegiatan', $id)->first();
 
         $tgl_kegiatan = new DateTime($kegiatan['tanggal_kegiatan']);
         $today = new DateTime();
@@ -275,29 +322,42 @@ class Dashboard extends BaseController
     public function program_kerja()
     {
         $search = $this->request->getVar('search');
+        $tahun = $this->request->getVar('tahun');
+        if ($tahun) {
+            $tahun = $tahun;
+        } else {
+            $tahun = Time::now()->getYear();
+        }
         if (user()->username == 'admin' || user()->username == 'ketua_umum' || user()->username == 'badan_pengawas') {
             if ($search) {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.tahun, program_kerja.nama_program, program_kerja.proposal, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->like('nama_program', $search)
-                    ->orLike('users.username', $search)->findAll();
+                    ->orLike('users.username', $search)->where('tahun', $tahun)->findAll();
             } else {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
-                    ->join('users', 'program_kerja.user=users.id')->findAll();
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.tahun, program_kerja.nama_program, program_kerja.proposal, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                    ->join('users', 'program_kerja.user=users.id')->where('tahun', $tahun)->findAll();
             }
         } else {
             if ($search) {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.tahun, program_kerja.nama_program, program_kerja.proposal, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->like('nama_program', $search)
-                    ->orLike('users.username', $search)->findAll();
+                    ->orLike('users.username', $search)->where('tahun', $tahun)->findAll();
             } else {
-                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.nama_program, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
-                    ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->findAll();
+                $program_kerja = $this->progja->select('program_kerja.id, program_kerja.tahun, program_kerja.nama_program, program_kerja.proposal, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
+                    ->join('users', 'program_kerja.user=users.id')->where('program_kerja.user', user()->id)->where('tahun', $tahun)->findAll();
             }
+        }
+
+        $years = array();
+        for ($i = 2022; $i <= Time::now()->getYear(); $i++) {
+            $years[] = $i;
         }
         // dd($program_kerja);
         $data = [
             'title' => 'Program Kerja',
             'progja' => $program_kerja,
+            'tahun' => $years,
+            'tahun_selected' => $tahun,
         ];
 
         return view('/dashboard/program_kerja', $data);
@@ -337,6 +397,12 @@ class Dashboard extends BaseController
                     'required' => 'Rencana Pelaksanaan Program Kerja harus diisi'
                 ]
             ],
+            'tahun' => [
+                'rules' => 'required|greater_than[2021]|less_than[' . (Time::now()->getYear() + 1) . ']',
+                'errors' => [
+                    'required' => 'Tentukan tahun program kerja'
+                ]
+            ],
         ];
 
         $edit = isset($input['id']);
@@ -355,7 +421,7 @@ class Dashboard extends BaseController
                 'deskripsi'             => $input['deskripsi'],
                 'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
                 'user'                  => user()->id,
-                'tahun'                 => Time::now('Asia/Jakarta', 'id_ID')->getYear(),
+                'tahun'                 => $input['tahun'],
             ];
             if (in_groups('admin')) {
                 $save['status'] = $input['status'];
@@ -366,7 +432,7 @@ class Dashboard extends BaseController
                 'deskripsi'             => $input['deskripsi'],
                 'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
                 'user'                  => user()->id,
-                'tahun'                 => Time::now('Asia/Jakarta', 'id_ID')->getYear(),
+                'tahun'                 => $input['tahun'],
                 'status'                => 'Belum Terlaksana',
             ];
         }
@@ -397,6 +463,7 @@ class Dashboard extends BaseController
     {
         $id = $this->request->getVar('id');
         $progja = $this->progja->where('id', $id)->first();
+        unlink('assets/uploads/document/proposal/' . $progja->proposal);
         unlink('assets/uploads/document/lpj/' . $progja->lpj);
         if (!$this->progja->where('id', $id)->delete()) {
             session()->setFlashdata('error', 'Gagal Menghapus Program Kerja');
@@ -424,6 +491,14 @@ class Dashboard extends BaseController
     {
         $input = $this->request->getVar();
         $validation = [
+            'proposal' => [
+                'rules' => 'uploaded[proposal]|ext_in[proposal,pdf]|mime_in[proposal,application/pdf]',
+                'errors' => [
+                    'uploaded' => 'File Proposal harus diisi',
+                    'ext_in' => 'File Proposal harus berformat PDF',
+                    'mime_in' => 'File Proposal harus berformat PDF',
+                ]
+            ],
             'lpj' => [
                 'rules' => 'uploaded[lpj]|ext_in[lpj,pdf]|mime_in[lpj,application/pdf]',
                 'errors' => [
@@ -438,24 +513,30 @@ class Dashboard extends BaseController
             return redirect()->to(site_url('dashboard/upload_lpj'))->withInput();
         }
 
-        $file = $this->request->getFile('lpj');
-        $name = $input['nama_program'] . '_' . Time::now('Asia/Jakarta', 'id_ID')->getYear() . '.pdf';
-        $file->move('assets/uploads/document/lpj', $name);
+        $proposal = $this->request->getFile('proposal');
+        $name_proposal = 'Proposal_' . $input['nama_program'] . '_' . Time::now('Asia/Jakarta', 'id_ID')->getYear() . '.pdf';
+        $proposal->move('assets/uploads/document/proposal', $name_proposal);
+
+        $lpj = $this->request->getFile('lpj');
+        $name = 'LPJ_' . $input['nama_program'] . '_' . Time::now('Asia/Jakarta', 'id_ID')->getYear() . '.pdf';
+        $lpj->move('assets/uploads/document/lpj', $name);
         // dd($file);
         $save = [
             'id' => $input['id'],
+            'proposal' => $name_proposal,
             'lpj' => $name,
             'status' => 'Sudah Terlaksana',
         ];
         // dd($save);
 
         if (!$this->progja->save($save)) {
+            unlink('assets/uploads/document/proposal/' . $save['proposal']);
             unlink('assets/uploads/document/lpj/' . $save['lpj']);
-            session()->setFlashdata('error', 'Gagal Mengupload LPJ');
+            session()->setFlashdata('error', 'Gagal Mengupload Proposal dan LPJ');
             return redirect()->to(site_url('dashboard/upload_lpj'));
         }
 
-        session()->setFlashdata('success', 'Berhasil Mengupload LPJ');
+        session()->setFlashdata('success', 'Berhasil Mengupload Proposal dan LPJ');
         return redirect()->to(site_url('dashboard/program_kerja'));
     }
 
@@ -467,5 +548,14 @@ class Dashboard extends BaseController
         ];
 
         return view('/dashboard/view_lpj', $data);
+    }
+    public function view_proposal($id)
+    {
+        $data = [
+            'title' => 'View Proposal',
+            'file'  => $id,
+        ];
+
+        return view('/dashboard/view_proposal', $data);
     }
 }

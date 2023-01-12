@@ -60,6 +60,38 @@
                 <hr>
             </li>
             <li class="nav-item">
+                <div class="nav-heading">Administrasi</div>
+                <div class="row text-muted small fw-bold text-uppercase px-3" data-bs-toggle="collapse" href="#admin-collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="col-10">Administrasi</span>
+                    <span class="col-2">
+                        <i class="bi bi-chevron-down"></i>
+                    </span>
+                </div>
+            </li>
+            <div id="admin-collapse" class="collapse">
+                <li class="nav-item">
+                    <a href="<?= base_url('administrasi/surat_masuk') ?>" class="nav-link collapsed px-3 d-flex">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Surat Masuk</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('administrasi/surat_keluar') ?>" class="nav-link collapsed px-3 d-flex">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Surat Keluar</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('administrasi/digilib') ?>" class="nav-link collapsed px-3 d-flex">
+                        <i class="bi bi-book"></i>
+                        <span>Digilib</span>
+                    </a>
+                </li>
+            </div>
+            <li class="my-1">
+                <hr>
+            </li>
+            <li class="nav-item">
                 <div class="nav-heading">PSDA</div>
                 <div class="row text-muted small fw-bold text-uppercase px-3" data-bs-toggle="collapse" href="#psdacollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                     <span class="col-10">PSDA</span>
@@ -100,6 +132,16 @@
             <li class="my-1">
                 <hr>
             </li>
+            <li class="nav-item">
+                <div class="nav-heading">Usaha</div>
+                <a href="<?= base_url('usaha/produk') ?>" class="nav-link collapsed px-3 d-flex">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Produk</span>
+                </a>
+            </li>
+            <li class="my-1">
+                <hr>
+            </li>
 
 
             <li class="nav-item">
@@ -124,6 +166,12 @@
                     <a href="<?= base_url('keuangan/pembayaran_simwa') ?>" class="nav-link collapsed px-3 d-flex">
                         <i class="bi bi-receipt-cutoff"></i>
                         <span>Pembayaran Simpanan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('keuangan/laporan_keuangan') ?>" class="nav-link collapsed px-3 d-flex">
+                        <i class="bi bi-receipt-cutoff"></i>
+                        <span>Laporan Keuangan</span>
                     </a>
                 </li>
             </div>
@@ -153,41 +201,6 @@
                     <a href="<?= base_url('litbang/hasil_survey') ?>" class="nav-link collapsed px-3 d-flex">
                         <i class="bi bi-clipboard2-data"></i>
                         <span>Hasil Survey</span>
-                    </a>
-                </li>
-            </div>
-
-            <li class="my-2">
-                <hr>
-            </li>
-
-            <li class="nav-item">
-                <div class="nav-heading">Administrasi</div>
-                <div class="row text-muted small fw-bold text-uppercase px-3" data-bs-toggle="collapse" href="#admin-collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    <span class="col-10">Administrasi</span>
-                    <span class="col-2">
-                        <i class="bi bi-chevron-down"></i>
-                    </span>
-                </div>
-            </li>
-
-            <div id="admin-collapse" class="collapse">
-                <li class="nav-item">
-                    <a href="<?= base_url('administrasi/surat_masuk') ?>" class="nav-link collapsed px-3 d-flex">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        <span>Surat Masuk</span>
-                    </a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a href="<?= base_url('dashboard/surat_keluar') ?>" class="nav-link collapsed px-3 d-flex">
-                        <i class="bi bi-box-arrow-right"></i>
-                        <span>Surat Keluar</span>
-                    </a>
-                </li> -->
-                <li class="nav-item">
-                    <a href="<?= base_url('administrasi/digilib') ?>" class="nav-link collapsed px-3 d-flex">
-                        <i class="bi bi-book"></i>
-                        <span>Digilib</span>
                     </a>
                 </li>
             </div>

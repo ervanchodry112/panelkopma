@@ -14,7 +14,7 @@ class SuratMasukModel extends Model
     protected $returnType       = SuratMasukModel::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_surat', 'no_surat', 'asal_surat', 'isi_surat', 'kode', 'indeks', 'tgl_surat', 'tgl_diterima', 'file', 'keterangan'];
+    protected $allowedFields    = ['id_surat', 'no_surat', 'asal_surat', 'isi_surat', 'perihal', 'kode', 'indeks', 'tgl_surat', 'tgl_diterima', 'file', 'keterangan'];
 
     // Dates
     protected $useTimestamps = true;
