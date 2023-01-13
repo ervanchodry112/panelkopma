@@ -134,7 +134,7 @@
                             Template
                         </div>
                         <div class="col-9">
-                            <a href="<?= base_url('assets/template/template_anggota.csv') ?>" target="_blank" class="btn btn-primary btn-sm">
+                            <a href="<?= base_url('assets/uploads/document/template/template_upload_anggota.xlsx') ?>" target="_blank" class="btn btn-primary btn-sm">
                                 <i class="bi bi-download ms-1"></i>
                                 Download
                             </a>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\AnggotaModel;
+use App\Models\LaporanKeuangan;
 use App\Models\SimpananModel;
 use App\Models\PembayaranSimwa;
 use CodeIgniter\I18n\Time;
@@ -15,12 +16,14 @@ class Keuangan extends BaseController
     protected $data_anggota;
     protected $data_simpanan;
     protected $bayar_simwa;
+    protected $laporan_keuangan;
 
     public function __construct()
     {
         $this->data_anggota = new AnggotaModel();
         $this->data_simpanan = new SimpananModel();
         $this->bayar_simwa = new PembayaranSimwa();
+        $this->laporan_keuangan = new LaporanKeuangan();
     }
 
     public function index()
@@ -220,5 +223,169 @@ class Keuangan extends BaseController
         readfile($file);
 
         exit;
+    }
+
+    // Laporan Keuangan
+    public function laporan_keuangan()
+    {
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $this->laporan_keuangan->like('bulan', $search)->orLike('tahun', $search)
+                ->orderBy('tahun', 'DESC')->orderBy('bulan', 'DESC')->findAll();
+        } else {
+            $this->laporan_keuangan->orderBy('tahun', 'DESC')->orderBy('bulan', 'DESC')->findAll();
+        }
+
+        $data = [
+            'title' => 'Laporan Keuangan',
+            'laporan' => $this->laporan_keuangan->paginate(10, 'laporan_keuangan'),
+            'search' => $search,
+        ];
+
+        return view('keuangan/laporan_keuangan', $data);
+    }
+
+    public function add_laporan()
+    {
+        $month = [
+            [
+                'id' => '01',
+                'name' => 'Januari'
+            ],
+            [
+                'id' => '02',
+                'name' => 'Februari'
+            ],
+            [
+                'id' => '03',
+                'name' => 'Maret'
+            ],
+            [
+                'id' => '04',
+                'name' => 'April'
+            ],
+            [
+                'id' => '05',
+                'name' => 'Mei'
+            ],
+            [
+                'id' => '06',
+                'name' => 'Juni'
+            ],
+            [
+                'id' => '07',
+                'name' => 'Juli'
+            ],
+            [
+                'id' => '08',
+                'name' => 'Agustus'
+            ],
+            [
+                'id' => '09',
+                'name' => 'September'
+            ],
+            [
+                'id' => '10',
+                'name' => 'Oktober'
+            ],
+            [
+                'id' => '11',
+                'name' => 'November'
+            ],
+            [
+                'id' => '12',
+                'name' => 'Desember'
+            ],
+        ];
+        $year = array();
+        for ($i = 2022; $i <= Time::today()->getYear(); $i++) {
+            $year[] = $i;
+        }
+        $data = [
+            'title' => 'Tambah Laporan Keuangan',
+            'validation' => \Config\Services::validation(),
+            'month' => $month,
+            'year' => $year,
+        ];
+
+        return view('keuangan/add_laporan', $data);
+    }
+
+    public function save_laporan()
+    {
+        $validation = [
+            'judul' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Judul harus diisi'
+                ]
+            ],
+            'bulan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Bulan harus diisi'
+                ]
+            ],
+            'tahun' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tahun harus diisi'
+                ]
+            ],
+            'file'  => [
+                'rules' => 'uploaded[file]|ext_in[file,pdf]|mime_in[file,application/pdf]|',
+                'errors' => [
+                    'uploaded' => 'File harus diisi',
+                    'mime_in' => 'File harus berformat PDF',
+                    'ext_in' => 'File harus berformat PDF'
+                ]
+            ],
+        ];
+
+        if (!$this->validate($validation)) {
+            return redirect()->to('/keuangan/add_laporan')->withInput();
+        }
+
+        $file = $this->request->getFile('file');
+        $file->move('assets/uploads/document/laporan_keuangan');
+
+        $save = [
+            'judul' => $this->request->getVar('judul'),
+            'bulan' => $this->request->getVar('bulan'),
+            'tahun' => $this->request->getVar('tahun'),
+            'file' => $file->getName(),
+        ];
+
+        if (!$this->laporan_keuangan->save($save)) {
+            session()->setFlashdata('error', 'Gagal menambahkan laporan keuangan');
+            return redirect()->to('/keuangan/add_laporan')->withInput();
+        }
+
+        session()->setFlashdata('success', 'Berhasil menambahkan laporan keuangan');
+        return redirect()->to('/keuangan/laporan_keuangan');
+    }
+
+    public function delete_laporan()
+    {
+        $id = $this->request->getVar('id');
+        // dd($id);
+        $laporan = $this->laporan_keuangan->where('id', $id)->first();
+        // dd($laporan);
+        unlink('assets/uploads/document/laporan_keuangan/' . $laporan->file);
+        if (!$this->laporan_keuangan->delete($id)) {
+            session()->setFlashdata('error', 'Gagal menghapus laporan keuangan');
+            return redirect()->to('/keuangan/laporan_keuangan');
+        }
+        session()->setFlashdata('success', 'Berhasil menghapus laporan keuangan');
+        return redirect()->to('/keuangan/laporan_keuangan');
+    }
+
+    public function view_laporan($file)
+    {
+        $data = [
+            'title' => 'View Laporan Keuangan',
+            'file' => $file,
+        ];
+        return view('keuangan/view_laporan', $data);
     }
 }

@@ -21,15 +21,7 @@ echo $this->section('main');
                         <div class="row mx-2 mb-2">
                             <div class="col d-flex justify-content-between">
                                 <!-- Button Input Data From CSV -->
-                                <!-- <button type="button" class="btn btn-secondary btn-sm py-2 rounded-pill shadow-sm d-flex" data-bs-toggle="modal" data-bs-target="#modalUpload">
-                                              <span class="me-1">
-                                                   <ion-icon name="cloud-upload-outline"></ion-icon>
-                                              </span>
-                                              <span>
-                                                   Upload CSV
-                                              </span>
-                                         </button> -->
-                                <!-- Button Input Data Form CSV -->
+
                                 <!-- Search Fiela -->
                                 <div class="col ">
                                     <form class="form w-50 d-flex align-items-center" action="<?= base_url('psda/calon_anggota') ?>">
@@ -61,16 +53,29 @@ echo $this->section('main');
                             </div>
                         </div>
                         <?php
-                        if (session()->getFlashdata('pesan')) {
+                        if (session()->getFlashdata('error')) {
                         ?>
                             <div class="row mx-2">
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    Data berhasil dihapus!
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?= session()->getFlashdata('error') ?>
                                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             </div>
                         <?php
-                            session()->remove('pesan');
+                            session()->remove('error');
+                        }
+                        ?>
+                        <?php
+                        if (session()->getFlashdata('success')) {
+                        ?>
+                            <div class="row mx-2">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <?= session()->getFlashdata('success') ?>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        <?php
+                            session()->remove('success');
                         }
                         ?>
                         <div class="container overflow-scroll">
@@ -138,6 +143,20 @@ echo $this->section('main');
                             </table>
                             <?= $pager->links('calon_anggota', 'custom_pagination') ?>
                         </div>
+                        <?php
+                        if (user()->username == 'admin') {
+                        ?>
+                            <div class="row mt-4">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                        Reset Data Calon Anggota
+                                    </button>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
 
                     </div>
                 </div>
@@ -145,6 +164,54 @@ echo $this->section('main');
         </div>
     </section>
 </main>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Konfirmasi Reset Data</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="<?= base_url('psda/reset_calon') ?>" method="post" enctype="multipart/form-data">
+                <div class="modal-body mx-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-danger text-center" role="alert">
+                                <strong>Perhatian!</strong><br>
+                                Ini akan menghapus seluruh data <strong>Calon Anggota</strong>!.
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                    $random_word = substr(str_shuffle($letters), 0, 8);
+                    ?>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <div class="h4 border border-2 p-3 rounded"><?= $random_word ?></div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12 text-center">
+                            Silakan ketikan kembali kata diatas untuk mengkonfirmasi penghapusan data!
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <?= csrf_field() ?>
+                            <input type="text" name="confirm" id="confirm" class="form-control text-center" placeholder="____________________">
+                            <input type="hidden" name="random" value="<?= $random_word ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin melakukan reset data calon anggota?')">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- End #main -->
 
 <?= $this->endSection(); ?>

@@ -167,7 +167,7 @@ class Dashboard extends BaseController
             ->join('data_kegiatan', 'data_kegiatan.id_kegiatan=presensi.id_kegiatan')
             ->where('presensi.id_kegiatan', $id)->paginate(25, 'presensi');
 
-        $kegiatan = $this->data_kegiatan->getKegiatan($id);
+        $kegiatan = $this->data_kegiatan->where('id_kegiatan', $id)->first();
 
         $tgl_kegiatan = new DateTime($kegiatan['tanggal_kegiatan']);
         $today = new DateTime();

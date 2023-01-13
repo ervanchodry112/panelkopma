@@ -18,7 +18,7 @@ echo $this->section('main');
                     <div class="card-body my-3">
                         <!-- Buat Konten Disini -->
                         <div class="container overflow-scroll">
-                            <table class="table table-striped table-responsive tabel-data fs-6" style="font-size: 12px;" id="tableData">
+                            <table class="table table-striped table-responsive tabel-data fs-6" id="tableData">
                                 <tr>
                                     <?php
                                     if (has_permission('mengelola_keuangan')) {
@@ -80,8 +80,10 @@ echo $this->section('main');
                                                 </a>
                                             <?php } ?>
                                         </td>
-                                        <td class="<?= ($d['status'] == 1 ? 'text-warning' : ($d['status'] == 2 ? 'text-danger' : 'text-success')) ?>">
-                                            <?= ($d['status'] == 1 ? 'Pending' : ($d['status'] == 2 ? 'Rejected' : "Accepted")) ?>
+                                        <td>
+                                            <div class="badge bg-<?= ($d['status'] == 1 ? 'warning' : ($d['status'] == 2 ? 'danger' : 'success')) ?>">
+                                                <?= ($d['status'] == 1 ? 'Pending' : ($d['status'] == 2 ? 'Rejected' : "Accepted")) ?>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php } ?>

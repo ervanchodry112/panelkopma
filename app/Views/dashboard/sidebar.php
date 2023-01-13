@@ -170,7 +170,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="<?= base_url('keuangan/laporan_keuangan') ?>" class="nav-link collapsed px-3 d-flex">
-                        <i class="bi bi-receipt-cutoff"></i>
+                        <i class="bi bi-file-earmark-bar-graph"></i>
                         <span>Laporan Keuangan</span>
                     </a>
                 </li>

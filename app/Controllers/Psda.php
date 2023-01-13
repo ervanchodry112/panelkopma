@@ -347,6 +347,7 @@ class Psda extends BaseController
     // Calon Anggota Function
     public function calon_anggota()
     {
+        // dd($this->calon_anggota);
         $search = $this->request->getVar('search');
         if ($search) {
             $calon = $this->calon_anggota
@@ -380,7 +381,7 @@ class Psda extends BaseController
         $filename = 'calon_anggota.xlsx';
         $spreadsheet = new Spreadsheet();
 
-        $calon = $this->calon_anggota->getCalonAnggota();
+        $calon = $this->calon_anggota->findAll();
 
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No');
@@ -404,8 +405,8 @@ class Psda extends BaseController
             $sheet->setCellValue('B' . $row, $c['npm']);
             $sheet->setCellValue('C' . $row, $c['nama_lengkap']);
             $sheet->setCellValue('D' . $row, $c['nama_panggilan']);
-            $sheet->setCellValue('E' . $row, $c['nama_jurusan']);
-            $sheet->setCellValue('F' . $row, $c['nama_fakultas']);
+            $sheet->setCellValue('E' . $row, $c['jurusan']);
+            $sheet->setCellValue('F' . $row, $c['fakultas']);
             $sheet->setCellValue('G' . $row, $c['nomor_hp']);
             $sheet->setCellValue('H' . $row, $c['email']);
             $sheet->setCellValue('I' . $row, $c['asal_informasi']);
@@ -436,6 +437,26 @@ class Psda extends BaseController
         readfile($file);
 
         exit;
+    }
+
+    public function reset_calon()
+    {
+        $input = $this->request->getVar();
+        if ($input['confirm'] != $input['random']) {
+            session()->setFlashData('error', 'Kata tidak sama!');
+            return redirect()->to('psda/calon_anggota');
+        }
+        $query = "DELETE FROM calon_anggota";
+        $db = db_connect();
+
+
+        if (!$db->query($query)) {
+            session()->setFlashdata('error', 'Reset data gagal dilakukan!');
+            return redirect()->to('psda/calon_anggota');
+        }
+
+        session()->setFlashData('success', 'Reset data berhasil dilakukan');
+        return redirect()->to('psda/calon_anggota');
     }
     // End of Calon Anggota Function 
 
@@ -474,6 +495,54 @@ class Psda extends BaseController
             'nomor_anggota' => $this->request->getVar('nomor_anggota'),
         ]);
         session()->setFlashdata('pesan', 'Poin berhasil ditambah');
+        return redirect()->to('/psda/data_poin');
+    }
+
+    public function upload_poin()
+    {
+        $validation = [
+            'file'  => [
+                'rules' => 'uploaded[file]|ext_in[file,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Pilih file terlebih dahulu',
+                    'ext_in' => 'File yang diupload harus berupa xls atau xlsx'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validation)) {
+            session()->setFlashdata('pesan', $this->validator->listErrors());
+            return redirect()->to('/psda/data_poin');
+        }
+
+        $file = $this->request->getFile('file');
+
+        if ($file->getExtension() == 'xls') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else if ($file->getExtension() == 'xlsx') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } else {
+            session()->setFlashdata('pesan', 'File yang diupload harus berupa xls atau xlsx');
+            return redirect()->to('/psda/data_poin');
+        }
+
+        $spreadsheet = $reader->load($file);
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->removeRow(1);
+        $data = $sheet->toArray();
+        foreach ($data as $d) {
+
+            $poin = $this->data_poin->select('poin')->where('nomor_anggota', $d[0])->first();
+
+            if (!$this->data_poin->save([
+                'nomor_anggota' => $d[0],
+                'poin' => $poin['poin'] + $d[2],
+            ])) {
+                session()->setFlashdata('pesan', 'Kesalahan pada data ' . $d[1] . ' diupload');
+                return redirect()->to('/psda/data_poin');
+            }
+        }
+        session()->setFlashdata('pesan', 'Data poin berhasil diupload');
         return redirect()->to('/psda/data_poin');
     }
     // End of Poin Function
@@ -536,6 +605,55 @@ class Psda extends BaseController
         $this->referal->delete($nomor_anggota);
         session()->setFlashdata('pesan', 'Data berhasil dihapus');
         return redirect()->to('/psda/kode_referal');
+    }
+
+    public function download_referal()
+    {
+        $ref = $this->referal->select('data_anggota.nama_lengkap, data_anggota.nomor_anggota, referal.kode_referal')
+            ->selectCount('calon_anggota.kode_referal', 'jumlah')
+            ->join('data_anggota', 'data_anggota.nomor_anggota=referal.nomor_anggota')
+            ->join('calon_anggota', 'calon_anggota.kode_referal=referal.kode_referal', 'left')
+            ->groupBy('referal.kode_referal')
+            ->findAll();
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nama Lengkap');
+        $sheet->setCellValue('B1', 'Nomor Anggota');
+        $sheet->setCellValue('C1', 'Kode Referal');
+        $sheet->setCellValue('D1', 'Jumlah');
+        $i = 2;
+        foreach ($ref as $r) {
+            $sheet->setCellValue('A' . $i, $r['nama_lengkap']);
+            $sheet->setCellValue('B' . $i, $r['nomor_anggota']);
+            $sheet->setCellValue('C' . $i, $r['kode_referal']);
+            $sheet->setCellValue('D' . $i, $r['jumlah']);
+            $i++;
+        }
+
+        $filename = 'kode_referal.xlsx';
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('assets/download/document/' . $filename);
+        $file = 'assets/download/document/' . $filename;
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file));
+
+        flush();
+
+        readfile($file);
+
+        exit;
     }
     // End of Referal Function
 }

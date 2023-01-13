@@ -55,7 +55,7 @@ echo $this->section('main');
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-sm-5 text-column">Tanggal Kegiatan</div>
-                                    <div class="col-sm-7"><?= $kegiatan['tanggal_kegiatan'] ?></div>
+                                    <div class="col-sm-7"><?= date_format(date_create($kegiatan['tanggal_kegiatan']), 'd M Y')  ?></div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-sm-5 text-column">Tempat Kegiatan</div>

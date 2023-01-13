@@ -20,9 +20,9 @@ echo $this->section('main');
                             <div class="col d-flex justify-content-between align-items-center">
                                 <!-- Search Fiela -->
 
-                                <a href="<?= base_url('psda/add_referal') ?>" class="btn btn-success btn-sm text-white d-flex align-items-center me-2 rounded-3">
-                                    <ion-icon name="add-outline" class="fs-6 align-middle"></ion-icon>
-                                    <span class="align-middle">Add</span>
+                                <a href="<?= base_url('psda/download_referal') ?>" class="btn btn-success btn-sm text-white d-flex align-items-center me-2 rounded-3">
+                                    <i class="bi bi-download me-1"></i>
+                                    XLSX
                                 </a>
 
                                 <form action="<?= base_url('psda/kode_referal') ?>" method="POST" class="form w-25 col-10 d-flex align-items-center">
@@ -62,7 +62,6 @@ echo $this->section('main');
                                     <th scope="col">Kode Referal</th>
                                     <th scope="col">Jumlah</th>
                                     <th scope="col">Action</th>
-                                    <!-- <th scope="col">Jumlah</th> -->
                                 </thead>
                                 <tbody>
                                     <?php
