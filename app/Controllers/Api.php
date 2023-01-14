@@ -6,7 +6,8 @@ use App\Controllers\BaseController;
 
 class Api extends BaseController
 {
-    public function register(){
-        
+    public function index()
+    {
+        //
     }
 }

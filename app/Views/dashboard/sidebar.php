@@ -27,7 +27,7 @@
 
         <li class="nav-heading">Main</li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="<?= base_url('dashboard') ?>">
+            <a class="nav-link collapsed" href="<?= base_url('/') ?>">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -47,7 +47,7 @@
         </li>
 
         <?php
-        if (!in_groups('panitia')) {
+        if (user()->username != 'panitia') {
         ?>
             <li class="nav-item">
                 <div class="nav-heading">Pengurus</div>

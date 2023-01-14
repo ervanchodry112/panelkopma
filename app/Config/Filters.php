@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\FilterJWT;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -29,6 +30,7 @@ class Filters extends BaseConfig
         'login'         => LoginFilter::class,
         'role'          => RoleFilter::class,
         'permission'    => PermissionFilter::class,
+        'authentication' => FilterJWT::class,
     ];
 
     /**
@@ -76,6 +78,11 @@ class Filters extends BaseConfig
      * @var array
      */
     public $filters = [
-        'login' => ['before' => ['/', 'admin/*', 'administrasi/*', 'dashboard/*', 'keuangan/*', 'litbang/*', 'psda/*', 'usaha/*',],],
+        'login' => [
+            'before' => ['dashbooard', '/', 'admin/*', 'administrasi/*', 'dashboard/*', 'keuangan/*', 'litbang/*', 'psda/*', 'usaha/*',],
+        ],
+        'authentication' => [
+            'before' => ['api/*', 'api'],
+        ],
     ];
 }
