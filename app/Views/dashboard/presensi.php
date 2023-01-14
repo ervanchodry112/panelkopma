@@ -19,7 +19,11 @@ echo $this->section('main');
                     <div class="card-body">
 
                         <div class="row mx-2 my-3">
-                            <div class="col d-flex justify-content-between align-items-center">
+                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                <a href="<?= base_url('dashboard/add_participant/' . $kegiatan['id_kegiatan']) ?>" class="btn btn-sm btn-primary me-3">
+                                    <i class="bi bi-plus-circle me-1"></i>
+                                    Tambah Peserta
+                                </a>
                                 <a href="<?= base_url('dashboard/data_kegiatan') ?>" class="link text-reset d-flex align-items-center">
                                     <ion-icon name="arrow-back-outline"></ion-icon>
                                     <span class="mx-1">Back</span>
@@ -99,7 +103,9 @@ echo $this->section('main');
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="id_kegiatan" id="id_kegiatan" value="<?= $kegiatan['id_kegiatan'] ?>">
             <!-- Buat Konten Disini -->
+            <h1 id="test"></h1>
         </div>
     </section>
 </main>

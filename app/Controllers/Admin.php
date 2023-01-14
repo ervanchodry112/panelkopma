@@ -215,9 +215,13 @@ class Admin extends BaseController
 
     public function add_akun()
     {
+
+        $nomor = $this->data_anggota->select('nomor_anggota')->findAll();
+
         $data = [
             'title' => 'Tambah Akun Si Juko',
             'validation' => \Config\Services::validation(),
+            'nomor_anggota' => $nomor,
         ];
 
 
@@ -237,13 +241,7 @@ class Admin extends BaseController
                     'is_unique' => 'Nomor anggota sudah terdaftar.',
                 ],
             ],
-            'username' => [
-                'rules' => 'required|is_unique[akun.username]',
-                'errors' => [
-                    'required' => 'Username harus diisi',
-                    'is_unique' => 'Username sudah terdaftar',
-                ],
-            ],
+
             'password' => [
                 'rules' => 'required|min_length[4]',
                 'errors' => [
@@ -266,22 +264,22 @@ class Admin extends BaseController
         }
         $exist = $this->data_anggota->like('nomor_anggota', $input['nomor_anggota'])->first();
         if (!$exist) {
-            session()->setFlashdata('pesan', '<strong>Gagal!</strong> Nomor anggota tidak ditemukan.');
+            session()->setFlashdata('error', '<strong>Gagal!</strong> Nomor anggota tidak ditemukan.');
             return redirect()->to('/admin/add_akun');
         }
 
         $data = [
             'nomor_anggota' => $input['nomor_anggota'],
-            'username' => $input['username'],
+            'username' => substr($input['nomor_anggota'], 0, 4) . substr($input['nomor_anggota'], -2),
             'password' => password_hash($input['password'], PASSWORD_DEFAULT),
         ];
 
-        if (!$this->akun->insert($data)) {
-            session()->setFlashdata('pesan', '<strong>Gagal!</strong> Akun gagal ditambahkan.');
+        if (!$this->akun->insert($data, false)) {
+            session()->setFlashdata('error', '<strong>Gagal!</strong> Akun gagal ditambahkan.');
             return redirect()->to('/admin/add_akun');
         }
         // dd('berhasil');
-        session()->setFlashdata('pesan', '<strong>Berhasil!</strong> Akun berhasil ditambahkan.');
+        session()->setFlashdata('success', '<strong>Berhasil!</strong> Akun berhasil ditambahkan.');
         return redirect()->to('/admin/akun_juko');
     }
 

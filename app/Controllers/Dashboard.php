@@ -163,11 +163,12 @@ class Dashboard extends BaseController
 
     public function presensi($id)
     {
-        $presensi = $this->data_presensi->join('data_anggota', 'data_anggota.npm=presensi.id_data')
+        $presensi = $this->data_presensi->join('data_anggota', 'data_anggota.nomor_anggota=presensi.id_data')
             ->join('data_kegiatan', 'data_kegiatan.id_kegiatan=presensi.id_kegiatan')
             ->where('presensi.id_kegiatan', $id)->paginate(25, 'presensi');
 
         $kegiatan = $this->data_kegiatan->where('id_kegiatan', $id)->first();
+
 
         $tgl_kegiatan = new DateTime($kegiatan['tanggal_kegiatan']);
         $today = new DateTime();
@@ -185,7 +186,8 @@ class Dashboard extends BaseController
             'kegiatan' => $kegiatan,
             'status' => $status,
             'pager' => $this->data_presensi->pager,
-            'current_page' => $current_page
+            'current_page' => $current_page,
+
         ];
         return view('dashboard/presensi', $data);
     }
@@ -231,6 +233,38 @@ class Dashboard extends BaseController
         readfile($file);
 
         exit;
+    }
+
+    public function add_participant($id)
+    {
+        $nomor = $this->data_anggota->select('nomor_anggota')->orderBy('nomor_anggota', 'ASC')->findAll();
+
+        $data = [
+            'title' => 'Tambah Peserta',
+            'nomor' => $nomor,
+            'validation' => \Config\Services::validation(),
+            'id_kegiatan' => $id,
+        ];
+
+        return view('dashboard/add_participant', $data);
+    }
+
+    public function submit_presensi()
+    {
+        $input = $this->request->getVar();
+        $save = [
+            'id_kegiatan' => $input['id_kegiatan'],
+            'id_data' => $input['nomor_anggota'],
+            'waktu' => date('Y-m-d H:i:s'),
+        ];
+
+        if (!$this->data_presensi->save($save)) {
+            session()->setFlashdata('error', 'Data gagal ditambahkan');
+            return redirect()->to('/dashboard/presensi/' . $input['id_kegiatan']);
+        }
+
+        session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
+        return redirect()->to('/dashboard/presensi/' . $input['id_kegiatan']);
     }
 
     public function qr_code($id)

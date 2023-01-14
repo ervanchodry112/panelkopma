@@ -16,6 +16,27 @@ echo $this->section('main');
                     </div>
                     <div class="card-body my-3">
                         <!-- Buat Konten Disini -->
+
+
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <div class="ms-3">
+                                    <a href="<?= base_url('admin/add_akun') ?>" class="btn btn-sm btn-primary w-75 justify-content-center d-flex align-items-center">
+                                        <i class="bi bi-plus-circle me-1"></i>
+                                        Tambah Akun
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div class="col-4 ms-auto">
+                                <form action="<?= base_url('admin/akun_juko') ?>" method="post" class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-sm btn-white">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                    <input type="search" name="search" id="search" class="form-control rounded-pill" placeholder="Search" autocomplete="FALSE">
+                                </form>
+                            </div>
+                        </div>
                         <?php
                         if (session()->getFlashdata('success')) { ?>
                             <div class="row mx-1">
@@ -37,26 +58,6 @@ echo $this->section('main');
                         <?php
                         }
                         ?>
-
-                        <div class="row mb-2">
-                            <div class="col-3">
-                                <div class="ms-3">
-                                    <a href="<?= base_url('admin/add_akun') ?>" class="btn btn-sm btn-primary w-75 justify-content-center d-flex align-items-center">
-                                        <i class="bi bi-plus-circle me-1"></i>
-                                        Tambah Akun
-                                    </a>
-                                </div>
-
-                            </div>
-                            <div class="col-4 ms-auto">
-                                <form action="<?= base_url('admin/akun_juko') ?>" method="post" class="d-flex align-items-center">
-                                    <button type="submit" class="btn btn-sm btn-white">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                    <input type="search" name="search" id="search" class="form-control rounded-pill" placeholder="Search" autocomplete="FALSE">
-                                </form>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-12">
                                 <table class="table table-striped table-responsive tabel-data text-center w-100 fs-6" style="font-size: 12px;" id="tableData">

@@ -37,14 +37,15 @@ echo $this->section('main');
                         <?php
                         }
                         ?>
-                        <form action="<?= base_url('admin/save_akun') ?>" method="POST">
+                        <form action="<?= base_url('dashboard/submit_presensi') ?>" method="POST">
                             <?= csrf_field(); ?>
+                            <input type="hidden" name="id_kegiatan" id="id_kegiatan" value="<?= (old('id_kegiatan') ? old('id_kegiatan') : $id_kegiatan) ?>">
                             <div class="row m-3 w-75">
                                 <label for="nomor_anggota" class="col-sm-3 col-form-label">Nomor Anggota</label>
                                 <div class="col-sm-9">
                                     <select type="text" name="nomor_anggota" class="form-select text-uppercase <?= ($validation->hasError('nomor_anggota') ? 'is-invalid' : '') ?>" value="<?= old('nomor_anggota') ?>" id="_nomor_anggota">
                                         <?php
-                                        foreach ($nomor_anggota as $row) {
+                                        foreach ($nomor as $row) {
                                             echo "<option value='" . $row['nomor_anggota'] . "'>" . $row['nomor_anggota'] . "</option>";
                                         }
                                         ?>
@@ -53,28 +54,7 @@ echo $this->section('main');
                                         <?= $validation->getError('nomor_anggota') ?>
                                     </div>
                                 </div>
-
                             </div>
-
-                            <div class="row m-3 w-75">
-                                <label for="password" class="col-sm-3 col-form-label">Password</label>
-                                <div class="col-sm-9">
-                                    <input type="password" name="password" class="form-control <?= ($validation->hasError('password') ? 'is-invalid' : '') ?>" value="<?= old('password') ?>"" id=" password" placeholder="Password">
-                                    <div class="invalid-feedback">
-                                        <?= $validation->getError('password') ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row m-3 w-75">
-                                <label for="pass_confirm" class="col-sm-3 col-form-label">Confirm Password</label>
-                                <div class="col-sm-9">
-                                    <input type="password" name="pass_confirm" class="form-control <?= ($validation->hasError('pass_confirm') ? 'is-invalid' : '') ?>" value="<?= old('pass_confirm') ?>"" id=" pass_confirm" placeholder="Confirm Password">
-                                    <div class="invalid-feedback">
-                                        <?= $validation->getError('pass_confirm') ?>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="row ms-4 w-75">
                                 <button type="submit" class="col-3 me-2 btn btn-sm btn-primary">Tambah</button>
                                 <a href="<?= base_url('admin/akun_juko') ?>" class="col-3 btn btn-secondary btn-sm">Batal</a>
