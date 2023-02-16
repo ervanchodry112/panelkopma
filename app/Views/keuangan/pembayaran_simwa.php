@@ -73,7 +73,7 @@ echo $this->section('main');
                                                 echo "-";
                                             } else {
                                             ?>
-                                                <a target="blank" href="" class="btn btn-sm btn-primary">
+                                                <a target="blank" href="<?= base_url('assets/uploads/img/bukti_simwa/' . $d['bukti_pembayaran']) ?>" class="btn btn-sm btn-primary">
                                                     <span clas>
                                                         <ion-icon name="eye-outline"></ion-icon>
                                                     </span>

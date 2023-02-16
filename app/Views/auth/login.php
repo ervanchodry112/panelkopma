@@ -17,7 +17,7 @@ echo $this->section('sidebar');
 
                             <div class="card-body ">
                                 <div class="pt-4 pb-2 text-center">
-                                    <img src="/img/logo-kopma-unila.png" width="60rem" alt="Kopma Unila">
+                                    <img src="<?= base_url('/img/logo-kopma-unila.png') ?>" width="60rem" alt="Kopma Unila">
                                     <h5 class="card-title text-center pb-0 fs-4"><?= lang('Auth.loginTitle') ?></h5>
                                 </div>
                                 <?= view('Myth\Auth\Views\_message_block') ?>

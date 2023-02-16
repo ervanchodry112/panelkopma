@@ -16,7 +16,7 @@ function getJWT($header)
 function validateJWT($encodedToken)
 {
     $key = getenv('JWT_SECRET_KEY');
-    $decodedToken = JWT::decode($encodedToken, $key, array('HS256'));
+    $decodedToken = JWT::decode($encodedToken, $key, ['HS256']);
     $akun = new SiJukoAccount();
 
     $data = $akun->where('username', $decodedToken->username)->first();
@@ -38,7 +38,7 @@ function createJWT($username)
         'nomor_anggota' => $data->nomor_anggota,
         'username'  => $username,
         'iat'       => $waktu_req,
-        'exp'       => $waktu_exp,
+        // 'exp'       => $waktu_exp,
     ];
 
     $jwt = JWT::encode($payload, getenv('JWT_SECRET_KEY'), 'HS256');

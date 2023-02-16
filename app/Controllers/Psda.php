@@ -72,7 +72,7 @@ class Psda extends BaseController
             $anggota = $this->data_anggota
                 ->like('data_anggota.npm', $search)->orLike('data_anggota.nama_lengkap', $search)
                 ->orLike('data_anggota.nomor_anggota', $search)
-                ->paginate(25, 'data_anggota');
+                ->paginate(50, 'data_anggota');
         } else {
             $anggota = $this->data_anggota->paginate(50, 'data_anggota');
         }
@@ -240,11 +240,12 @@ class Psda extends BaseController
         return redirect()->to('/psda/data_anggota');
     }
 
-    public function edit_anggota($npm)
+    public function edit_anggota()
     {
+        $nomor_anggota = $this->request->getVar('nomor_anggota');
         $data = [
             'title' => 'Edit Data Anggota',
-            'anggota' => $this->data_anggota->where('data_anggota.npm', $npm)->first(),
+            'anggota' => $this->data_anggota->where('nomor_anggota', $nomor_anggota)->first(),
             'validation' => \Config\Services::validation(),
         ];
         return view('/psda/edit_anggota', $data);
@@ -252,7 +253,8 @@ class Psda extends BaseController
 
     public function update_anggota()
     {
-        $this->data_anggota->save([
+
+        if (!$this->data_anggota->save([
             'npm' => $this->request->getVar('npm'),
             'nomor_anggota' => $this->request->getVar('nomor_anggota'),
             'nama_lengkap' => $this->request->getVar('nama'),
@@ -262,10 +264,60 @@ class Psda extends BaseController
             'keanggotaan' => $this->request->getVar('keanggotaan'),
             'jurusan' => $this->request->getVar('jurusan'),
             'fakultas' => $this->request->getVar('fakultas'),
-        ]);
-        session()->setFlashdata('pesan', 'Data berhasil diudpate');
+        ])) {
+            session()->setFlashdata('error', 'Data gagal diudpate');
+            return redirect()->to('/psda/data_anggota');
+        }
+        session()->setFlashdata('success', 'Data berhasil diudpate');
         return redirect()->to('/psda/data_anggota');
     }
+
+    public function upload_calon_anggota()
+    {
+        // dd($this->request->getVar());
+        $file = $this->request->getFile('csv');
+        // dd($file);
+        if ($file->getExtension() == 'xlsx') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } else if ($file->getExtension() == 'xls') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        }
+
+        $spreadsheet = $reader->load($file);
+        $spreadsheet->setActiveSheetIndex(0);
+        $spreadsheet->getActiveSheet()->removeRow(1);
+        $spreadsheet = $spreadsheet->getActiveSheet()->toArray();
+
+        foreach ($spreadsheet as $s) {
+            $save = [
+                'npm'               => $s[0],
+                'nama_lengkap'      => $s[1],
+                'nama_panggilan'    => $s[2],
+                'jurusan'           => $s[3],
+                'fakultas'          => $s[4],
+                'nomor_hp'          => $s[5],
+                'email'             => $s[6],
+                'asal_informasi'    => $s[7],
+                'domisili'          => $s[8],
+                'alasan'            => $s[9],
+                'kode_referal'      => $s[10],
+            ];
+
+
+            if (!$this->calon_anggota->insert($save, false)) {
+
+
+
+
+                session()->setFlashdata('error', 'Data gagal ditambahkan');
+                return redirect()->to('/psda/calon_anggota');
+            }
+        }
+
+        session()->setFlashdata('success', 'Data berhasil diupload');
+        return redirect()->to('/psda/calon_anggota');
+    }
+
 
     public function upload_anggota()
     {
@@ -396,8 +448,9 @@ class Psda extends BaseController
         $sheet->setCellValue('J1', 'Domisili');
         $sheet->setCellValue('K1', 'Tempat Lahir');
         $sheet->setCellValue('L1', 'Tanggal Lahir');
-        $sheet->setCellValue('M1', 'Alasan Masuk Kopma');
-        $sheet->setCellValue('N1', 'Kode Referal');
+        $sheet->setCellValue('M1', 'Jenis Kelamin');
+        $sheet->setCellValue('N1', 'Alasan Masuk Kopma');
+        $sheet->setCellValue('O1', 'Kode Referal');
         $row = 2;
 
         foreach ($calon as $c) {
@@ -413,8 +466,9 @@ class Psda extends BaseController
             $sheet->setCellValue('J' . $row, $c['domisili']);
             $sheet->setCellValue('K' . $row, $c['tempat_lahir']);
             $sheet->setCellValue('L' . $row, $c['tanggal_lahir']);
-            $sheet->setCellValue('M' . $row, $c['alasan']);
-            $sheet->setCellValue('N' . $row, $c['kode_referal']);
+            $sheet->setCellValue('M' . $row, $c['jenis_kelamin']);
+            $sheet->setCellValue('N' . $row, $c['alasan']);
+            $sheet->setCellValue('O' . $row, $c['referal']);
             $row++;
         }
         $writer = new Xlsx($spreadsheet);
@@ -463,12 +517,62 @@ class Psda extends BaseController
     // Poin Function
     public function data_poin()
     {
-        $poin = $this->data_poin->getPoin();
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $poin = $this->data_poin->join('data_anggota', 'data_anggota.nomor_anggota=data_poin.nomor_anggota')
+                ->join('data_simpanan', 'data_simpanan.nomor_anggota=data_anggota.nomor_anggota')
+                ->select('data_poin.poin, data_anggota.nomor_anggota, data_anggota.nama_lengkap, data_anggota.nomor_anggota, data_simpanan.simpanan_wajib')
+                ->like('data_anggota.nama_lengkap', $search)->orLike('data_poin.nomor_anggota', $search)->findAll();
+        } else {
+            $poin = $this->data_poin->getPoin();
+        }
         $data = [
             'title' => 'Data Poin',
             'data' => $poin
         ];
         return view('psda/data_poin', $data);
+    }
+
+    public function download_poin()
+    {
+        $ref = $this->data_poin->getPoin();
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nama Lengkap');
+        $sheet->setCellValue('B1', 'Nomor Anggota');
+        $sheet->setCellValue('C1', 'Poin');
+        $i = 2;
+        foreach ($ref as $r) {
+            $sheet->setCellValue('A' . $i, $r['nama_lengkap']);
+            $sheet->setCellValue('B' . $i, $r['nomor_anggota']);
+            $sheet->setCellValue('C' . $i, $r['poin'] + (int) (($r['simpanan_wajib'] / 10000) * 3));
+            $i++;
+        }
+
+        $filename = 'poin.xlsx';
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('assets/download/document/' . $filename);
+        $file = 'assets/download/document/' . $filename;
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file));
+
+        flush();
+
+        readfile($file);
+
+        exit;
     }
 
     public function add_value($seg1, $seg2, $seg3)

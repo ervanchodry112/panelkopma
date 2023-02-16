@@ -116,12 +116,19 @@ class AuthApi extends BaseController
             return $this->fail('Password Salah', 400);
         }
 
+        $data = $this->data_anggota->where('nomor_anggota', $cek->nomor_anggota)->first();
+
         helper('jwt');
         $response = [
             'status' => 200,
             'error' => null,
             'messages' => 'Berhasil Login',
-            'data' => $cek,
+            'data' => [
+                'nomor_anggota' => $data['nomor_anggota'],
+                'nama' => $data['nama_lengkap'],
+                'username' => $username,
+                'jurusan' => $data['jurusan'],
+            ],
             'access_token' => createJWT($username)
         ];
 

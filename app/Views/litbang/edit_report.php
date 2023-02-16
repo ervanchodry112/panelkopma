@@ -24,7 +24,7 @@ echo $this->section('main');
                     <div class="card-body">
                         <!-- Buat Konten Disini -->
 
-                        <form action="<?= base_url('litbang/save_report') ?>" method="POST" enctype="multipart/form-data">
+                        <form action="<?= base_url('litbang/update_report') ?>" method="POST" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
                             <input type="hidden" name="id_laporan" value="<?= $laporan['id_laporan'] ?>">
                             <input type="hidden" name="file_lama" value="<?= $laporan['file'] ?>">
@@ -67,20 +67,20 @@ echo $this->section('main');
                     </div>
                 </div>
                 <div class="row m-3 w-75">
+                    <label for="jumlah_responden" class="col-sm-3 col-form-label">Jumlah Responden</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="jumlah_responden" id="jumlah_responden" placeholder="0" class="form-control <?= ($validation->hasError('jumlah_responden') ? 'is-invalid' : '') ?>" value="<?= old('jumlah_responden') ? old('jumlah_responden') : $laporan['jumlah_responden'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('jumlah_responden') ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-3 w-75">
                     <label for="file" class="col-sm-3 col-form-label">Upload File</label>
                     <div class="col-sm-9">
                         <input type="file" name="file" id="file" class="form-control <?= ($validation->hasError('file') ? 'is-invalid' : '') ?>" value="<?= old('file') ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError('file') ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-3 w-75">
-                    <label for="jumlah_responden" class="col-sm-3 col-form-label">Jumlah Responden</label>
-                    <div class="col-sm-9">
-                        <input type="number" name="jumlah_responden" id="jumlah_responden" placeholder="0" class="form-control <?= ($validation->hasError('jumlah_responden') ? 'is-invalid' : '') ?>" value="<?= old('jumlah_responden') ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('jumlah_responden') ?>
                         </div>
                     </div>
                 </div>

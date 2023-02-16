@@ -70,7 +70,6 @@
                                     </tr>
                                 <?php } ?>
                             </table>
-                            <?= $pager->links('data_anggota', 'custom_pagination') ?>
                         </div>
                     </div>
                 </div>

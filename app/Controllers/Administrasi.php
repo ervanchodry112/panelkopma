@@ -25,9 +25,9 @@ class Administrasi extends BaseController
         $search = $this->request->getVar('search');
         if ($search) {
             $surat_masuk = $this->surat_masuk->like('no_surat', $search)->orLike('asal_surat', $search)
-                ->orLike('isi_surat', $search)->findAll();
+                ->orLike('isi_surat', $search)->orderBy('tgl_surat', 'DESC')->findAll();
         } else {
-            $surat_masuk = $this->surat_masuk->findAll();
+            $surat_masuk = $this->surat_masuk->orderBy('tgl_surat', 'DESC')->findAll();
         }
 
         $data = [
@@ -258,9 +258,9 @@ class Administrasi extends BaseController
         $search = $this->request->getVar('search');
         if ($search) {
             $surat_keluar = $this->surat_keluar->like('no_surat', $search)->orLike('tujuan', $search)
-                ->orLike('isi_surat', $search)->findAll();
+                ->orLike('isi_surat', $search)->orderBy('tgl_surat', 'DESC')->findAll();
         } else {
-            $surat_keluar = $this->surat_keluar->findAll();
+            $surat_keluar = $this->surat_keluar->orderBy('tgl_surat', 'DESC')->findAll();
         }
 
         $data = [

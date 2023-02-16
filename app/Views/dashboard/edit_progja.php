@@ -16,7 +16,33 @@ echo $this->section('main');
                     </div>
                     <div class="card-body my-3">
                         <!-- Buat Konten Disini -->
-                        <form action="<?= base_url('dashboard/save_progja') ?>" method="POST">
+                        <?php
+                        if (session()->getFlashdata('success')) {
+                        ?>
+                            <div class="row mx-2">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <?= session()->getFlashData('success') ?>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        <?php
+                            session()->remove('success');
+                        }
+                        ?>
+                        <?php
+                        if (session()->getFlashdata('error')) {
+                        ?>
+                            <div class="row mx-2">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?= session()->getFlashData('error') ?>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        <?php
+                            session()->remove('error');
+                        }
+                        ?>
+                        <form action="<?= base_url('dashboard/save_edit_progja') ?>" method="POST">
                             <?= csrf_field(); ?>
                             <input type="hidden" name="id" value="<?= (old('id') ? old('id') : $progja->id) ?>">
                             <div class="row m-3 w-75">

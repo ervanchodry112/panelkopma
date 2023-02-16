@@ -52,16 +52,29 @@ echo $this->section('main');
                             </div>
                         </div>
                         <?php
-                        if (session()->getFlashdata('pesan')) {
+                        if (session()->getFlashdata('success')) {
                         ?>
                             <div class="row mx-2">
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <?= session()->getFlashData('pesan') ?>
+                                    <?= session()->getFlashData('success') ?>
                                     <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             </div>
                         <?php
-                            session()->remove('pesan');
+                            session()->remove('success');
+                        }
+                        ?>
+                        <?php
+                        if (session()->getFlashdata('error')) {
+                        ?>
+                            <div class="row mx-2">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?= session()->getFlashData('error') ?>
+                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        <?php
+                            session()->remove('error');
                         }
                         ?>
                         <table class="table text-center table-striped table-responsive fs-6 align-middle">

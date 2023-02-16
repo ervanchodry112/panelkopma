@@ -85,10 +85,14 @@
                                 <?php
                                 $i = 1 + (25 * ($current_page - 1));
                                 foreach ($simpanan as $d) {
-                                    // dd($d['tgl_diksar']);
                                     $tagihan = 0;
                                     if ($d['tgl_diksar'] < '2022-01-01') {
-                                        $tagihan = date_diff(date_create($d['tgl_diksar']), date_create('2022-01-01'))->m * 5000;
+                                        $date1 = $d['tgl_diksar'];
+                                        $date2 = '2022-01-01';
+                                        $diff = abs(strtotime($date1) - strtotime($date2));
+                                        $month = floor($diff / (30 * 60 * 60 * 24));
+                                        $tagihan = $month * 5000;
+
                                         $month = abs($date->difference('2022-01-01')->getMonths());
                                     } else {
                                         $month = abs($date->difference($d['tgl_diksar'])->getMonths());

@@ -47,6 +47,8 @@ $routes->delete('/psda/delete_calon/(:num)', 'Psda::delete_calon/$1');
 $routes->delete('/psda/delete_anggota/(:any)', 'Psda::delete_anggota/$1');
 $routes->delete('/psda/delete_referal/(:any)', 'Psda::delete_referal/$1');
 
+$routes->post('/api/update_biodata', 'Api::update_biodata');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -27,6 +27,7 @@ class Litbang extends BaseController
     public function hasil_survey()
     {
         $laporan = $this->hasil_survey->findAll();
+        // dd($laporan);
         $data = [
             'title' => 'Hasil Survey',
             'laporan' => $laporan
@@ -49,8 +50,11 @@ class Litbang extends BaseController
 
         unlink('assets/uploads/document/hasil_survey/' . $laporan['file']);
 
-        $this->hasil_survey->delete($id_laporan);
-        session()->setFlashdata('pesan', 'Data berhasil dihapus');
+        if (!$this->hasil_survey->delete($id_laporan)) {
+            session()->setFlashdata('error', 'Data gagal dihapus');
+            return redirect()->to('/litbang/hasil_survey');
+        }
+        session()->setFlashdata('success', 'Data berhasil dihapus');
         return redirect()->to('/litbang/hasil_survey');
     }
 
@@ -171,7 +175,7 @@ class Litbang extends BaseController
             ]
 
         ])) {
-            return redirect()->to('/litbang/edit_report' . $this->request->getVar('id_laporan'))->withInput();
+            return redirect()->to('/litbang/edit_report/' . $this->request->getVar('id_laporan'))->withInput();
         }
 
         $file = $this->request->getFile('file');
@@ -184,14 +188,21 @@ class Litbang extends BaseController
             unlink('assets/uploads/document/hasil_survey/' . $this->request->getVar('file_lama'));
         }
 
-        $this->hasil_survey->save([
+        if (!$this->hasil_survey->save([
+            'id_laporan'    => $this->request->getVar('id_laporan'),
             'nama_survey' => $this->request->getVar('nama_survey'),
             'deskripsi' => $this->request->getVar('deskripsi'),
             'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
             'tanggal_selesai' => $this->request->getVar('tanggal_selesai'),
             'jumlah_responden' => $this->request->getVar('jumlah_responden'),
             'file' => $fileName
-        ]);
+        ])) {
+            session()->setFlashdata('error', 'Gagal mengubah data');
+            return redirect()->to('/litbang/edit_report/' . $this->request->getVar('id_laporan'))->withInput();
+        }
+
+        session()->setFlashdata('success', 'Data berhasil diubah');
+        return redirect()->to('/litbang/hasil_survey');
     }
 
     public function view_report($name)

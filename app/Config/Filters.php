@@ -82,7 +82,7 @@ class Filters extends BaseConfig
             'before' => ['dashbooard', '/', 'admin/*', 'administrasi/*', 'dashboard/*', 'keuangan/*', 'litbang/*', 'psda/*', 'usaha/*',],
         ],
         'authentication' => [
-            'before' => ['api/*', 'api'],
+            // 'before' => ['api/*', 'api'],
         ],
     ];
 }

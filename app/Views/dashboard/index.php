@@ -106,7 +106,7 @@ echo $this->section('main');
                                             <td><?= $k['nama_kegiatan'] ?></td>
                                             <td><?= date_format(date_create($k['tanggal_kegiatan']), 'd M Y')  ?></td>
                                             <td><?= $k['tempat_kegiatan'] ?></td>
-                                            <td><?= $k['peserta'] ?></td>
+                                            <td><?= $k['jumlah_peserta'] ?></td>
                                         </tr>
                                     <?php
                                     }

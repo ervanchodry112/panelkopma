@@ -10,10 +10,10 @@ class HasilSurveyModel extends Model
     protected $primaryKey       = 'id_laporan';
     protected $useAutoIncrement = false;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $allowedFields    = [
         'id_laporan', 'nama_survey', 'deskripsi', 'tanggal_mulai', 'tanggal_selesai',
-        'file', 'jumlah_responden', 'created_at', 'updated_at', 'deleted_at'
+        'file', 'jumlah_responden',
     ];
 
     // Dates

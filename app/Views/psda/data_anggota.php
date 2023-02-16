@@ -70,7 +70,7 @@
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <?php $i = 1 + (25 * ($currentPage - 1));
+                                <?php $i = 1 + (50 * ($currentPage - 1));
                                 foreach ($anggota as $d) { ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>
@@ -93,9 +93,13 @@
                                                             <ion-icon name="trash-outline"></ion-icon>
                                                         </button>
                                                     </form>
-                                                    <a href="<?= base_url('psda/edit_anggota/' . $d['npm']) ?>" type="button" class="ms-2 btn btn-sm btn-warning">
-                                                        <ion-icon name="create-outline"></ion-icon>
-                                                    </a>
+                                                    <form action="<?= base_url('psda/edit_anggota') ?>" method="post">
+                                                        <input type="hidden" name="nomor_anggota" value="<?= $d['nomor_anggota'] ?>">
+                                                        <button type="submit" class="ms-2 btn btn-sm btn-warning">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                    </form>
+
                                                 </div>
                                             </div>
                                         </td>

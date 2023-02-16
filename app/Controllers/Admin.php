@@ -35,11 +35,10 @@ class Admin extends BaseController
     public function data_user()
     {
         $user = $this->data_user->join('auth_groups_users', 'auth_groups_users.user_id=users.id')
-            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')->paginate(10, 'users');
+            ->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id')->findAll();
         $data = [
             'title' => 'Data User',
             'user' => $user,
-            'pager' => $this->data_user->pager,
         ];
 
         return view('/dashboard/data_user', $data);

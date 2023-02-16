@@ -9,7 +9,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <div class="logo d-flex align-items-center">
-            <img src="/img/logo-kopma-unila.png" alt="Kopma Unila" />
+            <img src="<?= base_url('/img/logo-kopma-unila.png') ?>" alt="Kopma Unila" />
             <span class="d-none d-lg-block">Kopma Unila</span>
         </div>
         <i class="bi bi-list toggle-sidebar-btn"></i>

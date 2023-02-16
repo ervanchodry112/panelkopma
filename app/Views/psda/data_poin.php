@@ -25,12 +25,18 @@ echo $this->section('main');
                                         <i class="bi bi-upload me-1"></i>
                                         XLSX
                                     </button>
+
                                     <!-- Search Field -->
+
                                     <ion-icon name="search-outline" class="ms-auto"></ion-icon>
-                                    <form class="form w-25">
-                                        <input type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
+                                    <form class=" form w-25">
+                                        <input name="search" type="search" class="form-control d-flex rounded-pill ms-1" style="height: 28px;" placeholder="Search" aria-label="Search" id="fieldSearch" autocomplete="off">
                                     </form>
                                     <!-- Search Field -->
+                                    <a href="<?= base_url('psda/download_poin') ?>" class="btn btn-success btn-sm text-white d-flex ms-3 align-items-center me-2 rounded-3">
+                                        <i class="bi bi-download me-1"></i>
+                                        XLSX
+                                    </a>
                                 </div>
                             </div>
                         </div>

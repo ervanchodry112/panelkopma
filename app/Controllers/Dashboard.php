@@ -60,11 +60,12 @@ class Dashboard extends BaseController
         $kegiatan = $this->data_kegiatan->where('tanggal_kegiatan >', Time::now('Asia/Jakarta', 'id_ID'))
             ->orderBy('tanggal_kegiatan', 'ASC')->findAll();
 
-        $kegiatan_selesai = $this->data_presensi->selectCount('presensi.id_data', 'peserta')
-            ->groupBy('data_kegiatan.id_kegiatan')
+        $kegiatan_selesai = $this->data_presensi->selectCount('presensi.id_data', 'jumlah_peserta')
             ->select('data_kegiatan.nama_kegiatan, data_kegiatan.tanggal_kegiatan, data_kegiatan.tempat_kegiatan')
-            ->join('data_kegiatan', 'presensi.id_kegiatan=presensi.id_data', 'right')
+            ->groupBy('data_kegiatan.id_kegiatan')
+            ->join('data_kegiatan', 'data_kegiatan.id_kegiatan=presensi.id_kegiatan', 'right')
             ->where('data_kegiatan.tanggal_kegiatan <', Time::now('Asia/Jakarta', 'id_ID'))
+            ->orderBy('data_kegiatan.tanggal_kegiatan', 'DESC')
             ->findAll();
 
         // dd($kegiatan_selesai);
@@ -196,8 +197,10 @@ class Dashboard extends BaseController
     {
         $spreadsheet = new Spreadsheet();
 
-        $presensi = $this->data_presensi->getPresensi($id);
-        $kegiatan = $this->data_kegiatan->getKegiatan($id);
+        $presensi = $this->data_presensi->join('data_anggota', 'data_anggota.nomor_anggota=presensi.id_data', 'left')
+            ->join('data_kegiatan', 'data_kegiatan.id_kegiatan=presensi.id_kegiatan')
+            ->where('presensi.id_kegiatan', $id)->findAll();
+        $kegiatan = $this->data_kegiatan->where('id_kegiatan', $id)->first();
         $filename = 'Presensi_' . $kegiatan['nama_kegiatan'] . '_' . $kegiatan['tanggal_kegiatan'] . '.xlsx';
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No');
@@ -362,7 +365,7 @@ class Dashboard extends BaseController
         } else {
             $tahun = Time::now()->getYear();
         }
-        if (user()->username == 'admin' || user()->username == 'ketua_umum' || user()->username == 'badan_pengawas') {
+        if (user()->username == 'admin' || user()->username == 'ketum' || user()->username == 'badanpengawas') {
             if ($search) {
                 $program_kerja = $this->progja->select('program_kerja.id, program_kerja.tahun, program_kerja.nama_program, program_kerja.proposal, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->like('nama_program', $search)
@@ -439,41 +442,23 @@ class Dashboard extends BaseController
             ],
         ];
 
-        $edit = isset($input['id']);
-
-        // dd($edit);
-
         if (!$this->validate($validation)) {
-            return redirect()->to(site_url('dashboard/' . ($edit ? 'edit_progja' : 'add_progja')))->withInput();
+            return redirect()->to(site_url('dashboard/add_progja'))->withInput();
         }
 
+        $save = [
+            'nama_program'          => $input['nama_program'],
+            'deskripsi'             => $input['deskripsi'],
+            'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
+            'user'                  => user()->id,
+            'tahun'                 => $input['tahun'],
+            'status'                => 'Belum Terlaksana',
+        ];
 
-        if ($edit) {
-            $save = [
-                'id'                    => $input['id'],
-                'nama_program'          => $input['nama_program'],
-                'deskripsi'             => $input['deskripsi'],
-                'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
-                'user'                  => user()->id,
-                'tahun'                 => $input['tahun'],
-            ];
-            if (in_groups('admin')) {
-                $save['status'] = $input['status'];
-            }
-        } else {
-            $save = [
-                'nama_program'          => $input['nama_program'],
-                'deskripsi'             => $input['deskripsi'],
-                'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
-                'user'                  => user()->id,
-                'tahun'                 => $input['tahun'],
-                'status'                => 'Belum Terlaksana',
-            ];
-        }
 
         if (!$this->progja->save($save)) {
-            session()->setFlashdata('error', 'Gagal Menambahkan Program Kerja');
-            return redirect()->to(site_url('dashboard/' . ($edit ? 'edit_progja' : 'add_progja')));
+            session()->setFlashdata('error', 'Gagal Menyimpan Program Kerja');
+            return redirect()->to('dashboard/add_progja')->withInput();
         }
 
         session()->setFlashdata('success', 'Berhasil Menambahkan Program Kerja');
@@ -493,12 +478,65 @@ class Dashboard extends BaseController
         return view('/dashboard/edit_progja', $data);
     }
 
+    public function save_edit_progja()
+    {
+        $input = $this->request->getVar();
+
+        $validation = [
+            'nama_program' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama Program Kerja harus diisi'
+                ]
+            ],
+            'deskripsi' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Deskripsi Program Kerja harus diisi'
+                ]
+            ],
+            'rencana_pelaksanaan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Rencana Pelaksanaan Program Kerja harus diisi'
+                ]
+            ],
+        ];
+
+        if (!$this->validate($validation)) {
+            dd($this->validator->getErrors());
+            return redirect()->to(site_url('dashboard/edit_progja'))->withInput();
+        }
+
+
+        $save = [
+            'id'                    => $input['id'],
+            'nama_program'          => $input['nama_program'],
+            'deskripsi'             => $input['deskripsi'],
+            'rencana_pelaksanaan'   => $input['rencana_pelaksanaan'],
+        ];
+        if (in_groups('admin')) {
+            $save['status'] = $input['status'];
+        }
+
+
+        if (!$this->progja->save($save)) {
+            session()->setFlashdata('error', 'Gagal Menyimpan Program Kerja');
+            return redirect()->to('dashboard/edit_progja')->withInput();
+        }
+
+        session()->setFlashdata('success', 'Berhasil Menyimpan Program Kerja');
+        return redirect()->to(site_url('dashboard/program_kerja'));
+    }
+
     public function delete_progja()
     {
         $id = $this->request->getVar('id');
         $progja = $this->progja->where('id', $id)->first();
-        unlink('assets/uploads/document/proposal/' . $progja->proposal);
-        unlink('assets/uploads/document/lpj/' . $progja->lpj);
+        if ($progja->proposal != null || $progja->lpj != null) {
+            unlink('assets/uploads/document/proposal/' . $progja->proposal);
+            unlink('assets/uploads/document/lpj/' . $progja->lpj);
+        }
         if (!$this->progja->where('id', $id)->delete()) {
             session()->setFlashdata('error', 'Gagal Menghapus Program Kerja');
             return redirect()->to(site_url('dashboard/program_kerja'));

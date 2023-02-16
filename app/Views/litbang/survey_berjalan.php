@@ -98,21 +98,21 @@ echo $this->section('main');
                                                 </div>
                                             </td>
                                             <td>
-                                                <form action="/litbang/edit_survey/" method="post" class="d-inline">
+                                                <form action="<?= base_url('/litbang/edit_survey') ?>" method="post" class="d-inline">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" value="<?= $s->id ?>" name="id">
                                                     <button type="submit" class="btn btn-warning btn-sm">
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
                                                 </form>
-                                                <form action="/litbang/finish_survey" method="post" class="d-inline">
+                                                <form action="<?= base_url('/litbang/finish_survey') ?>" method="post" class="d-inline">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="id" value="<?= $s->id ?>">
                                                     <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Apakah anda yakin?');">
                                                         <i class="bi bi-check"></i>
                                                     </button>
                                                 </form>
-                                                <form action="/litbang/delete_survey?id=<?= $s->id; ?>" method="post" class="d-inline">
+                                                <form action="<?= base_url('/litbang/delete_survey?id=' . $s->id) ?>" method="post" class="d-inline">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin?');">
