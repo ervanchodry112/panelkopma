@@ -105,7 +105,7 @@
 <body>
 
     <!-- Ganti nomor wa di bawah sesuai nomor cp tiap periode -->
-    <a href="https://wa.me/6288268006207" target="blank" id="call-me" class="btn btn-success position-absolute rounded-circle fs-4 position-sticky">
+    <a href="https://wa.me/6289627057971" target="blank" id="call-me" class="btn btn-success position-absolute rounded-circle fs-4 position-sticky">
         <ion-icon name="logo-whatsapp"></ion-icon>
     </a>
     <!-- TODO: Create a sticky whatsapp button for more information-->

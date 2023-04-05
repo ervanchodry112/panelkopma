@@ -57,7 +57,7 @@ class Keuangan extends BaseController
 
     public function pembayaran_simwa()
     {
-        $simwa = $this->bayar_simwa->join('data_anggota', 'data_anggota.nomor_anggota=pembayaran_simwa.nomor_anggota')->paginate(25, 'pembayaran_simwa');
+        $simwa = $this->bayar_simwa->join('data_anggota', 'data_anggota.nomor_anggota=pembayaran_simwa.nomor_anggota')->orderBy('id_pembayaran', 'DESC')->paginate(25, 'pembayaran_simwa');
         $current_page = $this->request->getVar('page_pembayaran_simwa') ? $this->request->getVar('page_pembayaran_simwa') : 1;
         $data = [
             'title' => 'Pembayaran Simpanan Wajib',
@@ -95,7 +95,7 @@ class Keuangan extends BaseController
             'nomor_anggota' => $nomor_anggota,
             'nominal' => $this->request->getVar('nominal'),
             'status' => 1,
-            'bukti_pembayaran' => '-'
+            'bukti_pembayaran' => '-',
         ]);
 
         // $this->bayar_simwa->c
@@ -110,11 +110,16 @@ class Keuangan extends BaseController
         // $npm = $this->data_anggota->select('npm')->where('nomor_anggota', $temp['nomor_anggota'])->first();
         $simpanan_lama = $this->data_simpanan->where('nomor_anggota', $temp['nomor_anggota'])->first();
         $simwa = $simpanan_lama['simpanan_wajib'] + $temp['nominal'];
+        $tagihan = $simpanan_lama['tagihan'] - $temp['nominal'];
+        if ($tagihan <= 0) {
+            $tagihan = 0;
+        }
         $this->bayar_simwa->update($id, [
             'status' => 3
         ]);
         $this->data_simpanan->update($temp['nomor_anggota'], [
             'simpanan_wajib' => $simwa,
+            'tagihan' => $tagihan,
         ]);
         return redirect()->to('/keuangan/pembayaran_simwa');
     }
@@ -150,6 +155,7 @@ class Keuangan extends BaseController
                 'nomor_anggota' => $s[1],
                 'simpanan_pokok' => $s[2],
                 'simpanan_wajib'    => $s[3],
+                'tagihan' => $s[4],
             ];
 
             if (!$this->data_simpanan->save($save)) {
@@ -191,7 +197,6 @@ class Keuangan extends BaseController
             } else {
                 $month = abs($date->difference($c['tgl_diksar'])->getMonths());
             }
-            $tagihan = ($tagihan + ($month * 10000)) - $c['simpanan_wajib'];
 
             $sheet->setCellValue('A' . $row, $i++);
             $sheet->setCellValue('B' . $row, $c['nama_lengkap']);
@@ -200,7 +205,7 @@ class Keuangan extends BaseController
             $sheet->setCellValue('E' . $row, $c['simpanan_pokok']);
             $sheet->setCellValue('F' . $row, $c['simpanan_wajib']);
             $sheet->setCellValue('G' . $row, $c['simpanan_pokok'] + $c['simpanan_wajib']);
-            $sheet->setCellValue('H' . $row, $tagihan);
+            $sheet->setCellValue('H' . $row, $c['tagihan'] == null ? '0' : $c['tagihan']);
             $row++;
         }
 

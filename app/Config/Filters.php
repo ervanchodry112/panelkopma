@@ -79,7 +79,7 @@ class Filters extends BaseConfig
      */
     public $filters = [
         'login' => [
-            'before' => ['dashbooard', '/', 'admin/*', 'administrasi/*', 'dashboard/*', 'keuangan/*', 'litbang/*', 'psda/*', 'usaha/*',],
+            'before' => ['dashbooard', '/', 'admin/*', 'administrasi/*', 'dashboard/*', 'keuangan/*', 'litbang/*', 'psda/*', 'usaha/*', 'humas/*'],
         ],
         'authentication' => [
             // 'before' => ['api/*', 'api'],

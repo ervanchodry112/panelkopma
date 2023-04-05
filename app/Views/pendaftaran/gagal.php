@@ -42,7 +42,7 @@
                         <div class="col-sm-7 text-center">
 
                             <!-- Ganti nomor WA di href ini sesuai dengan nomor yang bertanggung jawab di tahun kepengurusan tersebut -->
-                            <a href="https://wa.me/6289673116170">
+                            <a href="https://wa.me/6282180723467">
                                 <button class="btn btn-success mt-3 p-2">
                                     <div class="row justify-content-center align-middle">
                                         <div class="col-1">

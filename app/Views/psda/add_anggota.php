@@ -84,6 +84,9 @@ echo $this->section('main');
                                         <option selected>-- Status Keanggotaan --</option>
                                         <option value="Anggota">Anggota</option>
                                         <option value="Anggota Luar Biasa">Anggota Luar Biasa</option>
+                                        <option value="Pengurus">Pengurus</option>
+                                        <option value="UKA">UKA</option>
+                                        <option value="Gugus Fakultas">Gugus Fakultas</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         <?= $validation->getError('status_keanggotaan') ?>

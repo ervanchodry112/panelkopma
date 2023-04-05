@@ -14,10 +14,10 @@ echo $this->section('main');
                 <div class="card">
                     <div class="card-header mx-3 mt-3">
                         <h3><?= $title ?></h3>
-                        <form method="post" action="<?= base_url('psda/upload_calon_anggota') ?>" enctype="multipart/form-data">
+                        <!-- <form method="post" action="<?= base_url('psda/upload_calon_anggota') ?>" enctype="multipart/form-data">
                             <input type="file" name="csv" id="csv">
                             <input type="submit" value="Upload">
-                        </form>
+                        </form> -->
 
                     </div>
 

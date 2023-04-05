@@ -85,23 +85,7 @@
                                 <?php
                                 $i = 1 + (25 * ($current_page - 1));
                                 foreach ($simpanan as $d) {
-                                    $tagihan = 0;
-                                    if ($d['tgl_diksar'] < '2022-01-01') {
-                                        $date1 = $d['tgl_diksar'];
-                                        $date2 = '2022-01-01';
-                                        $diff = abs(strtotime($date1) - strtotime($date2));
-                                        $month = floor($diff / (30 * 60 * 60 * 24));
-                                        $tagihan = $month * 5000;
 
-                                        $month = abs($date->difference('2022-01-01')->getMonths());
-                                    } else {
-                                        $month = abs($date->difference($d['tgl_diksar'])->getMonths());
-                                    }
-                                    $tagihan = ($tagihan + ($month * 10000)) - $d['simpanan_wajib'];
-                                    // dd($tagihan);
-                                    // if ($tagihan < 0) {
-                                    //     $tagihan = 0;
-                                    // }
                                 ?>
                                     <tr>
                                         <th scope="row"><?= $i++ ?></th>
@@ -119,7 +103,7 @@
                                         <td>Rp<?= number_format($d['simpanan_pokok'], 2) ?></td>
                                         <td>Rp<?= number_format($d['simpanan_wajib'], 2) ?></td>
                                         <td>Rp<?= number_format($d['simpanan_pokok'] + $d['simpanan_wajib'], 2) ?></td>
-                                        <td>Rp<?= number_format($tagihan, 2) ?></td>
+                                        <td>Rp<?= number_format($d['tagihan'], 2) ?></td>
                                     </tr>
                                 <?php } ?>
                             </table>

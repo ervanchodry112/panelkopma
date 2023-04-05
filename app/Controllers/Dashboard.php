@@ -365,7 +365,7 @@ class Dashboard extends BaseController
         } else {
             $tahun = Time::now()->getYear();
         }
-        if (user()->username == 'admin' || user()->username == 'ketum' || user()->username == 'badanpengawas') {
+        if (user()->username == 'admin' || user()->username == 'ketum' || user()->username == 'badanpengawas' || user()->username == 'administrasi') {
             if ($search) {
                 $program_kerja = $this->progja->select('program_kerja.id, program_kerja.tahun, program_kerja.nama_program, program_kerja.proposal, program_kerja.lpj, program_kerja.deskripsi, program_kerja.rencana_pelaksanaan, users.username, program_kerja.status')
                     ->join('users', 'program_kerja.user=users.id')->like('nama_program', $search)

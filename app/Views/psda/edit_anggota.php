@@ -67,6 +67,9 @@ echo $this->section('main');
                                         <option value="<?= $anggota['keanggotaan'] ?>" selected><?= $anggota['keanggotaan'] ?></option>
                                         <option value="Anggota">Anggota</option>
                                         <option value="Anggota Luar BIasa">Anggota Luar Biasa</option>
+                                        <option value="Pengurus">Pengurus</option>
+                                        <option value="UKA">UKA</option>
+                                        <option value="Gugus Fakultas">Gugus Fakultas</option>
                                     </select>
                                 </div>
                             </div>

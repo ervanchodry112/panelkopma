@@ -41,6 +41,13 @@
                 <span>Data Kegiatan</span>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a href="https://scribehow.com/page/User_Guide_Panel_Kepengurusan_Kopma_Unila__vTx9pzLAQIGel6inLmjhZw" class="nav-link collapsed px-3 d-flex" target="_blank">
+                <i class="bi bi-book"></i>
+                <span>Panduan Pengguna</span>
+            </a>
+        </li>
         <li class="my-1">
 
             <hr>
@@ -56,6 +63,18 @@
                     <span>Program Kerja</span>
                 </a>
             </li>
+
+            <li class="my-1">
+                <hr>
+            </li>
+            <li class="nav-item">
+                <div class="nav-heading">Humas</div>
+                <a href="<?= base_url('humas/alumni') ?>" class="nav-link collapsed px-3 d-flex">
+                    <i class="bi bi-mortarboard"></i>
+                    <span>Alumni</span>
+                </a>
+            </li>
+
             <li class="my-1">
                 <hr>
             </li>

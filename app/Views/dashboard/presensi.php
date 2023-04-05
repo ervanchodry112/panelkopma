@@ -86,6 +86,7 @@ echo $this->section('main');
                                         <th scope="col">Timestamp</th>
                                         <th scope="col">Nama Lengkap</th>
                                         <th scope="col">Nomor Anggota</th>
+                                        <th scope="col">Jabatan</th>
                                     </tr>
                                 </thead>
                                 <?php $i = 1 + (25 * ($current_page - 1));
@@ -95,6 +96,7 @@ echo $this->section('main');
                                         <td><?= $d['waktu'] ?></td>
                                         <td><?= $d['nama_lengkap'] ?></td>
                                         <td><?= $d['nomor_anggota'] ?></td>
+                                        <td><?= $d['keanggotaan'] ?></td>
                                     </tr>
                                 <?php } ?>
                             </table>

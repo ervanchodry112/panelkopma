@@ -129,22 +129,6 @@ class Api extends BaseController
         if (!$data_simpanan || !$data_poin) {
             return $this->failNotFound('Data tidak ditemukan');
         }
-        $tagihan = 0;
-        if ($d['tgl_diksar'] < '2022-01-01') {
-            $date1 = $d['tgl_diksar'];
-            $date2 = '2022-01-01';
-            $diff = abs(strtotime($date1) - strtotime($date2));
-            $month = floor($diff / (30 * 60 * 60 * 24));
-            $tagihan = $month * 5000;
-
-            $month = abs(Time::today('Asia/Jakarta')->difference('2022-01-01')->getMonths());
-        } else {
-            $month = abs(Time::today('Asia/Jakarta')->difference($d['tgl_diksar'])->getMonths());
-        }
-        $tagihan = ($tagihan + ($month * 10000)) - $data_simpanan['simpanan_wajib'];
-        if ($tagihan <= 0) {
-            $tagihan = 0;
-        }
 
         $data_poin = (($data_simpanan['simpanan_wajib'] / 10000) * 3) + $data_poin['poin'];
 
@@ -156,7 +140,7 @@ class Api extends BaseController
                 'nomor_anggota' => $nomor_anggota,
                 'simpanan_wajib' => $data_simpanan['simpanan_wajib'],
                 'simpanan_pokok' => $data_simpanan['simpanan_pokok'],
-                'tagihan' => $tagihan,
+                'tagihan' => $data_simpanan['tagihan'] != null ? $data_simpanan['tagihan'] : 0,
                 'poin' => $data_poin,
             ]
         ];

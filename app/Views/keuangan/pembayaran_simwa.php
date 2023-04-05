@@ -88,6 +88,7 @@ echo $this->section('main');
                                     </tr>
                                 <?php } ?>
                             </table>
+                            <?= $pager->links('pembayaran_simwa', 'custom_pagination') ?>
                         </div>
 
                     </div>

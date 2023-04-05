@@ -8,7 +8,7 @@ class SimpananModel extends Model
 {
     protected $table = 'data_simpanan';
     protected $primaryKey = 'nomor_anggota';
-    protected $allowedFields = ['nomor_anggota', 'simpanan_pokok', 'simpanan_wajib'];
+    protected $allowedFields = ['nomor_anggota', 'simpanan_pokok', 'simpanan_wajib', 'tagihan'];
 
 
     protected $useTimestamps = true;
